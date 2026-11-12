@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>التقارير - Mr Romany Faheam</title>
+<style>
+*{box-sizing:border-box;font-family:'Segoe UI',Tahoma,sans-serif}
+body{margin:0;background:#F2F4F7}
+.topbar{background:#0F2A44;color:white;padding:14px 16px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:10}
+.topbar button{background:rgba(255,255,255,.18);color:white;border:none;width:42px;height:42px;border-radius:50%;font-size:20px;cursor:pointer}
+.topbar h2{margin:0;font-size:18px}
+.topbar p{margin:2px 0 0;font-size:12px;opacity:.85}
+.wrap{max-width:1150px;margin:16px auto;padding:0 12px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:14px}
+.stat{background:white;padding:16px;border-radius:14px;box-shadow:0 1px 3px rgba(0,0,0,.08);text-align:center}
+.stat b{font-size:26px;display:block}
+.stat small{color:#666}
+.stat.red b{color:#B71C1C}
+.stat.green b{color:#1B5E20}
+.stat.blue b{color:#0F2A44}
+.card{background:white;padding:18px;border-radius:16px;box-shadow:0 1px 3px rgba(0,0,0,.08);margin-bottom:14px}
+.card h3{margin:0 0 10px;color:#0F2A44}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.filters input,.filters select{flex:1;min-width:160px}
+input,select,textarea{padding:11px;border:1px solid #E0E0E0;border-radius:12px;font-size:14px;outline:none}
+.btn{border:none;padding:11px 18px;border-radius:12px;cursor:pointer;font-weight:bold}
+.btn-dark{background:#0F2A44;color:white}
+.btn-green{background:#1B5E20;color:white}
+.btn-red{background:#FFEBEE;color:#B71C1C}
+.btn-yellow{background:#FFF8E1;color:#7A5C00}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:right;background:#ECEFF1;padding:10px;border-bottom:2px solid #E0E0E0}
+td{padding:10px;border-bottom:1px solid #F0F0F0;vertical-align:top}
+tr{cursor:pointer}
+tr:hover{background:#F8F9FA}
+.avatar{width:44px;height:44px;border-radius:50%;background:#0F2A44;color:white;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0}
+.badge{padding:3px 8px;border-radius:12px;font-size:11px;font-weight:bold}
+.badge-ok{background:#E8F5E9;color:#1B5E20}
+.badge-warn{background:#FFF3E0;color:#E65100}
+.badge-bad{background:#FFEBEE;color:#B71C1C}
+.badge-gray{background:#ECEFF1;color:#455A64}
+.detail{display:none}
+.detail.open{display:block}
+.detail-head{display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap;background:#F8F9FA;padding:14px;border-radius:14px;margin-bottom:12px}
+.detail-head .avatar{width:72px;height:72px;font-size:24px}
+.detail-head b{font-size:18px}
+.detail-head small{display:block;color:#666;margin:2px 0}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.timeline{border-right:3px solid #0F2A44;padding-right:14px;margin:12px 0}
+.timeline div{padding:8px 0;border-bottom:1px solid #F0F0F0;font-size:13px;line-height:1.6}
+.timeline b{color:#0F2A44}
+.exam-row{display:flex;gap:10px;align-items:center;padding:10px;border:1px solid #EEE;border-radius:12px;margin:8px 0;flex-wrap:wrap}
+.exam-row b{flex:1;min-width:140px}
+.exam-row small{color:#666;display:block}
+.empty{text-align:center;color:#888;padding:30px;line-height:1.8}
+.empty b{color:#333;font-size:16px}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:100;padding:16px}
+.modal.open{display:flex}
+.modal-box{background:white;width:100%;max-width:460px;padding:20px;border-radius:16px}
+.modal-box h3{margin:0 0 10px;color:#0F2A44}
+@media(max-width:700px){table{font-size:12px}th,td{padding:8px 6px}}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <button onclick="window.location.href='dashboard.html'">‹</button>
+  <div><h2>📊 التقارير - كل حاجة عن كل طالب</h2><p>من يوم ما سجل، لحد آخر امتحان - للمستر بس</p></div>
+  <button style="margin-right:auto" onclick="window.print()">🖨️</button>
+</div>
+
+<div class="wrap">
+  <div class="stats">
+    <div class="stat blue"><b id="totalStudents">0</b><small>👥 إجمالي الطلبة</small></div>
+    <div class="stat"><b id="totalExams">0</b><small>📝 إجمالي الامتحانات اللي اتحلت</small></div>
+    <div class="stat green"><b id="avgGrade">-</b><small>📈 متوسط الدرجات</small></div>
+    <div class="stat red"><b id="cheatCount">0</b><small>⚠️ محاولات غش مشكوك فيها</small></div>
+    <div class="stat"><b id="warnedCount">0</b><small>🔔 طلبة واخدين تحذير</small></div>
+  </div>
+
+  <div class="card">
+    <h3>🔍 دور على طالب - بالكود أو الاسم أو رقم التليفون</h3>
+    <div class="filters">
+      <input id="searchInput" placeholder="اكتب كود الطالب أو اسمه أو رقم تليفونه..." oninput="renderStudents()">
+      <select id="filterStage" onchange="renderStudents()"><option value="all">كل المراحل</option><option>أولى بكالوريا</option><option>تانية بكالوريا</option><option>تالتة بكالوريا</option></select>
+      <select id="filterStatus" onchange="renderStudents()"><option value="all">كل الطلبة</option><option value="warned">واخدين تحذير بس</option><option value="cheat">مشكوك في غش بس</option><option value="blocked">محظورين بس</option></select>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <input id="newCode" placeholder="كود الطالب الحقيقي - مثال: AH1234" style="flex:1;min-width:140px">
+      <input id="newName" placeholder="اسم الطالب الحقيقي - أربع أسماء" style="flex:1;min-width:160px">
+      <input id="newPhone" placeholder="رقم الواتساب - مثال: 01000000000" style="flex:1;min-width:140px">
+      <select id="newStage" style="flex:1;min-width:140px"><option>أولى بكالوريا</option><option>تانية بكالوريا</option><option>تالتة بكالوريا</option></select>
+      <button class="btn btn-dark" onclick="addStudent()">+ أضف طالب حقيقي</button>
+    </div>
+    <p style="font-size:12px;color:#888;margin:8px 0 0">مفيش أي بيانات وهمية هنا. الطالب اللي بيسجل من تطبيقه بكوده، هيظهر هنا لوحده. أو انت تضيفه هنا بكوده الحقيقي.</p>
+  </div>
+
+  <div class="card">
+    <h3>👥 قايمة الطلبة - دوس على أي طالب عشان تشوف تقريره الكامل</h3>
+    <div style="overflow-x:auto">
+    <table>
+      <thead><tr><th>الطالب</th><th>الكود</th><th>المرحلة</th><th>رقم الواتساب - للمستر بس</th><th>انضم إمتى</th><th>امتحانات</th><th>متوسط</th><th>غش؟</th><th>الحالة</th></tr></thead>
+      <tbody id="studentsBody"></tbody>
+    </table>
+    </div>
+    <div class="empty" id="emptyStudents" style="display:none"><b>لسه مفيش طلبة</b><br>أضف طالب حقيقي من فوق، أو استنى الطالب يسجل من تطبيقه<br>أول ما طالب يسجل، تقريره هيظهر هنا لوحده</div>
+  </div>
+
+  <div class="card detail" id="studentDetail">
+    <div style="display:flex;justify-content:space-between;align-items:center"><h3>📄 تقرير الطالب الكامل</h3><button class="btn" style="background:#ECEFF1" onclick="closeDetail()">✕ اقفل التقرير</button></div>
+    <div id="detailContent"></div>
+  </div>
+</div>
+
+<div class="modal" id="warnModal">
+  <div class="modal-box">
+    <h3>⚠️ تحذير لطالب</h3>
+    <p id="warnStudentName" style="font-weight:bold"></p>
+    <label>سبب التحذير - هيوصل للطالب ولأهله في التقرير</label>
+    <textarea id="warnReason" rows="3" placeholder="مثال: محاولة غش في امتحان يوم..."></textarea>
+    <button class="btn btn-dark" style="width:100%;margin-top:10px" onclick="confirmWarn()">⚠️ ابعت التحذير</button>
+    <button class="btn" style="width:100%;background:#ECEFF1;margin-top:8px" onclick="closeWarn()">إلغاء</button>
+  </div>
+</div>
+
+<script>
+var selectedCode=null;
+var warnCode=null;
+function getStudents(){ try{ return JSON.parse(localStorage.getItem('realStudents')||'[]'); }catch(e){ return []; } }
+function saveStudents(a){ localStorage.setItem('realStudents', JSON.stringify(a)); }
+function getResults(){ try{ return JSON.parse(localStorage.getItem('examResults')||'[]'); }catch(e){ return []; } }
+function getWarnings(){ try{ return JSON.parse(localStorage.getItem('studentWarnings')||'{}'); }catch(e){ return {}; } }
+function saveWarnings(o){ localStorage.setItem('studentWarnings', JSON.stringify(o)); }
+function getBlocked(){ try{ return JSON.parse(localStorage.getItem('blockedStudents')||'[]'); }catch(e){ return []; } }
+function saveBlocked(a){ localStorage.setItem('blockedStudents', JSON.stringify(a)); }
+function initials(name){ var p=name.trim().split(' '); return (p[0]?p[0][0]:'؟')+(p[1]?p[1][0]:''); }
+function addStudent(){
+  var code=document.getElementById('newCode').value.trim();
+  var name=document.getElementById('newName').value.trim();
+  var phone=document.getElementById('newPhone').value.trim();
+  var stage=document.getElementById('newStage').value;
+  if(!code||!name){ alert('اكتب كود الطالب الحقيقي واسمه الحقيقي'); return; }
+  var all=getStudents();
+  if(all.some(function(s){ return s.code===code; })){ alert('الكود ده موجود قبل كده'); return; }
+  var now=new Date();
+  all.push({code:code, name:name, phone:phone||'مش متسجل', stage:stage, joinedAt:now.toLocaleString('ar-EG'), joinedISO:now.toISOString(), exams:[]});
+  saveStudents(all);
+  document.getElementById('newCode').value=''; document.getElementById('newName').value=''; document.getElementById('newPhone').value='';
+  renderStudents(); alert('تمت إضافة '+name+' ✅');
+}
+function studentStats(code){
+  var res=getResults().filter(function(r){ return r.code===code; });
+  var total=res.length;
+  var avg=total?Math.round(res.reduce(function(a,r){ return a+r.grade; },0)/total):0;
+  var cheat=res.filter(function(r){ return r.cheat; }).length;
+  return {total:total, avg:avg, cheat:cheat, results:res};
+}
+function renderStudents(){
+  var all=getStudents();
+  var q=document.getElementById('searchInput').value.trim();
+  var stage=document.getElementById('filterStage').value;
+  var status=document.getElementById('filterStatus').value;
+  var warnings=getWarnings(); var blocked=getBlocked();
+  var filtered=all.filter(function(s){
+    if(stage!=='all' && s.stage!==stage) return false;
+    if(q && !(s.code.includes(q)||s.name.includes(q)||(s.phone||'').includes(q))) return false;
+    var st=studentStats(s.code);
+    if(status==='warned' && !(warnings[s.code]&&warnings[s.code].length)) return false;
+    if(status==='cheat' && st.cheat===0) return false;
+    if(status==='blocked' && blocked.indexOf(s.code)===-1) return false;
+    return true;
+  });
+  document.getElementById('totalStudents').innerText=all.length;
+  var allRes=getResults();
+  document.getElementById('totalExams').innerText=allRes.length;
+  document.getElementById('avgGrade').innerText=allRes.length?Math.round(allRes.reduce(function(a,r){ return a+r.grade; },0)/allRes.length)+'%':'-';
+  document.getElementById('cheatCount').innerText=allRes.filter(function(r){ return r.cheat; }).length;
+  var warned=0; for(var k in warnings){ if(warnings[k].length) warned++; } document.getElementById('warnedCount').innerText=warned;
+  var html='';
+  for(var i=0;i<filtered.length;i++){
+    var s=filtered[i]; var st=studentStats(s.code);
+    var isBlocked=blocked.indexOf(s.code)!==-1;
+    var statusHtml=isBlocked?'<span class="badge badge-bad">🚫 محظور</span>':(warnings[s.code]&&warnings[s.code].length)?'<span class="badge badge-warn">⚠️ واخد تحذير ('+warnings[s.code].length+')</span>':'<span class="badge badge-ok">✅ نشط</span>';
+    var cheatHtml=st.cheat>0?'<span class="badge badge-bad">⚠️ '+st.cheat+' مشكوك</span>':'<span class="badge badge-gray">لا</span>';
+    html+='<tr onclick="openStudent(\''+s.code+'\')"><td><div style="display:flex;gap:10px;align-items:center"><div class="avatar">'+initials(s.name)+'</div><div><b>'+s.name+'</b><small style="display:block;color:#888">دوس عشان تشوف تقريره الكامل</small></div></div></td><td><b>'+s.code+'</b></td><td>'+s.stage+'</td><td dir="ltr" style="text-align:left">'+(s.phone||'-')+'</td><td><small>'+(s.joinedAt||'-')+'</small></td><td>'+st.total+'</td><td>'+(st.total?st.avg+'%':'-')+'</td><td>'+cheatHtml+'</td><td>'+statusHtml+'</td></tr>';
+  }
+  document.getElementById('studentsBody').innerHTML=html;
+  document.getElementById('emptyStudents').style.display=filtered.length?'none':'block';
+}
+function openStudent(code){
+  selectedCode=code;
+  var all=getStudents(); var s=null; for(var i=0;i<all.length;i++){ if(all[i].code===code) s=all[i]; } if(!s) return;
+  var st=studentStats(code); var warnings=getWarnings()[code]||[]; var blocked=getBlocked().indexOf(code)!==-1;
+  var pts=JSON.parse(localStorage.getItem('walletPoints')||'{}')[code]||0;
+  var html='<div class="detail-head"><div class="avatar">'+initials(s.name)+'</div><div style="flex:1;min-width:220px"><b>'+s.name+'</b><small>الكود: <b>'+s.code+'</b></small><small>المرحلة: '+s.stage+'</small><small>رقم الواتساب - للمستر بس: <b dir="ltr">'+(s.phone||'-')+'</b></small><small>انضم للتطبيق إمتى: <b>'+(s.joinedAt||'-')+'</b></small><small>رصيد النقاط - خاص: <b>'+pts+' نقطة</b></small><small>الحالة: '+(blocked?'<b style="color:#B71C1C">🚫 محظور من التطبيق</b>':warnings.length?'<b style="color:#E65100">⚠️ واخد '+warnings.length+' تحذير</b>':'<b style="color:#1B5E20">✅ نشط</b>')+'</small></div><div><button class="btn btn-yellow" onclick="openWarn(\''+s.code+'\')">⚠️ حذره</button> <button class="btn '+(blocked?'btn-green':'btn-red')+'" onclick="toggleBlock(\''+s.code+'\')">'+(blocked?'✅ فك الحظر':'🚫 احظره من التطبيق')+'</button> <button class="btn btn-red" onclick="deleteStudent(\''+s.code+'\')">🗑️ احذف حسابه نهائيا</button></div></div>';
+  html+='<div class="actions"><button class="btn btn-dark" onclick="printStudent()">🖨️ اطبع تقرير الطالب ده - لأهله</button><button class="btn" style="background:#E8F5E9;color:#1B5E20" onclick="addFakeExam()">+ أضف نتيجة امتحان يدوي - لو الامتحان كان ورقي</button></div>';
+  html+='<h4>📝 كل الامتحانات والواجبات - من يوم ما سجل</h4>';
+  if(!st.results.length) html+='<p style="font-size:13px;color:#888">لسه الطالب ده محلش أي امتحان ولا واجب<br>أول ما يحل امتحان من تطبيقه، النتيجة هتظهر هنا لوحدها، باليوم والساعة والدقيقة، والدرجة، والوقت، والغش</p>';
+  else {
+    for(var i=0;i<st.results.length;i++){
+      var r=st.results[i];
+      html+='<div class="exam-row"><div style="flex:1;min-width:200px"><b>'+(r.examTitle||'امتحان')+' - '+(r.type||'امتحان')+'</b><small>دخل يحل إمتى: '+(r.startedAt||'-')+'</small><small>خلص إمتى: '+(r.finishedAt||'-')+' • خد وقت: '+(r.duration||'-')+'</small><small>إجاباته: صح '+(r.correct||0)+' • غلط '+(r.wrong||0)+' • إجمالي '+(r.total||0)+'</small></div><div><b style="font-size:20px">'+r.grade+'%</b><small>الدرجة</small></div><div>'+(r.cheat?'<span class="badge badge-bad">⚠️ مشكوك في غش<br>'+(r.cheatReason||'')+'</span>':'<span class="badge badge-ok">✅ مفيش غش</span>')+'</div></div>';
+    }
+  }
+  html+='<h4>⚠️ سجل التحذيرات</h4>';
+  if(!warnings.length) html+='<p style="font-size:13px;color:#888">مفيش تحذيرات للطالب ده</p>';
+  else { html+='<div class="timeline">'; for(var j=0;j<warnings.length;j++){ html+='<div><b>'+warnings[j].date+'</b> - '+warnings[j].reason+'</div>'; } html+='</div>'; }
+  html+='<h4>📅 خط زمني - من يوم ما سجل</h4><div class="timeline"><div><b>'+(s.joinedAt||'-')+'</b> - انضم للتطبيق - الكود: '+s.code+'</div>';
+  for(var k=0;k<st.results.length;k++){ html+='<div><b>'+(st.results[k].finishedAt||'-')+'</b> - حل '+(st.results[k].examTitle||'امتحان')+' - الدرجة: '+st.results[k].grade+'% - الوقت: '+(st.results[k].duration||'-')+'</div>'; }
+  html+='</div>';
+  document.getElementById('detailContent').innerHTML=html;
+  document.getElementById('studentDetail').classList.add('open');
+  document.getElementById('studentDetail').scrollIntoView({behavior:'smooth'});
+}
+function closeDetail(){ document.getElementById('studentDetail').classList.remove('open'); selectedCode=null; }
+function openWarn(code){
+  warnCode=code; var all=getStudents(); var s=null; for(var i=0;i<all.length;i++){ if(all[i].code===code) s=all[i]; } if(!s) return;
+  document.getElementById('warnStudentName').innerText=s.name+' • '+s.code;
+  document.getElementById('warnReason').value=''; document.getElementById('warnModal').classList.add('open');
+}
+function closeWarn(){ document.getElementById('warnModal').classList.remove('open'); warnCode=null; }
+function confirmWarn(){
+  if(!warnCode) return;
+  var reason=document.getElementById('warnReason').value.trim(); if(!reason){ alert('اكتب سبب التحذير'); return; }
+  var w=getWarnings(); w[warnCode]=w[warnCode]||[]; w[warnCode].push({reason:reason, date:new Date().toLocaleString('ar-EG')}); saveWarnings(w);
+  var notifs=JSON.parse(localStorage.getItem('notifications')||'[]');
+  notifs.unshift({id:Date.now(), title:'⚠️ تحذير من المستر', msg:'التحذير: '+reason, target:'one', student:warnCode, stage:'', tone:'loud', toneName:'📢 قوية', who:'teacher', time:new Date().toLocaleString('ar-EG')});
+  localStorage.setItem('notifications', JSON.stringify(notifs));
+  closeWarn(); renderStudents(); if(selectedCode) openStudent(selectedCode);
+  alert('تم إرسال التحذير ✅ ووصله إشعار');
+}
+function toggleBlock(code){
+  var blocked=getBlocked(); var idx=blocked.indexOf(code);
+  if(idx===-1){ if(!confirm('تحظر الطالب ده من التطبيق؟ مش هيعرف يدخل تاني')) return; blocked.push(code); }
+  else { blocked.splice(idx,1); }
+  saveBlocked(blocked); renderStudents(); openStudent(code);
+}
+function deleteStudent(code){
+  if(!confirm('تحذف حساب الطالب ده نهائيا؟ هتتمسح كل بياناته، وكل امتحاناته، وكل تقاريره. متأكد؟')) return;
+  if(!confirm('تأكيد أخير: حذف نهائي، مفيش رجوع. متأكد؟')) return;
+  var all=getStudents().filter(function(s){ return s.code!==code; }); saveStudents(all);
+  var res=getResults().filter(function(r){ return r.code!==code; }); localStorage.setItem('examResults', JSON.stringify(res));
+  var w=getWarnings(); delete w[code]; saveWarnings(w);
+  var blocked=getBlocked().filter(function(c){ return c!==code; }); saveBlocked(blocked);
+  var pts=JSON.parse(localStorage.getItem('walletPoints')||'{}'); delete pts[code]; localStorage.setItem('walletPoints', JSON.stringify(pts));
+  var honor=JSON.parse(localStorage.getItem('honorBoard')||'[]').filter(function(h){ return h.code!==code; }); localStorage.setItem('honorBoard', JSON.stringify(honor));
+  closeDetail(); renderStudents(); alert('تم حذف حساب الطالب نهائيا');
+}
+function addFakeExam(){
+  if(!selectedCode) return;
+  var title=prompt('اسم الامتحان أو الواجب - مثال: امتحان الوحدة الأولى');
+  if(!title) return;
+  var grade=prompt('الدرجة - اكتب رقم من 0 لـ 100 - مثال: 85');
+  if(grade===null) return;
+  var res=getResults();
+  var now=new Date();
+  res.unshift({code:selectedCode, examTitle:title, type:'امتحان', grade:parseInt(grade,10)||0, correct:0, wrong:0, total:0, startedAt:now.toLocaleString('ar-EG'), finishedAt:now.toLocaleString('ar-EG'), duration:'يدوي', cheat:false});
+  localStorage.setItem('examResults', JSON.stringify(res));
+  renderStudents(); openStudent(selectedCode);
+}
+function printStudent(){ window.print(); }
+renderStudents();
+</script>
+</body>
+</html>
