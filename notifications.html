@@ -14,6 +14,9 @@ body{background:#F8F9FA}
 .chip-row{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
 .chip-row button{background:#F1F3F4;border:none;padding:8px 14px;border-radius:20px;cursor:pointer}
 .chip-row button.active{background:#FF6B00;color:white}
+.ringtone-item{display:flex;justify-content:space-between;align-items:center;padding:10px;border:1px solid #EEE;border-radius:12px;margin:6px 0;cursor:pointer}
+.ringtone-item.active{border-color:#FF6B00;background:#FFF8F0}
+.ringtone-item button{background:#FF6B00;color:white;border:none;padding:6px 12px;border-radius:16px;cursor:pointer}
 .notif-item{display:flex;gap:12px;padding:14px;border-bottom:1px solid #F0F0F0;align-items:flex-start}
 .notif-item:last-child{border:none}
 .notif-item span{font-size:24px;width:44px;height:44px;background:#FFF1E6;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
@@ -27,7 +30,7 @@ body{background:#F8F9FA}
 <div class="topbar-dash">
   <button class="icon-btn" onclick="window.location.href='dashboard.html'">‹</button>
   <div class="top-title"><h2>🔔 إشعارات</h2><p>ابعت رسالة للطلبة</p></div>
-  <button class="icon-btn" style="background:#FFC107;color:#333" onclick="testSound()">🔔</button>
+  <button class="icon-btn" style="background:#FFC107;color:#333" onclick="playSelectedRingtone()">🔔</button>
 </div>
 <div class="main notif-layout">
   <div class="send-card">
@@ -47,13 +50,31 @@ body{background:#F8F9FA}
     <input id="notifTitle" placeholder="مثال: امتحان بكرة...">
     <label>رسالة الإشعار</label>
     <textarea id="notifMsg" placeholder="اكتب رسالتك للطلبة هنا..."></textarea>
-    <label>🔔 صوت التنبيه</label>
-    <select id="notifSound"><option value="bell">🔔 جرس زي المنبه</option><option value="soft">🔔 ناعم</option><option value="loud">📢 قوي</option></select>
+
+    <div style="background:#FFF8F0;padding:14px;border-radius:14px;margin:12px 0">
+      <b>🎵 مين اللي يختار النغمة؟ - انت اللي بتتحكم</b>
+      <select id="whoChooses" onchange="toggleWhoChooses()">
+        <option value="teacher">👨‍🏫 أنا المستر اللي أحدد النغمة</option>
+        <option value="student">🎓 الطالب هو اللي يختار براحته</option>
+        <option value="perNotif">🔔 كل إشعار بنغمة مختلفة - أنا أختار لكل إشعار</option>
+      </select>
+      <p id="whoChoosesHint" style="font-size:12px;color:#6B7280;margin:6px 0 0">انت هتحدد النغمة، والطالب هيسمع نفس النغمة اللي انت اخترتها</p>
+    </div>
+
+    <div id="teacherToneBox">
+      <label>🎵 اختار نغمة الإشعار ده - دوس ▶️ واسمعها</label>
+      <div class="ringtone-item active" onclick="selectTone('classic',this)"><div><b>📞 رنة كلاسيك</b><small>زي رنة التليفون الأرضي - ترن ترن - 4 ثواني</small></div><button onclick="event.stopPropagation(); playRingtone('classic')">▶️ اسمعها</button></div>
+      <div class="ringtone-item" onclick="selectTone('alarm',this)"><div><b>⏰ منبه</b><small>زي منبه الصبح - قوي وطويل - 4 ثواني</small></div><button onclick="event.stopPropagation(); playRingtone('alarm')">▶️ اسمعها</button></div>
+      <div class="ringtone-item" onclick="selectTone('mobile',this)"><div><b>📱 رنة موبايل</b><small>زي رنة الموبايلات الحديثة - 3 ثواني</small></div><button onclick="event.stopPropagation(); playRingtone('mobile')">▶️ اسمعها</button></div>
+      <div class="ringtone-item" onclick="selectTone('soft',this)"><div><b>🎶 نغمة هادية</b><small>ناعمة - للتنبيهات العادية - 3 ثواني</small></div><button onclick="event.stopPropagation(); playRingtone('soft')">▶️ اسمعها</button></div>
+      <div class="ringtone-item" onclick="selectTone('loud',this)"><div><b>📢 نغمة قوية - امتحان مهم</b><small>قوية وطويلة - للامتحانات المهمة - 5 ثواني</small></div><button onclick="event.stopPropagation(); playRingtone('loud')">▶️ اسمعها</button></div>
+    </div>
+
     <label>⏰ إمتى يتبعت؟</label>
     <select id="notifWhen" onchange="toggleNotifTime()"><option value="now">🚀 دلوقتي</option><option value="later">⏰ بعد مدة</option></select>
     <div id="notifLaterBox" style="display:none"><input type="datetime-local" id="notifAt"></div>
-    <button class="btn" onclick="sendNotif()">🚀 ابعت الإشعار</button>
-    <p style="font-size:12px;color:#80868B;text-align:center">هيوصل للطالب بصوت منبه، وفيه جرس أصفر 🔔</p>
+    <button class="btn" onclick="sendNotif()">🚀 ابعت الإشعار بالنغمة دي</button>
+    <p style="font-size:12px;color:#80868B;text-align:center">الطالب هيسمع النغمة دي أول ما الإشعار يوصله</p>
   </div>
   <div class="list-card">
     <div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">📋 الإشعارات اللي بعتها</h3><b id="notifCount">0</b></div>
@@ -65,12 +86,41 @@ body{background:#F8F9FA}
 <script src="app.js"></script>
 <script>
 let notifTarget='all';
+let selectedTone='classic';
+let whoChooses='teacher';
 function setTarget(t){ notifTarget=t; document.getElementById('toAllBtn').classList.toggle('active',t==='all'); document.getElementById('toOneBtn').classList.toggle('active',t==='one'); document.getElementById('oneStudentBox').style.display=t==='one'?'block':'none'; }
 function toggleNotifTime(){ let w=document.getElementById('notifWhen').value; document.getElementById('notifLaterBox').style.display=w==='later'?'block':'none'; }
-function testSound(){ let s=document.getElementById('notifSound').value; let ctx=new (window.AudioContext||window.webkitAudioContext)(); let o=ctx.createOscillator(); let g=ctx.createGain(); o.connect(g); g.connect(ctx.destination); o.frequency.value=s==='loud'?880:660; o.type='sine'; g.gain.value=0.3; o.start(); setTimeout(()=>{o.stop(); if(s==='loud'){ let o2=ctx.createOscillator(); o2.connect(g); o2.frequency.value=880; o2.start(); setTimeout(()=>o2.stop(),300); } },400); }
-function sendNotif(){ let title=document.getElementById('notifTitle').value.trim(); let msg=document.getElementById('notifMsg').value.trim(); if(!title||!msg){ alert('اكتب العنوان والرسالة'); return; } let item={id:Date.now(), title, msg, target:notifTarget, student:document.getElementById('studentTarget').value.trim(), stage:document.getElementById('notifStage').value, sound:document.getElementById('notifSound').value, when:document.getElementById('notifWhen').value, at:document.getElementById('notifAt').value, time:new Date().toLocaleString('ar-EG')}; let arr=JSON.parse(localStorage.getItem('notifications')||'[]'); arr.unshift(item); localStorage.setItem('notifications',JSON.stringify(arr)); document.getElementById('notifTitle').value=''; document.getElementById('notifMsg').value=''; document.getElementById('studentTarget').value=''; testSound(); alert('تم إرسال الإشعار ✅'); renderNotifs(); }
+function toggleWhoChooses(){ whoChooses=document.getElementById('whoChooses').value; let hint=document.getElementById('whoChoosesHint'); if(whoChooses==='teacher') hint.innerText='انت هتحدد النغمة، والطالب هيسمع نفس النغمة اللي انت اخترتها'; if(whoChooses==='student') hint.innerText='الطالب هيختار النغمة اللي تعجبه من تطبيقه، وانت مش هتفرض عليه نغمة'; if(whoChooses==='perNotif') hint.innerText='انت هتختار لكل إشعار نغمة مختلفة، إشعار الامتحان بنغمة، وإشعار الواجب بنغمة تانية'; document.getElementById('teacherToneBox').style.display=whoChooses==='student'?'none':'block'; }
+function selectTone(t,el){ selectedTone=t; document.querySelectorAll('.ringtone-item').forEach(x=>x.classList.remove('active')); if(el) el.classList.add('active'); }
+function playSelectedRingtone(){ playRingtone(selectedTone); }
+function playNote(ctx, freq, start, dur, type='sine', vol=0.25){ let o=ctx.createOscillator(); let g=ctx.createGain(); o.connect(g); g.connect(ctx.destination); o.frequency.value=freq; o.type=type; g.gain.setValueAtTime(0, ctx.currentTime+start); g.gain.linearRampToValueAtTime(vol, ctx.currentTime+start+0.02); g.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime+start+dur); o.start(ctx.currentTime+start); o.stop(ctx.currentTime+start+dur+0.05); }
+function playRingtone(kind){
+  let ctx=new (window.AudioContext||window.webkitAudioContext)();
+  if(kind==='classic'){
+    // رنة كلاسيك - ترن ترن - 4 ثواني
+    for(let r=0;r<2;r++){ let base=r*1.8; playNote(ctx, 880, base, 0.35, 'sine', 0.3); playNote(ctx, 880, base+0.45, 0.35, 'sine', 0.3); playNote(ctx, 1100, base+0.9, 0.35, 'sine', 0.25); }
+  }
+  if(kind==='alarm'){
+    // منبه - قوي وطويل
+    for(let i=0;i<6;i++){ playNote(ctx, 1200, i*0.55, 0.3, 'square', 0.18); playNote(ctx, 800, i*0.55+0.25, 0.25, 'square', 0.15); }
+  }
+  if(kind==='mobile'){
+    // رنة موبايل حديث
+    let seq=[523,659,784,1046,784,659]; seq.forEach((f,i)=>{ playNote(ctx, f, i*0.35, 0.32, 'sine', 0.28); }); playNote(ctx, 1046, 2.2, 0.5, 'sine', 0.28);
+  }
+  if(kind==='soft'){
+    // هادية
+    let seq=[440,520,660,520]; seq.forEach((f,i)=>{ playNote(ctx, f, i*0.5, 0.45, 'sine', 0.22); });
+  }
+  if(kind==='loud'){
+    // قوية - امتحان مهم - 5 ثواني
+    for(let i=0;i<5;i++){ playNote(ctx, 1000, i*0.8, 0.4, 'sawtooth', 0.15); playNote(ctx, 1300, i*0.8+0.4, 0.35, 'sawtooth', 0.15); }
+  }
+}
+function testSound(){ playRingtone(selectedTone); }
+function sendNotif(){ let title=document.getElementById('notifTitle').value.trim(); let msg=document.getElementById('notifMsg').value.trim(); if(!title||!msg){ alert('اكتب العنوان والرسالة'); return; } let toneName={classic:'📞 رنة كلاسيك', alarm:'⏰ منبه', mobile:'📱 رنة موبايل', soft:'🎶 هادية', loud:'📢 قوية'}[selectedTone]; let item={id:Date.now(), title, msg, target:notifTarget, student:document.getElementById('studentTarget').value.trim(), stage:document.getElementById('notifStage').value, tone:selectedTone, toneName, who:whoChooses, when:document.getElementById('notifWhen').value, at:document.getElementById('notifAt').value, time:new Date().toLocaleString('ar-EG')}; let arr=JSON.parse(localStorage.getItem('notifications')||'[]'); arr.unshift(item); localStorage.setItem('notifications',JSON.stringify(arr)); document.getElementById('notifTitle').value=''; document.getElementById('notifMsg').value=''; document.getElementById('studentTarget').value=''; playRingtone(selectedTone); alert('تم إرسال الإشعار ✅ بالنغمة: '+toneName); renderNotifs(); }
 function deleteNotif(id){ if(!confirm('تحذف الإشعار؟')) return; let arr=JSON.parse(localStorage.getItem('notifications')||'[]').filter(n=>n.id!==id); localStorage.setItem('notifications',JSON.stringify(arr)); renderNotifs(); }
-function renderNotifs(){ let arr=JSON.parse(localStorage.getItem('notifications')||'[]'); let s=document.getElementById('searchNotif').value.trim(); if(s) arr=arr.filter(n=>(n.title+n.msg).includes(s)); document.getElementById('notifCount').innerText=arr.length; document.getElementById('emptyNotif').style.display=arr.length?'none':'block'; document.getElementById('notifList').innerHTML=arr.map(n=>`<div class="notif-item"><span>🔔</span><div><b>${n.title}</b><p style="margin:4px 0">${n.msg}</p><small>${n.target==='all'?'👨‍🎓 الكل':'👤 '+ (n.student||'طالب معين')} • ${n.stage} • ${n.time} ${n.when==='later'?'• ⏰ مجدول':''}</small></div><button class="del" onclick="deleteNotif(${n.id})">🗑️</button></div>`).join(''); }
+function renderNotifs(){ let arr=JSON.parse(localStorage.getItem('notifications')||'[]'); let s=document.getElementById('searchNotif').value.trim(); if(s) arr=arr.filter(n=>(n.title+n.msg).includes(s)); document.getElementById('notifCount').innerText=arr.length; document.getElementById('emptyNotif').style.display=arr.length?'none':'block'; document.getElementById('notifList').innerHTML=arr.map(n=>`<div class="notif-item"><span>🔔</span><div><b>${n.title}</b><p style="margin:4px 0">${n.msg}</p><small>${n.target==='all'?'👨‍🎓 الكل':'👤 '+ (n.student||'طالب معين')} • ${n.stage} • ${n.toneName||''} • ${n.who==='teacher'?'المستر حدد النغمة':n.who==='student'?'الطالب يختار':'كل إشعار بنغمة'} • ${n.time}</small><br><button onclick="playRingtone('${n.tone||'classic'}')" style="background:#FFF1E6;border:none;padding:6px 12px;border-radius:16px;cursor:pointer;margin-top:6px">▶️ اسمع نغمة الإشعار ده</button></div><button class="del" onclick="deleteNotif(${n.id})">🗑️</button></div>`).join(''); }
 renderNotifs();
 </script>
 </body>
