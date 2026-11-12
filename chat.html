@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الشات الجماعي - Mr Romany Faheam</title>
+<link rel="stylesheet" href="style.css">
+<style>
+body{background:#F0F2F5}
+.chat-layout{display:flex;gap:16px;max-width:1100px;align-items:flex-start}
+.control-card{width:300px;background:white;padding:18px;border-radius:16px;box-shadow:0 1px 3px rgba(0,0,0,.08);position:sticky;top:80px}
+.control-card h3{margin:0 0 10px}
+.switch-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #F0F0F0}
+.switch-row small{display:block;color:#80868B}
+.switch{position:relative;width:48px;height:26px;background:#CCC;border-radius:20px;cursor:pointer;flex-shrink:0}
+.switch.on{background:#34A853}
+.switch:after{content:'';position:absolute;width:22px;height:22px;background:white;border-radius:50%;top:2px;right:2px;transition:.2s}
+.switch.on:after{right:24px}
+.chat-card{flex:1;background:white;border-radius:16px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.08);display:flex;flex-direction:column;height:620px}
+.chat-head{background:#FF6B00;color:white;padding:14px;display:flex;gap:12px;align-items:center}
+.chat-head img{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid white}
+.chat-head b{font-size:16px}
+.chat-head small{opacity:.9}
+.chat-head .status{margin-right:auto;background:white;color:#FF6B00;padding:6px 12px;border-radius:16px;font-weight:bold;font-size:12px}
+.chat-head .status.closed{background:#FCE8E6;color:#D93025}
+.pinned{background:#FFF8E0;padding:10px 14px;border-bottom:1px solid #FFE082;display:flex;gap:8px;align-items:center;font-size:13px}
+.pinned button{margin-right:auto;background:none;border:none;cursor:pointer}
+.msgs{flex:1;overflow-y:auto;padding:14px;background:#ECE5DD;display:flex;flex-direction:column;gap:8px}
+.msg{max-width:80%;padding:10px 12px;border-radius:14px;position:relative;font-size:14px;box-shadow:0 1px 1px rgba(0,0,0,.1)}
+.msg.mine{background:#DCF8C6;margin-right:auto;border-bottom-left-radius:4px}
+.msg.other{background:white;margin-left:auto;border-bottom-right-radius:4px}
+.msg.teacher{background:#FFF3E0;border:1px solid #FF6B00;margin-left:auto}
+.msg .who{font-size:11px;font-weight:bold;color:#FF6B00;margin-bottom:4px;display:flex;align-items:center;gap:6px}
+.msg .who img{width:22px;height:22px;border-radius:50%;object-fit:cover}
+.msg .time{font-size:10px;color:#999;text-align:left;margin-top:4px}
+.msg .reply-box{background:rgba(0,0,0,.06);padding:6px 8px;border-radius:8px;font-size:12px;margin-bottom:6px;border-right:3px solid #FF6B00}
+.msg .reacts{margin-top:6px;display:flex;gap:4px}
+.msg .reacts span{background:#F1F3F4;padding:2px 6px;border-radius:12px;font-size:12px;cursor:pointer}
+.msg .actions{position:absolute;top:4px;left:6px;display:none;gap:4px}
+.msg:hover .actions{display:flex}
+.msg .actions button{background:white;border:none;border-radius:50%;width:24px;height:24px;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,.2);font-size:11px}
+.msg img.chat-img{max-width:220px;border-radius:10px;margin-top:6px}
+.msg video{max-width:220px;border-radius:10px;margin-top:6px}
+.reply-bar{background:#FFF3E0;padding:8px 12px;display:flex;gap:8px;align-items:center;font-size:12px;border-top:1px solid #FFE082}
+.input-bar{display:flex;gap:8px;padding:10px;background:white;align-items:flex-end}
+.input-bar textarea{flex:1;border:none;background:#F0F2F5;border-radius:20px;padding:10px 14px;resize:none;max-height:80px}
+.input-bar button{width:42px;height:42px;border-radius:50%;border:none;cursor:pointer;font-size:18px;flex-shrink:0}
+.send-btn{background:#FF6B00;color:white}
+.sticker-bar{display:none;gap:8px;padding:10px;background:white;border-top:1px solid #EEE;flex-wrap:wrap}
+.sticker-bar span{font-size:28px;cursor:pointer;padding:6px;border-radius:10px}
+.sticker-bar span:hover{background:#F1F3F4}
+.react-bar{display:none;gap:6px;padding:8px;background:white;border-top:1px solid #EEE}
+.react-bar span{font-size:22px;cursor:pointer}
+.closed-overlay{background:#F8F9FA;padding:20px;text-align:center;color:#5F6368}
+@media(max-width:850px){.chat-layout{flex-direction:column}.control-card{width:100%;position:static}.chat-card{height:600px;width:100%}}
+</style>
+</head>
+<body>
+<div class="topbar-dash">
+  <button class="icon-btn" onclick="window.location.href='dashboard.html'">‹</button>
+  <div class="top-title"><h2>💬 الشات الجماعي</h2><p>منتدى الطلبة - الكود بس اللي بيظهر</p></div>
+  <button class="icon-btn" style="background:#FF6B00" onclick="toggleChatLock()">🔒</button>
+</div>
+
+<div class="main chat-layout">
+  <div class="control-card">
+    <h3>⚙️ تحكم المستر في الشات</h3>
+    <p style="font-size:12px;color:#80868B">انت بس اللي تقدر تفتح وتقفل وتتحكم</p>
+    <div class="switch-row"><div><b>💬 الشات مفتوح ولا مقفول؟</b><small>لو مقفول، الطلبة مش هيعرفوا يبعتوا</small></div><div class="switch on" id="swOpen" onclick="toggleSwitch('open',this)"></div></div>
+    <div class="switch-row"><div><b>🖼️ السماح بالصور والفيديو</b><small>فيديو أقل من 50 ثانية عشان السيرفر</small></div><div class="switch on" id="swMedia" onclick="toggleSwitch('media',this)"></div></div>
+    <div class="switch-row"><div><b>🎙️ السماح بالريكورد</b><small>رسائل صوتية</small></div><div class="switch on" id="swVoice" onclick="toggleSwitch('voice',this)"></div></div>
+    <div class="switch-row"><div><b>😍 السماح بالستيكرات</b><small>ملصقات وإيموشن</small></div><div class="switch on" id="swSticker" onclick="toggleSwitch('sticker',this)"></div></div>
+    <div class="switch-row"><div><b>❤️ السماح بالرياكت</b><small>قلب وضحك وكده</small></div><div class="switch on" id="swReact" onclick="toggleSwitch('react',this)"></div></div>
+    <div style="background:#FFF8F0;padding:12px;border-radius:12px;margin-top:12px">
+      <b>🔒 الخصوصية</b>
+      <p style="font-size:12px;color:#5F6368;line-height:1.6">الطالب بيظهر بالكود بس، زي <b>AH1234</b><br>مفيش اسم، مفيش رقم، مفيش صورة<br>المستر بس اللي بيظهر باسمه وصورته<br>مفيش مكالمة صوت، مفيش مكالمة فيديو</p>
+    </div>
+    <button class="btn" onclick="clearChat()" style="background:#FCE8E6;color:#D93025;margin-top:12px">🗑️ امسح كل رسائل الشات</button>
+  </div>
+
+  <div class="chat-card">
+    <div class="chat-head">
+      <img src="teacher.jpg" onerror="this.src='https://via.placeholder.com/48'">
+      <div><b>Mr Romany Faheam - الشات الجماعي</b><br><small>👥 كل الطلبة • الكود بس اللي بيظهر • بدون مكالمات</small></div>
+      <div class="status" id="chatStatus">🟢 مفتوح</div>
+    </div>
+    <div class="pinned" id="pinnedBar" style="display:none"><span>📌</span><b id="pinnedText"></b><button onclick="unpin()">✕</button></div>
+    <div class="msgs" id="msgs"></div>
+    <div id="closedMsg" class="closed-overlay" style="display:none">🔒 المستر قفل الشات دلوقتي<br><small>استنى لما المستر يفتحه تاني</small></div>
+    <div class="reply-bar" id="replyBar" style="display:none"><span>↩️ بترد على:</span><b id="replyPreview"></b><button onclick="cancelReply()" style="margin-right:auto;background:none;border:none;cursor:pointer">✕</button></div>
+    <div class="react-bar" id="reactBar"><span onclick="sendReact('❤️')">❤️</span><span onclick="sendReact('😂')">😂</span><span onclick="sendReact('😮')">😮</span><span onclick="sendReact('😢')">😢</span><span onclick="sendReact('👍')">👍</span><span onclick="sendReact('🔥')">🔥</span></div>
+    <div class="sticker-bar" id="stickerBar"><span onclick="sendSticker('😂')">😂</span><span onclick="sendSticker('🔥')">🔥</span><span onclick="sendSticker('💪')">💪</span><span onclick="sendSticker('📚')">📚</span><span onclick="sendSticker('🎉')">🎉</span><span onclick="sendSticker('❤️')">❤️</span><span onclick="sendSticker('👏')">👏</span><span onclick="sendSticker('🤔')">🤔</span><span onclick="sendSticker('😎')">😎</span><span onclick="sendSticker('🏆')">🏆</span></div>
+    <div class="input-bar" id="inputBar">
+      <button onclick="toggleSticker()" title="ستيكرات">😍</button>
+      <button onclick="document.getElementById('chatFile').click()" title="صورة / فيديو أقل من 50 ثانية">📎</button>
+      <input type="file" id="chatFile" accept="image/*,video/*" style="display:none" onchange="sendFile(event)">
+      <textarea id="chatInput" placeholder="اكتب رسالتك... الكود بس اللي هيظهر" rows="1" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+      <button onclick="startVoice()" title="ريكورد">🎙️</button>
+      <button class="send-btn" onclick="sendMsg()">➤</button>
+    </div>
+    <div id="voiceBar" style="display:none;padding:10px;background:#FFF3E0;text-align:center"><b>🔴 بيسجل دلوقتي...</b> <button onclick="stopVoice()" style="background:#D93025;color:white;border:none;padding:8px 16px;border-radius:16px;cursor:pointer">⏹️ وقف وابعت</button></div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+<script>
+let chatSettings = JSON.parse(localStorage.getItem('chatSettings')||'{"open":true,"media":true,"voice":true,"sticker":true,"react":true}');
+let replyTo=null;
+let pinnedId=null;
+let mediaRecorder=null, audioChunks=[];
+function toggleSwitch(key, el){ chatSettings[key]=!chatSettings[key]; el.classList.toggle('on', chatSettings[key]); localStorage.setItem('chatSettings', JSON.stringify(chatSettings)); updateChatUI(); }
+function toggleChatLock(){ chatSettings.open=!chatSettings.open; localStorage.setItem('chatSettings', JSON.stringify(chatSettings)); updateChatUI(); }
+function updateChatUI(){
+  document.getElementById('swOpen').classList.toggle('on', chatSettings.open);
+  document.getElementById('swMedia').classList.toggle('on', chatSettings.media);
+  document.getElementById('swVoice').classList.toggle('on', chatSettings.voice);
+  document.getElementById('swSticker').classList.toggle('on', chatSettings.sticker);
+  document.getElementById('swReact').classList.toggle('on', chatSettings.react);
+  let st=document.getElementById('chatStatus'); st.innerText=chatSettings.open?'🟢 مفتوح':'🔴 مقفول'; st.classList.toggle('closed', !chatSettings.open);
+  document.getElementById('closedMsg').style.display=chatSettings.open?'none':'block';
+  document.getElementById('inputBar').style.display=chatSettings.open?'flex':'none';
+  document.getElementById('reactBar').style.display=chatSettings.react?'flex':'none';
+}
+function sendMsg(){
+  if(!chatSettings.open){ alert('الشات مقفول'); return; }
+  let t=document.getElementById('chatInput').value.trim(); if(!t) return;
+  let msgs=JSON.parse(localStorage.getItem('chatMsgs')||'[]');
+  msgs.push({id:Date.now(), who:'teacher', code:'', name:'Mr Romany Faheam', text:t, reply:replyTo?replyTo.text:'', replyCode:replyTo?replyTo.code:'', time:new Date().toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'}), reacts:{}});
+  localStorage.setItem('chatMsgs', JSON.stringify(msgs));
+  document.getElementById('chatInput').value=''; replyTo=null; document.getElementById('replyBar').style.display='none'; renderMsgs();
+}
+function sendSticker(s){ if(!chatSettings.sticker){ alert('الستيكرات مقفولة'); return; } let msgs=JSON.parse(localStorage.getItem('chatMsgs')||'[]'); msgs.push({id:Date.now(), who:'teacher', name:'Mr Romany Faheam', text:s, isSticker:true, time:new Date().toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'}), reacts:{}}); localStorage.setItem('chatMsgs', JSON.stringify(msgs)); renderMsgs(); }
+function sendReact(e){ alert('دوس على أي رسالة واختار رياكت ❤️ - الرياكت هيظهر تحت الرسالة'); }
+function addReact(id, emoji){ let msgs=JSON.parse(localStorage.getItem('chatMsgs')||'[]'); let m=msgs.find(x=>x.id===id); if(!m) return; m.reacts=m.reacts||{}; m.reacts[emoji]=(m.reacts[emoji]||0)+1; localStorage.setItem('chatMsgs', JSON.stringify(msgs)); renderMsgs(); }
+function toggleSticker(){ document.getElementById('stickerBar').style.display=document.getElementById('stickerBar').style.display==='flex'?'none':'flex'; }
+function sendFile(e){ if(!chatSettings.media){ alert('الصور والفيديو مقفولين'); return; } let f=e.target.files[0]; if(!f) return; if(f.type.startsWith('video/')){ let v=document.createElement('video'); v.preload='metadata'; v.onloadedmetadata=()=>{ if(v.duration>50){ alert('الفيديو أطول من 50 ثانية، اختار فيديو أقصر عشان السيرفر'); return; } readFile(f); }; v.src=URL.createObjectURL(f); } else { readFile(f); } }
+function readFile(f){ let r=new FileReader(); r.onload=()=>{ let msgs=JSON.parse(localStorage.getItem('chatMsgs')||'[]'); msgs.push({id:Date.now(), who:'teacher', name:'Mr Romany Faheam', text:'', file:r.result, fileType:f.type, time:new Date().toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'}), reacts:{}}); localStorage.setItem('chatMsgs', JSON.stringify(msgs)); renderMsgs(); }; r.readAsDataURL(f); }
+async function startVoice(){ if(!chatSettings.voice){ alert('الريكورد مقفول'); return; } try{ let stream=await navigator.mediaDevices.getUserMedia({audio:true}); mediaRecorder=new MediaRecorder(stream); audioChunks=[]; mediaRecorder.ondataavailable=e=>audioChunks.push(e.data); mediaRecorder.onstop=()=>{ let blob=new Blob(audioChunks,{type:'audio/webm'}); let r=new FileReader(); r.onload=()=>{ let msgs=JSON.parse(localStorage.getItem('chatMsgs')||'[]'); msgs.push({id:Date.now(), who:'teacher', name:'Mr Romany Faheam', text:'', audio:r.result, time:new Date().toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'}), reacts:{}}); localStorage.setItem('chatMsgs', JSON.stringify(msgs)); renderMsgs(); }; r.readAsDataURL(blob); }; mediaRecorder.start(); document.getElementById('voiceBar').style.display='block'; }catch(e){ alert('المتصفح مش سامح بالريكورد'); } }
+function stopVoice(){ if(mediaRecorder) mediaRecorder.stop(); document.getElementById('voiceBar').style.display='none'; }
+function doReply(id){ let msgs=JSON.parse(localStorage.getItem('chatMsgs')||'[]'); let m=msgs.find(x=>x.id===id); if(!m) return; replyTo={text:(m.text||'صورة / فيديو').substring(0,40), code:m.who==='teacher'?'Mr Romany Faheam':m.code||'AH1234'}; document.getElementById('replyBar').style.display='flex'; document.getElementById('replyPreview').innerText=replyTo.code+' : '+replyTo.text; document.getElementById('chatInput').focus(); }
+function cancelReply(){ replyTo=null; document.getElementById('replyBar').style.display='none'; }
+function pinMsg(id){ let msgs=JSON.parse(localStorage.getItem('chatMsgs')||'[]'); let m=msgs.find(x=>x.id===id); if(!m) return; pinnedId=id; document.getElementById('pinnedBar').style.display='flex'; document.getElementById('pinnedText').innerText=(m.who==='teacher'?'Mr Romany Faheam':m.code||'')+' : '+(m.text||'صورة / فيديو'); localStorage.setItem('pinnedId', id); }
+function unpin(){ pinnedId=null; localStorage.removeItem('pinnedId'); document.getElementById('pinnedBar').style.display='none'; }
+function deleteMsg(id){ if(!confirm('تمسح الرسالة دي؟ انت المستر، ليك حق تمسح أي رسالة')) return; let msgs=JSON.parse(localStorage.getItem('chatMsgs')||'[]').filter(x=>x.id!==id); localStorage.setItem('chatMsgs', JSON.stringify(msgs)); renderMsgs(); }
+function clearChat(){ if(!confirm('تمسح كل رسائل الشات؟')) return; localStorage.removeItem('chatMsgs'); renderMsgs(); }
+function renderMsgs(){
+  let msgs=JSON.parse(localStorage.getItem('chatMsgs')||'[]');
+  if(msgs.length===0){
+    msgs=[{id:1, who:'teacher', name:'Mr Romany Faheam', text:'أهلا بيكم في الشات الجماعي ❤️ هنا هنتكلم ونساعد بعض، الكود بس اللي بيظهر، مفيش أسماء ولا أرقام، والشات من غير مكالمات خالص', time:'الآن', reacts:{'❤️':3,'🔥':2}}, {id:2, who:'student', code:'AH1234', text:'أهلا يا مستر، الشات جميل جدا', time:'الآن', reacts:{'👍':1}}];
+    localStorage.setItem('chatMsgs', JSON.stringify(msgs));
+  }
+  document.getElementById('msgs').innerHTML=msgs.map(m=>{
+    let isTeacher=m.who==='teacher';
+    let whoHtml=isTeacher?`<div class="who"><img src="teacher.jpg" onerror="this.src='https://via.placeholder.com/22'"> Mr Romany Faheam • المستر</div>`:`<div class="who">👤 ${m.code||'AH1234'}</div>`;
+    let body='';
+    if(m.isSticker) body=`<div style="font-size:36px">${m.text}</div>`;
+    else if(m.audio) body=`<audio controls src="${m.audio}" style="width:200px"></audio>`;
+    else if(m.file) body=m.fileType&&m.fileType.startsWith('video')?`<video controls src="${m.file}"></video>`:`<img class="chat-img" src="${m.file}">`;
+    else body=`<div>${m.text}</div>`;
+    let replyHtml=m.reply?`<div class="reply-box">↩️ ${m.replyCode||''} : ${m.reply}</div>`:'';
+    let reactsHtml=Object.entries(m.reacts||{}).map(([e,c])=>`<span onclick="addReact(${m.id},'${e}')">${e} ${c}</span>`).join('');
+    return `<div class="msg ${isTeacher?'teacher':m.who==='teacher'?'teacher':'other'}">${whoHtml}${replyHtml}${body}<div class="time">${m.time}</div><div class="reacts">${reactsHtml}</div><div class="actions"><button onclick="doReply(${m.id})" title="رد">↩️</button><button onclick="addReact(${m.id},'❤️')" title="رياكت">❤️</button><button onclick="pinMsg(${m.id})" title="تثبيت">📌</button><button onclick="deleteMsg(${m.id})" title="مسح - انت أو صاحب الرسالة بس">🗑️</button></div></div>`;
+  }).join('');
+  let box=document.getElementById('msgs'); box.scrollTop=box.scrollHeight;
+  let pid=localStorage.getItem('pinnedId'); if(pid){ let msgs2=JSON.parse(localStorage.getItem('chatMsgs')||'[]'); let m=msgs2.find(x=>x.id==pid); if(m){ document.getElementById('pinnedBar').style.display='flex'; document.getElementById('pinnedText').innerText=(m.who==='teacher'?'Mr Romany Faheam':m.code||'')+' : '+(m.text||'صورة / فيديو'); } }
+}
+document.getElementById('chatInput').addEventListener('keydown', e=>{ if(e.key==='Enter'&&!e.shiftKey){ e.preventDefault(); sendMsg(); } });
+updateChatUI(); renderMsgs();
+</script>
+</body>
+</html>
