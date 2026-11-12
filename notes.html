@@ -9,32 +9,42 @@
 <body>
 <div class="topbar-dash">
   <button class="icon-btn" onclick="go('dashboard.html')">‹</button>
-  <div class="top-title"><h2>📝 ملاحظاتي - Keep</h2></div>
+  <div class="top-title"><h2>📝 ملاحظاتي</h2></div>
+  <input id="searchNotes" placeholder="🔍 دور في ملاحظاتك..." oninput="renderKeepNotes()" style="max-width:220px">
 </div>
-<div class="main">
-  <div class="keep-grid" id="notesGrid"></div>
-</div>
-<button class="fab" onclick="openNewNote()">+</button>
 
-<div class="modal" id="noteModal">
-  <div class="modal-card">
-    <h3>ملاحظة جديدة</h3>
-    <input id="noteTitle" placeholder="عنوان الملاحظة">
-    <textarea id="noteText" placeholder="اكتب ملاحظتك هنا..."></textarea>
-    <label>🕐 منبه - اختار وقت الإشعار</label>
-    <input type="datetime-local" id="noteTime">
-    <label>🖼️ صورة</label>
-    <input type="file" id="noteImg" accept="image/*" onchange="previewNoteImg(event)">
-    <img id="noteImgPreview" style="width:100%;border-radius:12px;display:none">
-    <label>🎥 فيديو</label>
-    <input type="file" id="noteVideo" accept="video/*">
-    <div class="row">
-      <button class="btn" style="background:#34A853" onclick="startVoice()">🎤 تسجيل صوت</button>
-      <button class="btn" style="background:#EA4335;display:none" id="stopVoice" onclick="stopVoice()">⏹️ وقف</button>
+<div class="main notes-page">
+  <div id="notesGrid" class="keep-grid"></div>
+  <div class="empty-notes" id="emptyNotes">لسه مفيش ملاحظات، دوس + واعمل أول ملاحظة</div>
+</div>
+
+<button class="fab" onclick="openNoteEditor()">+</button>
+
+<div class="note-editor" id="noteEditor">
+  <div class="note-editor-top">
+    <button onclick="closeNoteEditor()">‹ رجوع</button>
+    <div class="editor-actions">
+      <button onclick="togglePin()">📌 تثبيت</button>
+      <button onclick="deleteCurrentNote()">🗑️ حذف</button>
+      <button class="save-note-btn" onclick="saveKeepNoteFull()">💾 حفظ</button>
     </div>
-    <p id="voiceStatus"></p>
-    <button class="btn" onclick="saveKeepNote()">💾 حفظ الملاحظة</button>
-    <button class="btn" style="background:#6B7280" onclick="closeNewNote()">إغلاق</button>
+  </div>
+  <input id="noteTitle" placeholder="العنوان..." class="note-title-input">
+  <textarea id="noteText" placeholder="اكتب ملاحظتك هنا براحتك...&#10;تقدر تكتب كتير، تعمل قايمة، أي حاجة" class="note-text-full"></textarea>
+
+  <div class="note-tools">
+    <div class="tool-row">
+      <span>🎨 لون الملاحظة</span>
+      <div class="colors"><button style="background:#FFF9C4" onclick="setNoteColor('#FFF9C4')"></button><button style="background:#E8F0FE" onclick="setNoteColor('#E8F0FE')"></button><button style="background:#FCE4EC" onclick="setNoteColor('#FCE4EC')"></button><button style="background:#E6F4EA" onclick="setNoteColor('#E6F4EA')"></button><button style="background:#FFF1E6" onclick="setNoteColor('#FFF1E6')"></button></div>
+    </div>
+    <div class="tool-row"><span>🕐 منبه - إشعار</span><input type="datetime-local" id="noteTime"></div>
+    <div class="tool-row"><span>⏳ تختفي لوحدها بعد</span><select id="noteExpire"><option value="">متفضلش - متختفيش</option><option value="60">بعد ساعة</option><option value="1440">بعد يوم</option><option value="10080">بعد أسبوع</option></select></div>
+    <div class="tool-row"><span>✅ قايمة مهام</span><button onclick="addChecklist()">+ أضف مهمة</button></div>
+    <div id="checklistBox"></div>
+    <div class="tool-row"><span>🖼️ صورة</span><input type="file" accept="image/*" onchange="previewNoteImg(event)"><img id="noteImgPreview" style="width:100%;border-radius:16px;display:none"></div>
+    <div class="tool-row"><span>🎥 فيديو</span><input type="file" accept="video/*" onchange="previewNoteVideo(event)"><video id="noteVideoPreview" controls style="width:100%;border-radius:16px;display:none"></video></div>
+    <div class="tool-row"><span>🎤 صوت</span><button onclick="startVoice()">🎤 سجل</button><button id="stopVoice" style="display:none" onclick="stopVoice()">⏹️ وقف</button><span id="voiceStatus"></span></div>
+    <p style="font-size:12px;color:#6B7280">💡 أفكار: ثبت الملاحظة المهمة فوق، اعمل منبه لميعاد الامتحان، وخلي الملاحظة تختفي بعد الامتحان لوحدها</p>
   </div>
 </div>
 <script src="app.js"></script>
