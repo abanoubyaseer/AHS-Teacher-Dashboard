@@ -10,39 +10,32 @@
 <div class="topbar-dash">
   <button class="icon-btn" onclick="toggleSidebar()">☰</button>
   <button class="icon-btn note-top" onclick="go('notes.html')">📝</button>
-  <div class="top-title"><img src="teacher.jpg" id="topImg"><div><h2>Mr Romany Faheam</h2><p>AHS - لوحة تحكم المستر</p></div></div>
+  <div class="top-title"><img src="teacher.jpg"><div><h2>Mr Romany Faheam</h2><p>AHS</p></div></div>
 </div>
-
 <div class="sidebar" id="sidebar">
   <button class="close-sidebar" onclick="toggleSidebar()">‹</button>
-  <img src="teacher.jpg" id="sideImg"><h3>Mr Romany Faheam</h3><p>AHS</p>
-  <p style="font-size:12px">حجم الخط</p>
-  <div class="row"><button onclick="setFont('small')">صغير</button><button onclick="setFont('medium')">وسط</button><button onclick="setFont('large')">كبير</button></div>
-  <p style="font-size:12px">الإضاءة</p>
-  <div class="row"><button onclick="setTheme('light')">☀️ فاتحة</button><button onclick="setTheme('dark')">🌙 غامقة</button></div>
-  <hr><button onclick="openSettings()">⚙️ الإعدادات</button><button onclick="logout()">🚪 تسجيل خروج</button>
+  <img src="teacher.jpg"><h3>Mr Romany Faheam</h3>
+  <p>حجم الخط</p><div class="row"><button onclick="setFont('small')">صغير</button><button onclick="setFont('medium')">وسط</button><button onclick="setFont('large')">كبير</button></div>
+  <p>الإضاءة</p><div class="row"><button onclick="setTheme('light')">☀️ فاتحة</button><button onclick="setTheme('dark')">🌙 غامقة</button></div>
+  <hr><button onclick="openSettings()">⚙️ الإعدادات</button><button onclick="logout()">🚪 خروج</button>
 </div>
-
 <div class="main">
   <div class="top-widgets">
-    <div class="widget widget-students" onclick="go('students.html')"><span>👨‍🎓</span><div><b id="totalStudents">0</b><small>إجمالي الطلاب</small></div></div>
-    <div class="widget widget-cal" onclick="toggleCalendar()"><span>📅</span><div><b id="todayDate">--</b><small id="todayTime">--</small><p id="todayDay">--</p></div></div>
+    <div class="widget"><span>👨‍🎓</span><div><b id="totalStudents">0</b><small>إجمالي الطلاب</small></div></div>
+    <div class="widget" onclick="toggleCalendar()"><span>📅</span><div><b id="todayDate">--</b><small id="todayTime">--</small><p id="todayDay">--</p></div></div>
   </div>
   <div class="calendar-box" id="calendarBox"><div class="cal-head"><button onclick="changeMonth(-1)">‹</button><b id="calTitle"></b><button onclick="changeMonth(1)">›</button></div><div class="cal-grid" id="calGrid"></div></div>
-
   <div class="welcome"><h1>أهلا بيك يا مستر روماني ❤️</h1><p>اختار هتعمل إيه النهاردة</p></div>
-
   <div class="menu-list">
     <button class="menu-item anim-1" onclick="go('exams.html')"><span>📝</span><div><b>إنشاء امتحان</b><small>اختياري - صح وغلط - مقالي</small></div><i>›</i></button>
-    <button class="menu-item anim-2" onclick="go('homework.html')"><span>📚</span><div><b>إنشاء واجب</b><small>واجب جديد للطلبة</small></div><i>›</i></button>
-    <button class="menu-item anim-3"><span>🔔</span><div><b>إشعارات</b><small>رسالة لكل الطلبة أو طالب معين</small></div><i>›</i></button>
-    <button class="menu-item anim-4"><span>💬</span><div><b>شات جماعي</b><small>شات لكل الطلبة</small></div><i>›</i></button>
-    <button class="menu-item anim-5"><span>🏆</span><div><b>لوحة الشرف</b><small>أفضل طالب</small></div><i>›</i></button>
-    <button class="menu-item anim-6"><span>📊</span><div><b>التقارير</b><small>درجات ووقت كل طالب</small></div><i>›</i></button>
+    <button class="menu-item anim-2" onclick="go('homework.html')"><span>📚</span><div><b>إنشاء واجب</b><small>واجب جديد</small></div><i>›</i></button>
+    <button class="menu-item anim-3" onclick="go('notifications.html')"><span>🔔</span><div><b>إشعارات</b><small>رسالة لكل الطلبة</small></div><i>›</i></button>
+    <button class="menu-item anim-4" onclick="go('chat.html')"><span>💬</span><div><b>شات جماعي</b><small>شات لكل الطلبة</small></div><i>›</i></button>
+    <button class="menu-item anim-5" onclick="go('honor.html')"><span>🏆</span><div><b>لوحة الشرف</b><small>أفضل طالب</small></div><i>›</i></button>
+    <button class="menu-item anim-6" onclick="go('reports.html')"><span>📊</span><div><b>التقارير</b><small>درجات ووقت كل طالب</small></div><i>›</i></button>
   </div>
 </div>
-
-<div class="modal" id="settingsModal"><div class="modal-card"><h3>⚙️ الإعدادات</h3><label>تغيير الباسورد</label><input id="newPass" placeholder="الباسورد الجديد"><button class="btn" onclick="changePass()">حفظ الباسورد الجديد</button><label>تغيير الصورة</label><input type="file" accept="image/*" onchange="changeImg(event)"><button class="btn" style="background:#6B7280" onclick="closeSettings()">إغلاق</button></div></div>
+<div class="modal" id="settingsModal"><div class="modal-card"><h3>⚙️ الإعدادات</h3><label>تغيير الباسورد</label><input id="newPass" placeholder="الباسورد الجديد"><button class="btn" onclick="changePass()">حفظ</button><label>تغيير الصورة</label><input type="file" accept="image/*" onchange="changeImg(event)"><button class="btn" style="background:#6B7280" onclick="closeSettings()">إغلاق</button></div></div>
 <script src="app.js"></script>
 </body>
 </html>
