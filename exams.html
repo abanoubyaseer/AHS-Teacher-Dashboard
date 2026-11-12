@@ -3,30 +3,53 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>إنشاء امتحان - Mr Romany Faheam</title>
+<title>إنشاء امتحان</title>
 <link rel="stylesheet" href="style.css">
 <style>
-.form-layout{display:flex;gap:16px;align-items:flex-start}
-.settings-panel{flex:1;min-width:280px;background:white;padding:18px;border-radius:24px;position:sticky;top:80px}
-.questions-panel{flex:2;min-width:0}
-.big-title{font-size:22px;font-weight:bold;border:none;border-bottom:2px solid #FF6B00;border-radius:0}
-.setting-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #F3F4F6}
-.switch{position:relative;width:48px;height:26px;flex-shrink:0}
+body{background:#F8F9FA}
+.form-layout{display:flex;gap:20px;align-items:flex-start;max-width:1200px}
+.settings-panel{flex:0 0 320px;background:white;padding:20px;border-radius:16px;box-shadow:0 1px 3px rgba(0,0,0,.08);position:sticky;top:80px}
+.settings-panel h3{margin:0 0 16px;font-size:16px}
+.set-group{margin:18px 0 0;padding-top:14px;border-top:1px solid #F0F0F0}
+.set-group b{font-size:13px;color:#5F6368;display:block;margin-bottom:10px}
+.setting-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 0;font-size:14px}
+.setting-row small{color:#80868B;display:block;font-size:11px}
+.switch{position:relative;width:44px;height:24px;flex-shrink:0}
 .switch input{opacity:0;width:0;height:0}
-.slider{position:absolute;inset:0;background:#ccc;border-radius:20px;cursor:pointer}
-.slider:before{content:"";position:absolute;width:20px;height:20px;background:white;border-radius:50%;top:3px;right:3px;transition:.3s}
-.switch input:checked + .slider{background:#34A853}
-.switch input:checked + .slider:before{transform:translateX(-22px)}
-.google-bar{position:sticky;bottom:12px;background:white;padding:12px;border-radius:24px;box-shadow:0 10px 25px rgba(0,0,0,.15);display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
-.google-bar button{background:#FFF1E6;border:none;padding:10px 14px;border-radius:20px;cursor:pointer;font-weight:bold}
-.google-bar .add-q-main{background:#FF6B00;color:white}
-.q-card{background:white;padding:16px;border-radius:24px;margin-bottom:12px}
-.q-head{display:flex;justify-content:space-between;gap:8px}
-.q-head select{width:140px}
-.q-tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-.q-tools button{background:#FFF1E6;border:none;padding:8px 12px;border-radius:20px;cursor:pointer}
-.delete-q{background:#FEE2E2 !important}
-@media(max-width:800px){.form-layout{flex-direction:column}.settings-panel{position:static;width:100%}}
+.slider{position:absolute;inset:0;background:#DADCE0;border-radius:20px;cursor:pointer;transition:.2s}
+.slider:before{content:"";position:absolute;width:18px;height:18px;background:white;border-radius:50%;top:3px;right:3px;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.switch input:checked + .slider{background:#FF6B00}
+.switch input:checked + .slider:before{transform:translateX(-20px)}
+.questions-panel{flex:1;min-width:0}
+.top-form-card{background:white;border-radius:16px;padding:24px;box-shadow:0 1px 3px rgba(0,0,0,.08);border-top:8px solid #FF6B00;margin-bottom:16px}
+.top-form-card input{border:none;border-bottom:1px solid #E0E0E0;border-radius:0;padding:10px 0}
+.top-form-card input:focus{border-color:#FF6B00}
+.q-card{background:white;padding:20px;border-radius:16px;margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,.08);transition:.2s}
+.q-card:focus-within{box-shadow:0 4px 16px rgba(255,107,0,.15);border-right:4px solid #FF6B00}
+.q-head{display:flex;gap:12px;align-items:flex-start}
+.q-head textarea{flex:1;border:none;background:#F8F9FA;border-radius:12px;padding:14px;font-size:16px;min-height:56px;resize:none}
+.q-head select{width:150px;background:#F8F9FA;border:1px solid #E0E0E0;border-radius:12px;padding:10px}
+.opt-row{display:flex;gap:10px;align-items:center;margin:8px 0}
+.opt-row input[type="text"]{flex:1;background:transparent;border:none;border-bottom:1px solid #E0E0E0;border-radius:0}
+.opt-row input[type="text"]:focus{border-color:#FF6B00}
+.opt-row button{background:none;border:none;color:#9AA0A6;cursor:pointer;font-size:18px}
+.q-footer{display:flex;justify-content:space-between;align-items:center;margin-top:16px;padding-top:12px;border-top:1px solid #F0F0F0}
+.q-footer .left{display:flex;gap:6px;align-items:center}
+.q-footer button{background:#F1F3F4;border:none;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:13px}
+.q-footer button:hover{background:#FFE8D6}
+.q-footer .del{background:#FCE8E6;color:#D93025}
+.add-bar{display:flex;justify-content:center;margin:16px 0}
+.add-bar button{background:white;border:1px dashed #DADCE0;padding:14px 28px;border-radius:30px;cursor:pointer;font-weight:bold;font-size:15px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.add-bar button:hover{border-color:#FF6B00;color:#FF6B00}
+.type-picker{display:none;background:white;border-radius:16px;padding:16px;box-shadow:0 8px 24px rgba(0,0,0,.15);text-align:center;margin:0 auto 16px;max-width:480px}
+.type-picker.open{display:block}
+.type-picker button{background:#F1F3F4;border:none;padding:12px 16px;border-radius:16px;cursor:pointer;margin:6px;font-size:14px}
+.type-picker button:hover{background:#FF6B00;color:white}
+.publish-bar{position:sticky;bottom:12px;background:white;padding:12px;border-radius:16px;box-shadow:0 8px 24px rgba(0,0,0,.15);display:flex;gap:8px}
+.publish-bar button{flex:1;padding:12px;border-radius:12px;border:none;cursor:pointer;font-weight:bold}
+.publish-bar .main-btn{background:#FF6B00;color:white}
+.publish-bar .draft-btn{background:#F1F3F4}
+@media(max-width:850px){.form-layout{flex-direction:column}.settings-panel{position:static;width:100%}}
 </style>
 </head>
 <body>
@@ -36,42 +59,55 @@
   <button class="icon-btn" style="background:#34A853" onclick="publishExam()">🚀</button>
 </div>
 <div class="main form-layout">
+  <div class="questions-panel">
+    <div class="top-form-card">
+      <input id="examTitle" placeholder="عنوان الامتحان - اكتب هنا..." oninput="autoSave()" style="font-size:24px;font-weight:bold">
+      <input id="examSub" placeholder="وصف الامتحان - اختياري..." oninput="autoSave()">
+      <p style="font-size:12px;color:#80868B;margin:10px 0 0">🎫 الطالب هيدخل بالكود بتاعه الـ 6 حروف، مش بباسورد امتحان</p>
+    </div>
+    <div id="questionsList"></div>
+    <div class="type-picker" id="typePicker">
+      <p style="margin:0 0 10px;font-weight:bold">اختار نوع السؤال</p>
+      <button onclick="confirmAdd('mcq')">✏️ اختياري</button>
+      <button onclick="confirmAdd('tf')">✅❌ صح وغلط</button>
+      <button onclick="confirmAdd('essay')">📝 مقالي</button>
+      <br><button onclick="closePicker()" style="background:none;color:#80868B">إلغاء</button>
+    </div>
+    <div class="add-bar"><button onclick="openPicker()">+ إضافة سؤال</button></div>
+    <div class="publish-bar"><button class="draft-btn" onclick="saveAsDraft()">📝 مسودة</button><button class="main-btn" onclick="publishExam()">🚀 نشر الامتحان</button></div>
+  </div>
   <div class="settings-panel">
     <h3>⚙️ إعدادات الامتحان</h3>
     <label>🎓 المرحلة</label>
     <select id="examStage" onchange="autoSave()"><option>أولى بكالوريا</option><option>تانية بكالوريا</option><option>تالتة بكالوريا</option></select>
     <label>📌 حالة الامتحان</label>
-    <select id="publishMode" onchange="autoSave(); togglePublishTimes()"><option value="draft">📝 مسودة - مانزلهوش</option><option value="now">🚀 انشره دلوقتي</option><option value="later">⏰ انزله بعد مدة</option></select>
+    <select id="publishMode" onchange="autoSave(); togglePublishTimes()"><option value="draft">📝 مسودة</option><option value="now">🚀 انشره دلوقتي</option><option value="later">⏰ انزله بعد مدة</option></select>
     <div id="publishLaterBox" style="display:none"><label>⏰ إمتى ينزل؟</label><input type="datetime-local" id="publishAt" onchange="autoSave()"></div>
-    <div class="setting-row"><span>📌 إجباري لازم يتحل</span><label class="switch"><input type="checkbox" id="isRequired" checked onchange="autoSave()"><span class="slider"></span></label></div>
-    <div class="setting-row"><span>🔀 لخبطة الأسئلة</span><label class="switch"><input type="checkbox" id="isShuffle" onchange="autoSave()"><span class="slider"></span></label></div>
-    <div class="setting-row"><span>🔀 لخبطة الاختيارات</span><label class="switch"><input type="checkbox" id="shuffleOptions" checked onchange="autoSave()"><span class="slider"></span></label></div>
-    <div class="setting-row"><span>🚫 منع الغش</span><label class="switch"><input type="checkbox" id="antiCheat" checked onchange="autoSave()"><span class="slider"></span></label></div>
-    <div class="setting-row"><span>👁️ إظهار النتيجة بعد التسليم</span><label class="switch"><input type="checkbox" id="showResult" checked onchange="autoSave()"><span class="slider"></span></label></div>
-    <div class="setting-row"><span>✅ إظهار الصح والغلط في التقرير</span><label class="switch"><input type="checkbox" id="showAnswers" checked onchange="autoSave()"><span class="slider"></span></label></div>
-    <label>🔔 التنبيه قبل انتهاء الوقت - انت حدد المدة</label>
-    <select id="warnTime" onchange="autoSave()"><option value="2">قبلها بـ 2 دقيقة</option><option value="5" selected>قبلها بـ 5 دقايق</option><option value="10">قبلها بـ 10 دقايق</option><option value="15">قبلها بـ 15 دقيقة</option></select>
-    <label>🔁 عدد المحاولات - انت حددها</label>
-    <select id="attempts" onchange="autoSave()"><option value="1">مرة واحدة</option><option value="2">مرتين</option><option value="3">3 مرات</option><option value="999">مفتوح</option></select>
-    <label>🎫 دخول الطالب بالكود بتاعه</label>
-    <p style="font-size:12px;color:#6B7280">الطالب مش هيدخل على الأسئلة غير لما يكتب الكود الـ 6 حروف بتاعه اللي اتعمل لما سجل حسابه</p>
-    <label>عدد الأسئلة</label><input id="examCount" readonly value="0">
-    <label>⏱️ وقت الامتحان - يبدأ أول ما الطالب يفتح</label><input type="number" id="examTime" value="30" oninput="autoSave()">
-    <label>⏰ تايمر حذف الامتحان</label><input type="datetime-local" id="deleteAt" onchange="autoSave()">
-    <label>🔒 الامتحان هيتقفل إمتى؟</label><input type="datetime-local" id="examClose" onchange="autoSave()">
-    <label>الدرجة الكلية</label><input id="examTotal" readonly value="0">
-    <label>درجة النجاح</label><input type="number" id="passGrade" value="10" oninput="autoSave()">
-    <label>كل صفحة فيها كام سؤال؟</label><select id="perPage" onchange="autoSave()"><option value="5">5 ثم التالي</option><option value="10">10 ثم التالي</option><option value="1">سؤال واحد ثم التالي</option><option value="1000">كل الأسئلة في صفحة واحدة</option></select>
-    <label>الرسالة بعد التسليم</label><textarea id="afterMsg" oninput="autoSave()">أحسنت يا بطل! تم التسليم ❤️</textarea>
+    <div class="set-group"><b>⏱️ الوقت والمحاولات</b>
+      <label>وقت الامتحان - يبدأ أول ما الطالب يفتح</label><input type="number" id="examTime" value="30" oninput="autoSave()">
+      <label>عدد المحاولات</label><select id="attempts" onchange="autoSave()"><option value="1">مرة واحدة</option><option value="2">مرتين</option><option value="3">3 مرات</option><option value="999">مفتوح</option></select>
+      <label>التنبيه قبل ما يخلص</label><select id="warnTime" onchange="autoSave()"><option value="2">قبلها بـ 2 دقيقة</option><option value="5" selected>قبلها بـ 5 دقايق</option><option value="10">قبلها بـ 10 دقايق</option><option value="15">قبلها بـ 15 دقيقة</option></select>
+      <label>الامتحان هيتقفل إمتى؟</label><input type="datetime-local" id="examClose" onchange="autoSave()">
+      <label>تايمر حذف الامتحان لوحده</label><input type="datetime-local" id="deleteAt" onchange="autoSave()">
+    </div>
+    <div class="set-group"><b>📊 الدرجات</b>
+      <div class="setting-row"><span>عدد الأسئلة</span><b id="examCountText">0</b></div>
+      <div class="setting-row"><span>الدرجة الكلية</span><b id="examTotalText">0</b></div>
+      <label>درجة النجاح</label><input type="number" id="passGrade" value="10" oninput="autoSave()">
+      <label>كل صفحة فيها كام سؤال؟</label><select id="perPage" onchange="autoSave()"><option value="5">5 ثم التالي</option><option value="10">10 ثم التالي</option><option value="1">سؤال واحد ثم التالي</option><option value="1000">كل الأسئلة في صفحة واحدة</option></select>
+    </div>
+    <div class="set-group"><b>🔀 اللخبطة ومنع الغش</b>
+      <div class="setting-row"><span>لخبطة الأسئلة</span><label class="switch"><input type="checkbox" id="isShuffle" onchange="autoSave()"><span class="slider"></span></label></div>
+      <div class="setting-row"><span>لخبطة الاختيارات</span><label class="switch"><input type="checkbox" id="shuffleOptions" checked onchange="autoSave()"><span class="slider"></span></label></div>
+      <div class="setting-row"><span>منع الغش<small>منع سكرين شوت والخروج</small></span><label class="switch"><input type="checkbox" id="antiCheat" checked onchange="autoSave()"><span class="slider"></span></label></div>
+    </div>
+    <div class="set-group"><b>👁️ بعد التسليم</b>
+      <div class="setting-row"><span>إجباري لازم يتحل</span><label class="switch"><input type="checkbox" id="isRequired" checked onchange="autoSave()"><span class="slider"></span></label></div>
+      <div class="setting-row"><span>إظهار النتيجة</span><label class="switch"><input type="checkbox" id="showResult" checked onchange="autoSave()"><span class="slider"></span></label></div>
+      <div class="setting-row"><span>إظهار الصح والغلط في التقرير</span><label class="switch"><input type="checkbox" id="showAnswers" checked onchange="autoSave()"><span class="slider"></span></label></div>
+    </div>
+    <div class="set-group"><b>💬 رسالة بعد التسليم</b><textarea id="afterMsg" oninput="autoSave()">أحسنت يا بطل! تم التسليم ❤️</textarea></div>
     <button class="btn" style="background:#EA4335" onclick="clearDraft()">🗑️ مسح المسودة</button>
-  </div>
-  <div class="questions-panel">
-    <input id="examTitle" placeholder="عنوان الامتحان * إجباري" oninput="autoSave()" class="big-title" style="background:white;padding:16px;border-radius:24px">
-    <input id="examSub" placeholder="العنوان الثاني - اختياري" oninput="autoSave()" style="background:white;padding:16px;border-radius:24px">
-    <div id="questionsList" style="margin-top:12px"></div>
-    <div class="google-bar"><button class="add-q-main" onclick="addQuestion('mcq')">+ إضافة سؤال</button><button onclick="addQuestion('mcq')">✏️ اختياري</button><button onclick="addQuestion('tf')">✅❌ صح وغلط</button><button onclick="addQuestion('essay')">📝 مقالي</button></div>
-    <button class="btn" onclick="publishExam()">🚀 نشر الامتحان</button>
-    <button class="btn" style="background:#6B7280" onclick="saveAsDraft()">📝 حفظ كمسودة</button>
   </div>
 </div>
 <script src="app.js"></script>
@@ -80,18 +116,21 @@ let questions = JSON.parse(localStorage.getItem('examDraftQuestions')||'[]');
 function loadDraft(){ let d=JSON.parse(localStorage.getItem('examDraft')||'{}'); if(d.title) document.getElementById('examTitle').value=d.title; if(d.sub) document.getElementById('examSub').value=d.sub; if(d.stage) document.getElementById('examStage').value=d.stage; if(d.time) document.getElementById('examTime').value=d.time; if(d.close) document.getElementById('examClose').value=d.close; if(d.passGrade) document.getElementById('passGrade').value=d.passGrade; if(d.perPage) document.getElementById('perPage').value=d.perPage; if(d.afterMsg) document.getElementById('afterMsg').value=d.afterMsg; if(d.isRequired!==undefined) document.getElementById('isRequired').checked=d.isRequired; if(d.isShuffle!==undefined) document.getElementById('isShuffle').checked=d.isShuffle; if(d.shuffleOptions!==undefined) document.getElementById('shuffleOptions').checked=d.shuffleOptions; if(d.antiCheat!==undefined) document.getElementById('antiCheat').checked=d.antiCheat; if(d.showResult!==undefined) document.getElementById('showResult').checked=d.showResult; if(d.showAnswers!==undefined) document.getElementById('showAnswers').checked=d.showAnswers; if(d.warnTime) document.getElementById('warnTime').value=d.warnTime; if(d.attempts) document.getElementById('attempts').value=d.attempts; if(d.publishMode) document.getElementById('publishMode').value=d.publishMode; if(d.publishAt) document.getElementById('publishAt').value=d.publishAt; if(d.deleteAt) document.getElementById('deleteAt').value=d.deleteAt; togglePublishTimes(); renderQuestions(); }
 function autoSave(){ let draft={title:document.getElementById('examTitle').value, sub:document.getElementById('examSub').value, stage:document.getElementById('examStage').value, time:document.getElementById('examTime').value, close:document.getElementById('examClose').value, passGrade:document.getElementById('passGrade').value, perPage:document.getElementById('perPage').value, afterMsg:document.getElementById('afterMsg').value, isRequired:document.getElementById('isRequired').checked, isShuffle:document.getElementById('isShuffle').checked, shuffleOptions:document.getElementById('shuffleOptions').checked, antiCheat:document.getElementById('antiCheat').checked, showResult:document.getElementById('showResult').checked, showAnswers:document.getElementById('showAnswers').checked, warnTime:document.getElementById('warnTime').value, attempts:document.getElementById('attempts').value, publishMode:document.getElementById('publishMode').value, publishAt:document.getElementById('publishAt').value, deleteAt:document.getElementById('deleteAt').value}; localStorage.setItem('examDraft',JSON.stringify(draft)); localStorage.setItem('examDraftQuestions',JSON.stringify(questions)); let t=document.getElementById('autoSaveText'); if(t) t.innerText='💾 تم الحفظ تلقائياً '+new Date().toLocaleTimeString('ar-EG'); }
 function togglePublishTimes(){ let m=document.getElementById('publishMode'); if(!m) return; document.getElementById('publishLaterBox').style.display=m.value==='later'?'block':'none'; }
-function addQuestion(type){ let q={id:Date.now()+Math.random(), type, text:'', grade:5, options: type==='mcq'?['','','','']: type==='tf'?['صح','غلط']:[], correct:0, correctText:'', img:''}; questions.push(q); autoSave(); renderQuestions(); }
-function renderQuestions(){ let list=document.getElementById('questionsList'); if(!list) return; document.getElementById('examCount').value=questions.length; let total=questions.reduce((s,q)=>s+parseInt(q.grade||0),0); document.getElementById('examTotal').value=total; list.innerHTML=questions.map((q,i)=>{ let opts=''; if(q.type==='mcq'){ opts=q.options.map((o,oi)=>`<div style="display:flex;gap:8px;align-items:center"><input type="radio" name="q${q.id}" ${q.correct===oi?'checked':''} onclick="updateQ(${q.id},'correct',${oi},null)" style="width:20px"><input placeholder="اختيار ${oi+1}" value="${o}" oninput="updateQ(${q.id},'opt',${oi},this.value)" style="flex:1"></div>`).join('')+`<button onclick="addOption(${q.id})">+ اختيار</button>`; } if(q.type==='tf'){ opts=`<label>الإجابة الصح: <select onchange="updateQ(${q.id},'correct',0,this.value)"><option value="0" ${q.correct==0?'selected':''}>صح</option><option value="1" ${q.correct==1?'selected':''}>غلط</option></select></label>`; } if(q.type==='essay'){ opts=`<input placeholder="الإجابة النموذجية" value="${q.correctText||''}" oninput="updateQ(${q.id},'correctText',0,this.value)">`; } let typeName=q.type==='mcq'?'اختياري':q.type==='tf'?'صح وغلط':'مقالي'; return `<div class="q-card"><div class="q-head"><b>سؤال ${i+1} - ${typeName}</b><select onchange="changeQType(${q.id},this.value)"><option value="mcq" ${q.type==='mcq'?'selected':''}>اختياري</option><option value="tf" ${q.type==='tf'?'selected':''}>صح وغلط</option><option value="essay" ${q.type==='essay'?'selected':''}>مقالي</option></select></div><textarea placeholder="اكتب السؤال..." oninput="updateQ(${q.id},'text',0,this.value)">${q.text||''}</textarea>${q.img?`<img src="${q.img}" style="width:100%;border-radius:16px">`:''}<div>${opts}</div><div class="q-tools"><label>درجة: <input type="number" value="${q.grade}" style="width:70px" oninput="updateQ(${q.id},'grade',0,this.value)"></label><label><input type="file" accept="image/*" onchange="uploadQImg(${q.id},event)" style="display:none"><span style="background:#E8F0FE;padding:8px 12px;border-radius:20px;cursor:pointer;display:inline-block">🖼️ صورة</span></label><button onclick="duplicateQ(${q.id})">📄 نسخ</button><button onclick="moveQ(${q.id},-1)">⬆️</button><button onclick="moveQ(${q.id},1)">⬇️</button><button class="delete-q" onclick="deleteQ(${q.id})">🗑️ حذف</button></div></div>`; }).join(''); }
+function openPicker(){ document.getElementById('typePicker').classList.add('open'); document.getElementById('typePicker').scrollIntoView({behavior:'smooth'}); }
+function closePicker(){ document.getElementById('typePicker').classList.remove('open'); }
+function confirmAdd(type){ closePicker(); let q={id:Date.now()+Math.random(), type, text:'', grade:5, options: type==='mcq'?['','','','']: type==='tf'?['صح','غلط']:[], correct:0, correctText:'', img:''}; questions.push(q); autoSave(); renderQuestions(); }
+function renderQuestions(){ let list=document.getElementById('questionsList'); if(!list) return; document.getElementById('examCountText').innerText=questions.length; let total=questions.reduce((s,q)=>s+parseInt(q.grade||0),0); document.getElementById('examTotalText').innerText=total; list.innerHTML=questions.map((q,i)=>{ let opts=''; if(q.type==='mcq'){ opts=q.options.map((o,oi)=>`<div class="opt-row"><input type="radio" name="q${q.id}" ${q.correct===oi?'checked':''} onclick="updateQ(${q.id},'correct',${oi},null)" style="width:18px"><input type="text" placeholder="اختيار ${oi+1}" value="${o}" oninput="updateQ(${q.id},'opt',${oi},this.value)"><button onclick="removeOpt(${q.id},${oi})">×</button></div>`).join('')+`<button onclick="addOption(${q.id})" style="background:none;border:none;color:#FF6B00;cursor:pointer">+ أضف اختيار</button>`; } if(q.type==='tf'){ opts=`<div class="opt-row"><label><input type="radio" name="q${q.id}" ${q.correct==0?'checked':''} onclick="updateQ(${q.id},'correct',0,0)"> صح</label><label style="margin-right:16px"><input type="radio" name="q${q.id}" ${q.correct==1?'checked':''} onclick="updateQ(${q.id},'correct',1,1)"> غلط</label></div><p style="font-size:12px;color:#80868B">اختار الصح، هي دي الإجابة الصح</p>`; } if(q.type==='essay'){ opts=`<textarea placeholder="الإجابة النموذجية - اختياري" oninput="updateQ(${q.id},'correctText',0,this.value)" style="background:#F8F9FA;border:none;border-radius:12px;padding:12px;min-height:70px">${q.correctText||''}</textarea>`; } let typeLabel=q.type==='mcq'?'✏️ اختياري':q.type==='tf'?'✅❌ صح وغلط':'📝 مقالي'; return `<div class="q-card"><div class="q-head"><textarea placeholder="السؤال ${i+1} - اكتب السؤال هنا..." oninput="updateQ(${q.id},'text',0,this.value)">${q.text||''}</textarea><select onchange="changeQType(${q.id},this.value)"><option value="mcq" ${q.type==='mcq'?'selected':''}>✏️ اختياري</option><option value="tf" ${q.type==='tf'?'selected':''}>✅❌ صح وغلط</option><option value="essay" ${q.type==='essay'?'selected':''}>📝 مقالي</option></select></div>${q.img?`<img src="${q.img}" style="width:100%;border-radius:12px;margin-top:12px">`:''}<div style="margin-top:12px">${opts}</div><div class="q-footer"><div class="left"><label>درجة: <input type="number" value="${q.grade}" style="width:60px;padding:6px;border-radius:8px" oninput="updateQ(${q.id},'grade',0,this.value)"></label><label style="cursor:pointer;background:#F1F3F4;padding:8px 12px;border-radius:20px"><input type="file" accept="image/*" onchange="uploadQImg(${q.id},event)" style="display:none">🖼️ صورة</label></div><div style="display:flex;gap:6px"><button onclick="duplicateQ(${q.id})">📄 نسخ</button><button onclick="moveQ(${q.id},-1)">⬆️</button><button onclick="moveQ(${q.id},1)">⬇️</button><button class="del" onclick="deleteQ(${q.id})">🗑️</button></div></div></div>`; }).join(''); }
 function updateQ(id,field,idx,val){ let q=questions.find(x=>x.id===id); if(!q) return; if(field==='text') q.text=val; if(field==='grade') q.grade=val; if(field==='opt') q.options[idx]=val; if(field==='correct') q.correct=parseInt(val ?? idx); if(field==='correctText') q.correctText=val; autoSave(); }
 function changeQType(id,newType){ let q=questions.find(x=>x.id===id); q.type=newType; if(newType==='mcq') q.options=['','','','']; if(newType==='tf') q.options=['صح','غلط']; if(newType==='essay') q.options=[]; autoSave(); renderQuestions(); }
 function addOption(id){ let q=questions.find(x=>x.id===id); q.options.push(''); autoSave(); renderQuestions(); }
+function removeOpt(id,oi){ let q=questions.find(x=>x.id===id); q.options.splice(oi,1); autoSave(); renderQuestions(); }
 function duplicateQ(id){ let q=questions.find(x=>x.id===id); let copy=JSON.parse(JSON.stringify(q)); copy.id=Date.now()+Math.random(); questions.push(copy); autoSave(); renderQuestions(); }
 function moveQ(id,dir){ let idx=questions.findIndex(x=>x.id===id); let ni=idx+dir; if(ni<0||ni>=questions.length) return; [questions[idx],questions[ni]]=[questions[ni],questions[idx]]; autoSave(); renderQuestions(); }
 function uploadQImg(id,e){ let f=e.target.files[0]; if(!f) return; let r=new FileReader(); r.onload=()=>{ let q=questions.find(x=>x.id===id); q.img=r.result; autoSave(); renderQuestions(); }; r.readAsDataURL(f); }
 function deleteQ(id){ if(!confirm('تحذف السؤال؟')) return; questions=questions.filter(q=>q.id!==id); autoSave(); renderQuestions(); }
 function clearDraft(){ if(!confirm('تمسح المسودة؟')) return; questions=[]; localStorage.removeItem('examDraft'); localStorage.removeItem('examDraftQuestions'); location.reload(); }
 function saveAsDraft(){ autoSave(); let title=document.getElementById('examTitle').value.trim(); if(!title){ alert('اكتب العنوان'); return; } let draft=JSON.parse(localStorage.getItem('examDraft')||'{}'); let item={id:Date.now(), kind:'exam', title, sub:document.getElementById('examSub').value, ...draft, questions, status:'draft', created:new Date().toLocaleString('ar-EG')}; let arr=JSON.parse(localStorage.getItem('exams')||'[]'); arr.push(item); localStorage.setItem('exams',JSON.stringify(arr)); alert('تم حفظه كمسودة 📝'); window.location.href='dashboard.html'; }
-function publishExam(){ let title=document.getElementById('examTitle').value.trim(); if(!title){ alert('اكتب العنوان الأساسي - إجباري'); return; } if(questions.length===0){ alert('ضيف سؤال'); return; } let draft=JSON.parse(localStorage.getItem('examDraft')||'{}'); let mode=document.getElementById('publishMode').value; let item={id:Date.now(), kind:'exam', title, sub:document.getElementById('examSub').value, ...draft, questions, status: mode==='draft'?'draft': mode==='later'?'scheduled':'published', created:new Date().toLocaleString('ar-EG')}; let arr=JSON.parse(localStorage.getItem('exams')||'[]'); arr.push(item); localStorage.setItem('exams',JSON.stringify(arr)); questions=[]; localStorage.removeItem('examDraft'); localStorage.removeItem('examDraftQuestions'); if(mode==='later'){ alert('تم جدولة النزول ⏰ هينزل في الوقت اللي اخترته'); } else if(mode==='draft'){ alert('تم حفظه كمسودة 📝'); } else { alert('تم النشر ✅ الطالب هيدخل بالكود بتاعه'); } window.location.href='dashboard.html'; }
+function publishExam(){ let title=document.getElementById('examTitle').value.trim(); if(!title){ alert('اكتب العنوان الأساسي'); return; } if(questions.length===0){ alert('ضيف سؤال'); return; } let draft=JSON.parse(localStorage.getItem('examDraft')||'{}'); let mode=document.getElementById('publishMode').value; let item={id:Date.now(), kind:'exam', title, sub:document.getElementById('examSub').value, ...draft, questions, status: mode==='draft'?'draft': mode==='later'?'scheduled':'published', created:new Date().toLocaleString('ar-EG')}; let arr=JSON.parse(localStorage.getItem('exams')||'[]'); arr.push(item); localStorage.setItem('exams',JSON.stringify(arr)); questions=[]; localStorage.removeItem('examDraft'); localStorage.removeItem('examDraftQuestions'); if(mode==='later'){ alert('تم جدولة النزول ⏰'); } else if(mode==='draft'){ alert('تم حفظه كمسودة 📝'); } else { alert('تم النشر ✅ الطالب هيدخل بالكود بتاعه'); } window.location.href='dashboard.html'; }
 loadDraft();
 </script>
 </body>
