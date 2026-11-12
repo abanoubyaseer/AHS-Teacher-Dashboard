@@ -6,35 +6,41 @@
 <title>لوحة التحكم - Mr Romany Faheam</title>
 <link rel="stylesheet" href="style.css">
 </head>
-<body class="dash-body">
-
+<body>
 <div class="topbar-dash">
   <button class="icon-btn" onclick="toggleSidebar()">☰</button>
-  <button class="icon-btn note-top" onclick="openNotes()">📝</button>
-  <div class="top-title">
-    <img src="teacher.jpg" id="topImg">
-    <div><h2>Mr Romany Faheam</h2><p>AHS - لوحة تحكم المستر</p></div>
-  </div>
+  <button class="icon-btn note-top" onclick="go('notes.html')">📝</button>
+  <div class="top-title"><img src="teacher.jpg" id="topImg"><div><h2>Mr Romany Faheam</h2><p>AHS - لوحة تحكم المستر</p></div></div>
 </div>
 
 <div class="sidebar" id="sidebar">
-  <img src="teacher.jpg" id="sideImg">
-  <h3>Mr Romany Faheam</h3>
-  <p>AHS - لوحة التحكم</p>
+  <img src="teacher.jpg" id="sideImg"><h3>Mr Romany Faheam</h3><p>AHS</p>
   <p style="font-size:12px">حجم الخط</p>
   <div class="row"><button onclick="setFont('small')">صغير</button><button onclick="setFont('medium')">وسط</button><button onclick="setFont('large')">كبير</button></div>
   <p style="font-size:12px">الإضاءة</p>
   <div class="row"><button onclick="setTheme('light')">☀️ فاتحة</button><button onclick="setTheme('dark')">🌙 غامقة</button></div>
-  <hr>
-  <button onclick="openSettings()">⚙️ الإعدادات</button>
-  <button onclick="logout()">🚪 تسجيل خروج</button>
+  <hr><button onclick="openSettings()">⚙️ الإعدادات</button><button onclick="logout()">🚪 تسجيل خروج</button>
 </div>
 
 <div class="main">
-  <div class="welcome">
-    <h1>أهلا بيك يا مستر روماني ❤️</h1>
-    <p>اختار هتعمل إيه النهاردة</p>
+  <div class="top-widgets">
+    <div class="widget widget-students" onclick="go('students.html')">
+      <span>👨‍🎓</span>
+      <div><b id="totalStudents">0</b><small>إجمالي الطلاب المستخدمين للتطبيق</small><p>دوس لعرض الطلاب</p></div>
+    </div>
+    <div class="widget widget-cal" onclick="toggleCalendar()">
+      <span>📅</span>
+      <div><b id="todayDate">--</b><small id="todayTime">--</small><p id="todayDay">--</p><small>دوس لفتح التقويم</small></div>
+    </div>
   </div>
+
+  <div class="calendar-box" id="calendarBox">
+    <div class="cal-head"><button onclick="changeMonth(-1)">‹</button><b id="calTitle"></b><button onclick="changeMonth(1)">›</button></div>
+    <div class="cal-grid" id="calGrid"></div>
+    <p style="font-size:12px;color:#6B7280">دوس على أي يوم لعمل ملاحظة في اليوم ده</p>
+  </div>
+
+  <div class="welcome"><h1>أهلا بيك يا مستر روماني ❤️</h1><p>اختار هتعمل إيه النهاردة</p></div>
 
   <div class="menu-list">
     <button class="menu-item anim-1" onclick="go('exams.html')"><span>📝</span><div><b>إنشاء امتحان</b><small>اختياري - صح وغلط - مقالي</small></div><i>›</i></button>
@@ -43,31 +49,13 @@
     <button class="menu-item anim-4"><span>💬</span><div><b>شات جماعي</b><small>شات لكل الطلبة</small></div><i>›</i></button>
     <button class="menu-item anim-5"><span>🏆</span><div><b>لوحة الشرف</b><small>أفضل طالب</small></div><i>›</i></button>
     <button class="menu-item anim-6"><span>📊</span><div><b>التقارير</b><small>درجات ووقت كل طالب</small></div><i>›</i></button>
-  </div>
-</div>
-
-<div class="modal" id="notesModal">
-  <div class="modal-card">
-    <h3>📝 ملاحظاتي</h3>
-    <textarea id="noteInput" placeholder="اكتب ملاحظة..."></textarea>
-    <button class="btn" onclick="saveNote()">حفظ الملاحظة</button>
-    <div id="notesList"></div>
-    <button class="btn" style="background:#6B7280" onclick="closeNotes()">إغلاق</button>
+    <button class="menu-item anim-1" onclick="go('notes.html')"><span>📝</span><div><b>ملاحظاتي Keep</b><small>كتابة - صوت - صورة - فيديو + منبه</small></div><i>›</i></button>
   </div>
 </div>
 
 <div class="modal" id="settingsModal">
-  <div class="modal-card">
-    <h3>⚙️ الإعدادات</h3>
-    <label>تغيير الباسورد</label>
-    <input id="newPass" placeholder="الباسورد الجديد">
-    <button class="btn" onclick="changePass()">حفظ الباسورد الجديد</button>
-    <label>تغيير الصورة</label>
-    <input type="file" id="newImg" accept="image/*" onchange="changeImg(event)">
-    <button class="btn" style="background:#6B7280" onclick="closeSettings()">إغلاق</button>
-  </div>
+  <div class="modal-card"><h3>⚙️ الإعدادات</h3><label>تغيير الباسورد</label><input id="newPass" placeholder="الباسورد الجديد"><button class="btn" onclick="changePass()">حفظ الباسورد الجديد</button><label>تغيير الصورة</label><input type="file" accept="image/*" onchange="changeImg(event)"><button class="btn" style="background:#6B7280" onclick="closeSettings()">إغلاق</button></div>
 </div>
-
 <script src="app.js"></script>
 </body>
 </html>

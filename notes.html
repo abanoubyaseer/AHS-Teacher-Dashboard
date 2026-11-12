@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ملاحظاتي - Keep</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="topbar-dash">
+  <button class="icon-btn" onclick="go('dashboard.html')">‹</button>
+  <div class="top-title"><h2>📝 ملاحظاتي - Keep</h2></div>
+</div>
+<div class="main">
+  <div class="keep-grid" id="notesGrid"></div>
+</div>
+<button class="fab" onclick="openNewNote()">+</button>
+
+<div class="modal" id="noteModal">
+  <div class="modal-card">
+    <h3>ملاحظة جديدة</h3>
+    <input id="noteTitle" placeholder="عنوان الملاحظة">
+    <textarea id="noteText" placeholder="اكتب ملاحظتك هنا..."></textarea>
+    <label>🕐 منبه - اختار وقت الإشعار</label>
+    <input type="datetime-local" id="noteTime">
+    <label>🖼️ صورة</label>
+    <input type="file" id="noteImg" accept="image/*" onchange="previewNoteImg(event)">
+    <img id="noteImgPreview" style="width:100%;border-radius:12px;display:none">
+    <label>🎥 فيديو</label>
+    <input type="file" id="noteVideo" accept="video/*">
+    <div class="row">
+      <button class="btn" style="background:#34A853" onclick="startVoice()">🎤 تسجيل صوت</button>
+      <button class="btn" style="background:#EA4335;display:none" id="stopVoice" onclick="stopVoice()">⏹️ وقف</button>
+    </div>
+    <p id="voiceStatus"></p>
+    <button class="btn" onclick="saveKeepNote()">💾 حفظ الملاحظة</button>
+    <button class="btn" style="background:#6B7280" onclick="closeNewNote()">إغلاق</button>
+  </div>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
