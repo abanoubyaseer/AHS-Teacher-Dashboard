@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>إشعارات - Mr Romany Faheam</title>
+<link rel="stylesheet" href="style.css">
+<style>
+body{background:#F8F9FA}
+.notif-layout{display:flex;gap:20px;align-items:flex-start;max-width:1000px}
+.send-card{flex:1;background:white;padding:22px;border-radius:16px;box-shadow:0 1px 3px rgba(0,0,0,.08);border-top:8px solid #FF6B00;position:sticky;top:80px}
+.list-card{flex:1.2;background:white;padding:20px;border-radius:16px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.send-card textarea{min-height:110px;background:#F8F9FA;border:none;border-radius:12px}
+.chip-row{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.chip-row button{background:#F1F3F4;border:none;padding:8px 14px;border-radius:20px;cursor:pointer}
+.chip-row button.active{background:#FF6B00;color:white}
+.notif-item{display:flex;gap:12px;padding:14px;border-bottom:1px solid #F0F0F0;align-items:flex-start}
+.notif-item:last-child{border:none}
+.notif-item span{font-size:24px;width:44px;height:44px;background:#FFF1E6;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.notif-item b{display:block}
+.notif-item small{color:#80868B}
+.notif-item .del{margin-right:auto;background:#FCE8E6;color:#D93025;border:none;padding:6px 10px;border-radius:16px;cursor:pointer}
+@media(max-width:850px){.notif-layout{flex-direction:column}.send-card{position:static;width:100%}}
+</style>
+</head>
+<body>
+<div class="topbar-dash">
+  <button class="icon-btn" onclick="window.location.href='dashboard.html'">‹</button>
+  <div class="top-title"><h2>🔔 إشعارات</h2><p>ابعت رسالة للطلبة</p></div>
+  <button class="icon-btn" style="background:#FFC107;color:#333" onclick="testSound()">🔔</button>
+</div>
+<div class="main notif-layout">
+  <div class="send-card">
+    <h3 style="margin:0 0 12px">✍️ إشعار جديد</h3>
+    <label>هتبعت لمين؟</label>
+    <div class="chip-row">
+      <button id="toAllBtn" class="active" onclick="setTarget('all')">👨‍🎓 الكل</button>
+      <button id="toOneBtn" onclick="setTarget('one')">👤 طالب معين</button>
+    </div>
+    <div id="oneStudentBox" style="display:none">
+      <label>اكتب كود الطالب أو اسمه</label>
+      <input id="studentTarget" placeholder="مثال: AH1234 أو أحمد محمد...">
+    </div>
+    <label>🎓 المرحلة</label>
+    <select id="notifStage"><option value="all">كل المراحل</option><option>أولى بكالوريا</option><option>تانية بكالوريا</option><option>تالتة بكالوريا</option></select>
+    <label>عنوان الإشعار</label>
+    <input id="notifTitle" placeholder="مثال: امتحان بكرة...">
+    <label>رسالة الإشعار</label>
+    <textarea id="notifMsg" placeholder="اكتب رسالتك للطلبة هنا..."></textarea>
+    <label>🔔 صوت التنبيه</label>
+    <select id="notifSound"><option value="bell">🔔 جرس زي المنبه</option><option value="soft">🔔 ناعم</option><option value="loud">📢 قوي</option></select>
+    <label>⏰ إمتى يتبعت؟</label>
+    <select id="notifWhen" onchange="toggleNotifTime()"><option value="now">🚀 دلوقتي</option><option value="later">⏰ بعد مدة</option></select>
+    <div id="notifLaterBox" style="display:none"><input type="datetime-local" id="notifAt"></div>
+    <button class="btn" onclick="sendNotif()">🚀 ابعت الإشعار</button>
+    <p style="font-size:12px;color:#80868B;text-align:center">هيوصل للطالب بصوت منبه، وفيه جرس أصفر 🔔</p>
+  </div>
+  <div class="list-card">
+    <div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">📋 الإشعارات اللي بعتها</h3><b id="notifCount">0</b></div>
+    <input id="searchNotif" placeholder="🔍 دور في الإشعارات..." oninput="renderNotifs()" style="background:#F8F9FA;border:none">
+    <div id="notifList"></div>
+    <div id="emptyNotif" style="text-align:center;color:#80868B;padding:30px">لسه مبعتش أي إشعار<br>اكتب أول إشعار من على اليمين</div>
+  </div>
+</div>
+<script src="app.js"></script>
+<script>
+let notifTarget='all';
+function setTarget(t){ notifTarget=t; document.getElementById('toAllBtn').classList.toggle('active',t==='all'); document.getElementById('toOneBtn').classList.toggle('active',t==='one'); document.getElementById('oneStudentBox').style.display=t==='one'?'block':'none'; }
+function toggleNotifTime(){ let w=document.getElementById('notifWhen').value; document.getElementById('notifLaterBox').style.display=w==='later'?'block':'none'; }
+function testSound(){ let s=document.getElementById('notifSound').value; let ctx=new (window.AudioContext||window.webkitAudioContext)(); let o=ctx.createOscillator(); let g=ctx.createGain(); o.connect(g); g.connect(ctx.destination); o.frequency.value=s==='loud'?880:660; o.type='sine'; g.gain.value=0.3; o.start(); setTimeout(()=>{o.stop(); if(s==='loud'){ let o2=ctx.createOscillator(); o2.connect(g); o2.frequency.value=880; o2.start(); setTimeout(()=>o2.stop(),300); } },400); }
+function sendNotif(){ let title=document.getElementById('notifTitle').value.trim(); let msg=document.getElementById('notifMsg').value.trim(); if(!title||!msg){ alert('اكتب العنوان والرسالة'); return; } let item={id:Date.now(), title, msg, target:notifTarget, student:document.getElementById('studentTarget').value.trim(), stage:document.getElementById('notifStage').value, sound:document.getElementById('notifSound').value, when:document.getElementById('notifWhen').value, at:document.getElementById('notifAt').value, time:new Date().toLocaleString('ar-EG')}; let arr=JSON.parse(localStorage.getItem('notifications')||'[]'); arr.unshift(item); localStorage.setItem('notifications',JSON.stringify(arr)); document.getElementById('notifTitle').value=''; document.getElementById('notifMsg').value=''; document.getElementById('studentTarget').value=''; testSound(); alert('تم إرسال الإشعار ✅'); renderNotifs(); }
+function deleteNotif(id){ if(!confirm('تحذف الإشعار؟')) return; let arr=JSON.parse(localStorage.getItem('notifications')||'[]').filter(n=>n.id!==id); localStorage.setItem('notifications',JSON.stringify(arr)); renderNotifs(); }
+function renderNotifs(){ let arr=JSON.parse(localStorage.getItem('notifications')||'[]'); let s=document.getElementById('searchNotif').value.trim(); if(s) arr=arr.filter(n=>(n.title+n.msg).includes(s)); document.getElementById('notifCount').innerText=arr.length; document.getElementById('emptyNotif').style.display=arr.length?'none':'block'; document.getElementById('notifList').innerHTML=arr.map(n=>`<div class="notif-item"><span>🔔</span><div><b>${n.title}</b><p style="margin:4px 0">${n.msg}</p><small>${n.target==='all'?'👨‍🎓 الكل':'👤 '+ (n.student||'طالب معين')} • ${n.stage} • ${n.time} ${n.when==='later'?'• ⏰ مجدول':''}</small></div><button class="del" onclick="deleteNotif(${n.id})">🗑️</button></div>`).join(''); }
+renderNotifs();
+</script>
+</body>
+</html>
