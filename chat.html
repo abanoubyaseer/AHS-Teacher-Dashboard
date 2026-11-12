@@ -4,168 +4,238 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>الشات الجماعي - Mr Romany Faheam</title>
-<link rel="stylesheet" href="style.css">
 <style>
-body{background:#F0F2F5}
-.chat-layout{display:flex;gap:16px;max-width:1100px;align-items:flex-start}
-.control-card{width:300px;background:white;padding:18px;border-radius:16px;box-shadow:0 1px 3px rgba(0,0,0,.08);position:sticky;top:80px}
-.control-card h3{margin:0 0 10px}
-.switch-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #F0F0F0}
-.switch-row small{display:block;color:#80868B}
-.switch{position:relative;width:48px;height:26px;background:#CCC;border-radius:20px;cursor:pointer;flex-shrink:0}
+*{box-sizing:border-box;font-family:'Segoe UI',Tahoma,sans-serif}
+body{margin:0;background:#F0F2F5;padding:0}
+.topbar{background:#FF6B00;color:white;padding:14px 16px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:10}
+.topbar button{background:rgba(255,255,255,.2);color:white;border:none;width:42px;height:42px;border-radius:50%;font-size:20px;cursor:pointer}
+.topbar h2{margin:0;font-size:18px}
+.topbar p{margin:2px 0 0;font-size:12px;opacity:.9}
+.wrap{max-width:1100px;margin:16px auto;padding:0 12px;display:flex;gap:16px;align-items:flex-start}
+.control{width:300px;background:white;padding:18px;border-radius:16px;box-shadow:0 1px 4px rgba(0,0,0,.1);flex-shrink:0}
+.control h3{margin:0 0 6px}
+.control p{font-size:12px;color:#777;margin:0 0 10px}
+.row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #F0F0F0;gap:10px}
+.row b{font-size:14px}
+.row small{display:block;color:#888;font-size:11px;margin-top:2px}
+.switch{width:52px;height:28px;background:#CCC;border-radius:20px;cursor:pointer;position:relative;flex-shrink:0;user-select:none}
 .switch.on{background:#34A853}
-.switch:after{content:'';position:absolute;width:22px;height:22px;background:white;border-radius:50%;top:2px;right:2px;transition:.2s}
-.switch.on:after{right:24px}
-.chat-card{flex:1;background:white;border-radius:16px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.08);display:flex;flex-direction:column;height:620px}
-.chat-head{background:#FF6B00;color:white;padding:14px;display:flex;gap:12px;align-items:center}
-.chat-head img{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid white}
-.chat-head b{font-size:16px}
-.chat-head small{opacity:.9}
-.chat-head .status{margin-right:auto;background:white;color:#FF6B00;padding:6px 12px;border-radius:16px;font-weight:bold;font-size:12px}
-.chat-head .status.closed{background:#FCE8E6;color:#D93025}
-.pinned{background:#FFF8E0;padding:10px 14px;border-bottom:1px solid #FFE082;display:flex;gap:8px;align-items:center;font-size:13px}
-.pinned button{margin-right:auto;background:none;border:none;cursor:pointer}
+.switch:after{content:'';position:absolute;width:24px;height:24px;background:white;border-radius:50%;top:2px;right:2px;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.switch.on:after{right:26px}
+.info{background:#FFF8F0;padding:12px;border-radius:12px;margin-top:12px;font-size:12px;line-height:1.7;color:#555}
+.clearbtn{width:100%;background:#FCE8E6;color:#D93025;border:none;padding:12px;border-radius:12px;cursor:pointer;margin-top:12px;font-weight:bold}
+.chat{flex:1;background:white;border-radius:16px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.1);display:flex;flex-direction:column;height:640px;min-width:0}
+.chat-head{background:#FF6B00;color:white;padding:12px;display:flex;gap:10px;align-items:center}
+.chat-head img{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid white;background:white}
+.chat-head b{font-size:15px}
+.chat-head small{font-size:11px;opacity:.9}
+.status{margin-right:auto;background:white;color:#FF6B00;padding:7px 12px;border-radius:20px;font-weight:bold;font-size:12px;white-space:nowrap}
+.status.closed{background:#FCE8E6;color:#D93025}
+.pinned{background:#FFF8E0;padding:10px 12px;border-bottom:1px solid #FFE082;display:flex;gap:8px;align-items:center;font-size:13px}
+.pinned button{margin-right:auto;background:none;border:none;cursor:pointer;font-size:16px}
 .msgs{flex:1;overflow-y:auto;padding:14px;background:#ECE5DD;display:flex;flex-direction:column;gap:8px}
-.msg{max-width:80%;padding:10px 12px;border-radius:14px;position:relative;font-size:14px;box-shadow:0 1px 1px rgba(0,0,0,.1)}
+.msg{max-width:82%;padding:10px 12px;border-radius:14px;position:relative;font-size:14px;box-shadow:0 1px 1px rgba(0,0,0,.1);word-break:break-word}
 .msg.mine{background:#DCF8C6;margin-right:auto;border-bottom-left-radius:4px}
 .msg.other{background:white;margin-left:auto;border-bottom-right-radius:4px}
 .msg.teacher{background:#FFF3E0;border:1px solid #FF6B00;margin-left:auto}
 .msg .who{font-size:11px;font-weight:bold;color:#FF6B00;margin-bottom:4px;display:flex;align-items:center;gap:6px}
 .msg .who img{width:22px;height:22px;border-radius:50%;object-fit:cover}
 .msg .time{font-size:10px;color:#999;text-align:left;margin-top:4px}
-.msg .reply-box{background:rgba(0,0,0,.06);padding:6px 8px;border-radius:8px;font-size:12px;margin-bottom:6px;border-right:3px solid #FF6B00}
-.msg .reacts{margin-top:6px;display:flex;gap:4px}
-.msg .reacts span{background:#F1F3F4;padding:2px 6px;border-radius:12px;font-size:12px;cursor:pointer}
-.msg .actions{position:absolute;top:4px;left:6px;display:none;gap:4px}
-.msg:hover .actions{display:flex}
-.msg .actions button{background:white;border:none;border-radius:50%;width:24px;height:24px;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,.2);font-size:11px}
-.msg img.chat-img{max-width:220px;border-radius:10px;margin-top:6px}
+.msg .reply-box{background:rgba(0,0,0,.07);padding:6px 8px;border-radius:8px;font-size:12px;margin-bottom:6px;border-right:3px solid #FF6B00}
+.msg .reacts{margin-top:6px;display:flex;gap:4px;flex-wrap:wrap}
+.msg .reacts span{background:#F1F3F4;padding:2px 7px;border-radius:12px;font-size:12px;cursor:pointer}
+.msg .actions{position:absolute;top:4px;left:6px;display:flex;gap:4px;opacity:0}
+.msg:hover .actions{opacity:1}
+.msg .actions button{background:white;border:none;border-radius:50%;width:26px;height:26px;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,.3);font-size:12px}
+.msg img.cimg{max-width:220px;border-radius:10px;margin-top:6px;display:block}
 .msg video{max-width:220px;border-radius:10px;margin-top:6px}
 .reply-bar{background:#FFF3E0;padding:8px 12px;display:flex;gap:8px;align-items:center;font-size:12px;border-top:1px solid #FFE082}
-.input-bar{display:flex;gap:8px;padding:10px;background:white;align-items:flex-end}
-.input-bar textarea{flex:1;border:none;background:#F0F2F5;border-radius:20px;padding:10px 14px;resize:none;max-height:80px}
-.input-bar button{width:42px;height:42px;border-radius:50%;border:none;cursor:pointer;font-size:18px;flex-shrink:0}
-.send-btn{background:#FF6B00;color:white}
+.reply-bar button{margin-right:auto;background:none;border:none;cursor:pointer}
+.react-bar{display:flex;gap:6px;padding:8px;background:white;border-top:1px solid #EEE;flex-wrap:wrap}
+.react-bar span{font-size:22px;cursor:pointer;padding:4px}
 .sticker-bar{display:none;gap:8px;padding:10px;background:white;border-top:1px solid #EEE;flex-wrap:wrap}
 .sticker-bar span{font-size:28px;cursor:pointer;padding:6px;border-radius:10px}
 .sticker-bar span:hover{background:#F1F3F4}
-.react-bar{display:none;gap:6px;padding:8px;background:white;border-top:1px solid #EEE}
-.react-bar span{font-size:22px;cursor:pointer}
-.closed-overlay{background:#F8F9FA;padding:20px;text-align:center;color:#5F6368}
-@media(max-width:850px){.chat-layout{flex-direction:column}.control-card{width:100%;position:static}.chat-card{height:600px;width:100%}}
+.input-bar{display:flex;gap:8px;padding:10px;background:white;align-items:center}
+.input-bar textarea{flex:1;border:none;background:#F0F2F5;border-radius:20px;padding:11px 14px;resize:none;max-height:80px;outline:none;font-size:14px;min-height:44px}
+.input-bar button{width:44px;height:44px;border-radius:50%;border:none;cursor:pointer;font-size:18px;flex-shrink:0;background:#F0F2F5}
+.send-btn{background:#FF6B00 !important;color:white !important}
+.voice-bar{display:none;padding:10px;background:#FFF3E0;text-align:center}
+.voice-bar button{background:#D93025;color:white;border:none;padding:9px 18px;border-radius:16px;cursor:pointer}
+.closed-box{background:#F8F9FA;padding:18px;text-align:center;color:#5F6368;display:none}
+@media(max-width:850px){.wrap{flex-direction:column}.control{width:100%}.chat{width:100%}}
 </style>
 </head>
 <body>
-<div class="topbar-dash">
-  <button class="icon-btn" onclick="window.location.href='dashboard.html'">‹</button>
-  <div class="top-title"><h2>💬 الشات الجماعي</h2><p>منتدى الطلبة - الكود بس اللي بيظهر</p></div>
-  <button class="icon-btn" style="background:#FF6B00" onclick="toggleChatLock()">🔒</button>
+<div class="topbar">
+  <button onclick="goDash()">‹</button>
+  <div><h2>💬 الشات الجماعي</h2><p>منتدى الطلبة - الكود بس اللي بيظهر</p></div>
+  <button style="margin-right:auto" onclick="toggleLock()">🔒</button>
 </div>
 
-<div class="main chat-layout">
-  <div class="control-card">
+<div class="wrap">
+  <div class="control">
     <h3>⚙️ تحكم المستر في الشات</h3>
-    <p style="font-size:12px;color:#80868B">انت بس اللي تقدر تفتح وتقفل وتتحكم</p>
-    <div class="switch-row"><div><b>💬 الشات مفتوح ولا مقفول؟</b><small>لو مقفول، الطلبة مش هيعرفوا يبعتوا</small></div><div class="switch on" id="swOpen" onclick="toggleSwitch('open',this)"></div></div>
-    <div class="switch-row"><div><b>🖼️ السماح بالصور والفيديو</b><small>فيديو أقل من 50 ثانية عشان السيرفر</small></div><div class="switch on" id="swMedia" onclick="toggleSwitch('media',this)"></div></div>
-    <div class="switch-row"><div><b>🎙️ السماح بالريكورد</b><small>رسائل صوتية</small></div><div class="switch on" id="swVoice" onclick="toggleSwitch('voice',this)"></div></div>
-    <div class="switch-row"><div><b>😍 السماح بالستيكرات</b><small>ملصقات وإيموشن</small></div><div class="switch on" id="swSticker" onclick="toggleSwitch('sticker',this)"></div></div>
-    <div class="switch-row"><div><b>❤️ السماح بالرياكت</b><small>قلب وضحك وكده</small></div><div class="switch on" id="swReact" onclick="toggleSwitch('react',this)"></div></div>
-    <div style="background:#FFF8F0;padding:12px;border-radius:12px;margin-top:12px">
-      <b>🔒 الخصوصية</b>
-      <p style="font-size:12px;color:#5F6368;line-height:1.6">الطالب بيظهر بالكود بس، زي <b>AH1234</b><br>مفيش اسم، مفيش رقم، مفيش صورة<br>المستر بس اللي بيظهر باسمه وصورته<br>مفيش مكالمة صوت، مفيش مكالمة فيديو</p>
-    </div>
-    <button class="btn" onclick="clearChat()" style="background:#FCE8E6;color:#D93025;margin-top:12px">🗑️ امسح كل رسائل الشات</button>
+    <p>انت بس اللي تقدر تفتح وتقفل وتتحكم</p>
+    <div class="row"><div><b>💬 الشات مفتوح ولا مقفول؟</b><small>لو مقفول، الطلبة مش هيعرفوا يبعتوا</small></div><div class="switch on" id="swOpen" onclick="toggleSwitch('open')"></div></div>
+    <div class="row"><div><b>🖼️ السماح بالصور والفيديو</b><small>فيديو أقل من 50 ثانية</small></div><div class="switch on" id="swMedia" onclick="toggleSwitch('media')"></div></div>
+    <div class="row"><div><b>🎙️ السماح بالريكورد</b><small>رسائل صوتية</small></div><div class="switch on" id="swVoice" onclick="toggleSwitch('voice')"></div></div>
+    <div class="row"><div><b>😍 السماح بالستيكرات</b><small>ملصقات وإيموشن</small></div><div class="switch on" id="swSticker" onclick="toggleSwitch('sticker')"></div></div>
+    <div class="row"><div><b>❤️ السماح بالرياكت</b><small>قلب وضحك وكده</small></div><div class="switch on" id="swReact" onclick="toggleSwitch('react')"></div></div>
+    <div class="info"><b>🔒 الخصوصية</b><br>الطالب بيظهر بالكود بس، زي <b>AH1234</b><br>مفيش اسم، مفيش رقم، مفيش صورة<br>المستر بس اللي بيظهر باسمه وصورته<br>مفيش مكالمة صوت، مفيش مكالمة فيديو</div>
+    <button class="clearbtn" onclick="clearChat()">🗑️ امسح كل رسائل الشات</button>
+    <button class="clearbtn" style="background:#E8F0FE;color:#1A73E8" onclick="addTestStudent()">👤 جرب رسالة طالب وهمي - شوف الكود</button>
   </div>
 
-  <div class="chat-card">
+  <div class="chat">
     <div class="chat-head">
       <img src="teacher.jpg" onerror="this.src='https://via.placeholder.com/48'">
-      <div><b>Mr Romany Faheam - الشات الجماعي</b><br><small>👥 كل الطلبة • الكود بس اللي بيظهر • بدون مكالمات</small></div>
+      <div><b>Mr Romany Faheam - الشات الجماعي</b><br><small>👥 كل الطلبة • الكود بس • بدون مكالمات</small></div>
       <div class="status" id="chatStatus">🟢 مفتوح</div>
     </div>
     <div class="pinned" id="pinnedBar" style="display:none"><span>📌</span><b id="pinnedText"></b><button onclick="unpin()">✕</button></div>
     <div class="msgs" id="msgs"></div>
-    <div id="closedMsg" class="closed-overlay" style="display:none">🔒 المستر قفل الشات دلوقتي<br><small>استنى لما المستر يفتحه تاني</small></div>
-    <div class="reply-bar" id="replyBar" style="display:none"><span>↩️ بترد على:</span><b id="replyPreview"></b><button onclick="cancelReply()" style="margin-right:auto;background:none;border:none;cursor:pointer">✕</button></div>
-    <div class="react-bar" id="reactBar"><span onclick="sendReact('❤️')">❤️</span><span onclick="sendReact('😂')">😂</span><span onclick="sendReact('😮')">😮</span><span onclick="sendReact('😢')">😢</span><span onclick="sendReact('👍')">👍</span><span onclick="sendReact('🔥')">🔥</span></div>
+    <div class="closed-box" id="closedMsg">🔒 المستر قفل الشات دلوقتي<br><small>استنى لما المستر يفتحه تاني</small></div>
+    <div class="reply-bar" id="replyBar" style="display:none"><span>↩️ بترد على:</span><b id="replyPreview"></b><button onclick="cancelReply()">✕</button></div>
+    <div class="react-bar" id="reactBar"><span onclick="alert('دوس على أي رسالة واختار ❤️ من الزرار اللي فوق الرسالة')">❤️</span><span>😂</span><span>😮</span><span>😢</span><span>👍</span><span>🔥</span></div>
     <div class="sticker-bar" id="stickerBar"><span onclick="sendSticker('😂')">😂</span><span onclick="sendSticker('🔥')">🔥</span><span onclick="sendSticker('💪')">💪</span><span onclick="sendSticker('📚')">📚</span><span onclick="sendSticker('🎉')">🎉</span><span onclick="sendSticker('❤️')">❤️</span><span onclick="sendSticker('👏')">👏</span><span onclick="sendSticker('🤔')">🤔</span><span onclick="sendSticker('😎')">😎</span><span onclick="sendSticker('🏆')">🏆</span></div>
     <div class="input-bar" id="inputBar">
       <button onclick="toggleSticker()" title="ستيكرات">😍</button>
-      <button onclick="document.getElementById('chatFile').click()" title="صورة / فيديو أقل من 50 ثانية">📎</button>
+      <button onclick="document.getElementById('chatFile').click()" title="صورة / فيديو">📎</button>
       <input type="file" id="chatFile" accept="image/*,video/*" style="display:none" onchange="sendFile(event)">
-      <textarea id="chatInput" placeholder="اكتب رسالتك... الكود بس اللي هيظهر" rows="1" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+      <textarea id="chatInput" placeholder="اكتب رسالتك... الكود بس اللي هيظهر" rows="1"></textarea>
       <button onclick="startVoice()" title="ريكورد">🎙️</button>
       <button class="send-btn" onclick="sendMsg()">➤</button>
     </div>
-    <div id="voiceBar" style="display:none;padding:10px;background:#FFF3E0;text-align:center"><b>🔴 بيسجل دلوقتي...</b> <button onclick="stopVoice()" style="background:#D93025;color:white;border:none;padding:8px 16px;border-radius:16px;cursor:pointer">⏹️ وقف وابعت</button></div>
+    <div class="voice-bar" id="voiceBar"><b>🔴 بيسجل دلوقتي...</b> <button onclick="stopVoice()">⏹️ وقف وابعت</button></div>
   </div>
 </div>
 
-<script src="app.js"></script>
 <script>
-let chatSettings = JSON.parse(localStorage.getItem('chatSettings')||'{"open":true,"media":true,"voice":true,"sticker":true,"react":true}');
-let replyTo=null;
-let pinnedId=null;
-let mediaRecorder=null, audioChunks=[];
-function toggleSwitch(key, el){ chatSettings[key]=!chatSettings[key]; el.classList.toggle('on', chatSettings[key]); localStorage.setItem('chatSettings', JSON.stringify(chatSettings)); updateChatUI(); }
-function toggleChatLock(){ chatSettings.open=!chatSettings.open; localStorage.setItem('chatSettings', JSON.stringify(chatSettings)); updateChatUI(); }
-function updateChatUI(){
-  document.getElementById('swOpen').classList.toggle('on', chatSettings.open);
-  document.getElementById('swMedia').classList.toggle('on', chatSettings.media);
-  document.getElementById('swVoice').classList.toggle('on', chatSettings.voice);
-  document.getElementById('swSticker').classList.toggle('on', chatSettings.sticker);
-  document.getElementById('swReact').classList.toggle('on', chatSettings.react);
-  let st=document.getElementById('chatStatus'); st.innerText=chatSettings.open?'🟢 مفتوح':'🔴 مقفول'; st.classList.toggle('closed', !chatSettings.open);
+var chatSettings = {open:true, media:true, voice:true, sticker:true, react:true};
+try{ var saved = JSON.parse(localStorage.getItem('chatSettings')||'{}'); if(saved.open!==undefined) chatSettings=saved; }catch(e){}
+var replyTo=null;
+var mediaRecorder=null, audioChunks=[];
+function goDash(){ window.location.href='dashboard.html'; }
+function toggleSwitch(key){
+  chatSettings[key]=!chatSettings[key];
+  localStorage.setItem('chatSettings', JSON.stringify(chatSettings));
+  updateUI();
+}
+function toggleLock(){ toggleSwitch('open'); }
+function updateUI(){
+  document.getElementById('swOpen').className='switch'+(chatSettings.open?' on':'');
+  document.getElementById('swMedia').className='switch'+(chatSettings.media?' on':'');
+  document.getElementById('swVoice').className='switch'+(chatSettings.voice?' on':'');
+  document.getElementById('swSticker').className='switch'+(chatSettings.sticker?' on':'');
+  document.getElementById('swReact').className='switch'+(chatSettings.react?' on':'');
+  var st=document.getElementById('chatStatus'); st.innerText=chatSettings.open?'🟢 مفتوح':'🔴 مقفول'; st.className='status'+(chatSettings.open?'':' closed');
   document.getElementById('closedMsg').style.display=chatSettings.open?'none':'block';
   document.getElementById('inputBar').style.display=chatSettings.open?'flex':'none';
   document.getElementById('reactBar').style.display=chatSettings.react?'flex':'none';
 }
+function getMsgs(){ try{ return JSON.parse(localStorage.getItem('chatMsgs')||'[]'); }catch(e){ return []; } }
+function saveMsgs(m){ localStorage.setItem('chatMsgs', JSON.stringify(m)); }
 function sendMsg(){
   if(!chatSettings.open){ alert('الشات مقفول'); return; }
-  let t=document.getElementById('chatInput').value.trim(); if(!t) return;
-  let msgs=JSON.parse(localStorage.getItem('chatMsgs')||'[]');
-  msgs.push({id:Date.now(), who:'teacher', code:'', name:'Mr Romany Faheam', text:t, reply:replyTo?replyTo.text:'', replyCode:replyTo?replyTo.code:'', time:new Date().toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'}), reacts:{}});
-  localStorage.setItem('chatMsgs', JSON.stringify(msgs));
-  document.getElementById('chatInput').value=''; replyTo=null; document.getElementById('replyBar').style.display='none'; renderMsgs();
+  var input=document.getElementById('chatInput');
+  var t=input.value.trim(); if(!t) return;
+  var msgs=getMsgs();
+  msgs.push({id:Date.now(), who:'teacher', name:'Mr Romany Faheam', text:t, reply:replyTo?replyTo.text:'', replyCode:replyTo?replyTo.code:'', time:new Date().toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'}), reacts:{}});
+  saveMsgs(msgs); input.value=''; input.style.height='auto'; replyTo=null; document.getElementById('replyBar').style.display='none'; renderMsgs();
 }
-function sendSticker(s){ if(!chatSettings.sticker){ alert('الستيكرات مقفولة'); return; } let msgs=JSON.parse(localStorage.getItem('chatMsgs')||'[]'); msgs.push({id:Date.now(), who:'teacher', name:'Mr Romany Faheam', text:s, isSticker:true, time:new Date().toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'}), reacts:{}}); localStorage.setItem('chatMsgs', JSON.stringify(msgs)); renderMsgs(); }
-function sendReact(e){ alert('دوس على أي رسالة واختار رياكت ❤️ - الرياكت هيظهر تحت الرسالة'); }
-function addReact(id, emoji){ let msgs=JSON.parse(localStorage.getItem('chatMsgs')||'[]'); let m=msgs.find(x=>x.id===id); if(!m) return; m.reacts=m.reacts||{}; m.reacts[emoji]=(m.reacts[emoji]||0)+1; localStorage.setItem('chatMsgs', JSON.stringify(msgs)); renderMsgs(); }
-function toggleSticker(){ document.getElementById('stickerBar').style.display=document.getElementById('stickerBar').style.display==='flex'?'none':'flex'; }
-function sendFile(e){ if(!chatSettings.media){ alert('الصور والفيديو مقفولين'); return; } let f=e.target.files[0]; if(!f) return; if(f.type.startsWith('video/')){ let v=document.createElement('video'); v.preload='metadata'; v.onloadedmetadata=()=>{ if(v.duration>50){ alert('الفيديو أطول من 50 ثانية، اختار فيديو أقصر عشان السيرفر'); return; } readFile(f); }; v.src=URL.createObjectURL(f); } else { readFile(f); } }
-function readFile(f){ let r=new FileReader(); r.onload=()=>{ let msgs=JSON.parse(localStorage.getItem('chatMsgs')||'[]'); msgs.push({id:Date.now(), who:'teacher', name:'Mr Romany Faheam', text:'', file:r.result, fileType:f.type, time:new Date().toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'}), reacts:{}}); localStorage.setItem('chatMsgs', JSON.stringify(msgs)); renderMsgs(); }; r.readAsDataURL(f); }
-async function startVoice(){ if(!chatSettings.voice){ alert('الريكورد مقفول'); return; } try{ let stream=await navigator.mediaDevices.getUserMedia({audio:true}); mediaRecorder=new MediaRecorder(stream); audioChunks=[]; mediaRecorder.ondataavailable=e=>audioChunks.push(e.data); mediaRecorder.onstop=()=>{ let blob=new Blob(audioChunks,{type:'audio/webm'}); let r=new FileReader(); r.onload=()=>{ let msgs=JSON.parse(localStorage.getItem('chatMsgs')||'[]'); msgs.push({id:Date.now(), who:'teacher', name:'Mr Romany Faheam', text:'', audio:r.result, time:new Date().toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'}), reacts:{}}); localStorage.setItem('chatMsgs', JSON.stringify(msgs)); renderMsgs(); }; r.readAsDataURL(blob); }; mediaRecorder.start(); document.getElementById('voiceBar').style.display='block'; }catch(e){ alert('المتصفح مش سامح بالريكورد'); } }
+function sendSticker(s){
+  if(!chatSettings.sticker){ alert('الستيكرات مقفولة'); return; }
+  var msgs=getMsgs(); msgs.push({id:Date.now(), who:'teacher', name:'Mr Romany Faheam', text:s, isSticker:true, time:new Date().toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'}), reacts:{}}); saveMsgs(msgs); renderMsgs();
+  document.getElementById('stickerBar').style.display='none';
+}
+function addReact(id, emoji){
+  if(!chatSettings.react){ alert('الرياكت مقفول'); return; }
+  var msgs=getMsgs(); var m=null; for(var i=0;i<msgs.length;i++){ if(msgs[i].id===id) m=msgs[i]; } if(!m) return;
+  m.reacts=m.reacts||{}; m.reacts[emoji]=(m.reacts[emoji]||0)+1; saveMsgs(msgs); renderMsgs();
+}
+function toggleSticker(){
+  if(!chatSettings.sticker){ alert('الستيكرات مقفولة'); return; }
+  var b=document.getElementById('stickerBar'); b.style.display=(b.style.display==='flex')?'none':'flex';
+}
+function sendFile(e){
+  if(!chatSettings.media){ alert('الصور والفيديو مقفولين'); e.target.value=''; return; }
+  var f=e.target.files[0]; if(!f) return;
+  if(f.type.indexOf('video')===0){
+    var v=document.createElement('video'); v.preload='metadata';
+    v.onloadedmetadata=function(){ if(v.duration>50){ alert('الفيديو أطول من 50 ثانية، اختار فيديو أقصر عشان السيرفر'); e.target.value=''; return; } readFile(f); };
+    v.onerror=function(){ readFile(f); };
+    v.src=URL.createObjectURL(f);
+  } else { readFile(f); }
+  e.target.value='';
+}
+function readFile(f){
+  var r=new FileReader(); r.onload=function(){
+    var msgs=getMsgs(); msgs.push({id:Date.now(), who:'teacher', name:'Mr Romany Faheam', text:'', file:r.result, fileType:f.type, time:new Date().toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'}), reacts:{}}); saveMsgs(msgs); renderMsgs();
+  }; r.readAsDataURL(f);
+}
+function startVoice(){
+  if(!chatSettings.voice){ alert('الريكورد مقفول'); return; }
+  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){ alert('المتصفح مش بيدعم الريكورد هنا، جربه من الموبايل'); return; }
+  navigator.mediaDevices.getUserMedia({audio:true}).then(function(stream){
+    mediaRecorder=new MediaRecorder(stream); audioChunks=[];
+    mediaRecorder.ondataavailable=function(e){ audioChunks.push(e.data); };
+    mediaRecorder.onstop=function(){
+      var blob=new Blob(audioChunks,{type:'audio/webm'}); var r=new FileReader();
+      r.onload=function(){ var msgs=getMsgs(); msgs.push({id:Date.now(), who:'teacher', name:'Mr Romany Faheam', text:'', audio:r.result, time:new Date().toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'}), reacts:{}}); saveMsgs(msgs); renderMsgs(); };
+      r.readAsDataURL(blob);
+    };
+    mediaRecorder.start(); document.getElementById('voiceBar').style.display='block';
+  }).catch(function(){ alert('لازم تسمح بالميكروفون عشان الريكورد'); });
+}
 function stopVoice(){ if(mediaRecorder) mediaRecorder.stop(); document.getElementById('voiceBar').style.display='none'; }
-function doReply(id){ let msgs=JSON.parse(localStorage.getItem('chatMsgs')||'[]'); let m=msgs.find(x=>x.id===id); if(!m) return; replyTo={text:(m.text||'صورة / فيديو').substring(0,40), code:m.who==='teacher'?'Mr Romany Faheam':m.code||'AH1234'}; document.getElementById('replyBar').style.display='flex'; document.getElementById('replyPreview').innerText=replyTo.code+' : '+replyTo.text; document.getElementById('chatInput').focus(); }
+function doReply(id){
+  var msgs=getMsgs(); var m=null; for(var i=0;i<msgs.length;i++){ if(msgs[i].id===id) m=msgs[i]; } if(!m) return;
+  replyTo={text:(m.text||'صورة / فيديو').substring(0,40), code:m.who==='teacher'?'Mr Romany Faheam':(m.code||'AH1234')};
+  document.getElementById('replyBar').style.display='flex'; document.getElementById('replyPreview').innerText=replyTo.code+' : '+replyTo.text; document.getElementById('chatInput').focus();
+}
 function cancelReply(){ replyTo=null; document.getElementById('replyBar').style.display='none'; }
-function pinMsg(id){ let msgs=JSON.parse(localStorage.getItem('chatMsgs')||'[]'); let m=msgs.find(x=>x.id===id); if(!m) return; pinnedId=id; document.getElementById('pinnedBar').style.display='flex'; document.getElementById('pinnedText').innerText=(m.who==='teacher'?'Mr Romany Faheam':m.code||'')+' : '+(m.text||'صورة / فيديو'); localStorage.setItem('pinnedId', id); }
-function unpin(){ pinnedId=null; localStorage.removeItem('pinnedId'); document.getElementById('pinnedBar').style.display='none'; }
-function deleteMsg(id){ if(!confirm('تمسح الرسالة دي؟ انت المستر، ليك حق تمسح أي رسالة')) return; let msgs=JSON.parse(localStorage.getItem('chatMsgs')||'[]').filter(x=>x.id!==id); localStorage.setItem('chatMsgs', JSON.stringify(msgs)); renderMsgs(); }
+function pinMsg(id){
+  var msgs=getMsgs(); var m=null; for(var i=0;i<msgs.length;i++){ if(msgs[i].id===id) m=msgs[i]; } if(!m) return;
+  localStorage.setItem('pinnedId', id);
+  document.getElementById('pinnedBar').style.display='flex';
+  document.getElementById('pinnedText').innerText=(m.who==='teacher'?'Mr Romany Faheam':(m.code||''))+' : '+(m.text||'صورة / فيديو');
+}
+function unpin(){ localStorage.removeItem('pinnedId'); document.getElementById('pinnedBar').style.display='none'; }
+function deleteMsg(id){
+  if(!confirm('تمسح الرسالة دي؟ انت المستر، ليك حق تمسح أي رسالة')) return;
+  var msgs=getMsgs().filter(function(x){ return x.id!==id; }); saveMsgs(msgs); renderMsgs();
+}
 function clearChat(){ if(!confirm('تمسح كل رسائل الشات؟')) return; localStorage.removeItem('chatMsgs'); renderMsgs(); }
+function addTestStudent(){
+  var msgs=getMsgs(); msgs.push({id:Date.now(), who:'student', code:'AH1234', text:'أهلا يا مستر، الشات شغال كويس ❤️', time:new Date().toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'}), reacts:{}}); saveMsgs(msgs); renderMsgs();
+}
 function renderMsgs(){
-  let msgs=JSON.parse(localStorage.getItem('chatMsgs')||'[]');
+  var msgs=getMsgs();
   if(msgs.length===0){
     msgs=[{id:1, who:'teacher', name:'Mr Romany Faheam', text:'أهلا بيكم في الشات الجماعي ❤️ هنا هنتكلم ونساعد بعض، الكود بس اللي بيظهر، مفيش أسماء ولا أرقام، والشات من غير مكالمات خالص', time:'الآن', reacts:{'❤️':3,'🔥':2}}, {id:2, who:'student', code:'AH1234', text:'أهلا يا مستر، الشات جميل جدا', time:'الآن', reacts:{'👍':1}}];
-    localStorage.setItem('chatMsgs', JSON.stringify(msgs));
+    saveMsgs(msgs);
   }
-  document.getElementById('msgs').innerHTML=msgs.map(m=>{
-    let isTeacher=m.who==='teacher';
-    let whoHtml=isTeacher?`<div class="who"><img src="teacher.jpg" onerror="this.src='https://via.placeholder.com/22'"> Mr Romany Faheam • المستر</div>`:`<div class="who">👤 ${m.code||'AH1234'}</div>`;
-    let body='';
-    if(m.isSticker) body=`<div style="font-size:36px">${m.text}</div>`;
-    else if(m.audio) body=`<audio controls src="${m.audio}" style="width:200px"></audio>`;
-    else if(m.file) body=m.fileType&&m.fileType.startsWith('video')?`<video controls src="${m.file}"></video>`:`<img class="chat-img" src="${m.file}">`;
-    else body=`<div>${m.text}</div>`;
-    let replyHtml=m.reply?`<div class="reply-box">↩️ ${m.replyCode||''} : ${m.reply}</div>`:'';
-    let reactsHtml=Object.entries(m.reacts||{}).map(([e,c])=>`<span onclick="addReact(${m.id},'${e}')">${e} ${c}</span>`).join('');
-    return `<div class="msg ${isTeacher?'teacher':m.who==='teacher'?'teacher':'other'}">${whoHtml}${replyHtml}${body}<div class="time">${m.time}</div><div class="reacts">${reactsHtml}</div><div class="actions"><button onclick="doReply(${m.id})" title="رد">↩️</button><button onclick="addReact(${m.id},'❤️')" title="رياكت">❤️</button><button onclick="pinMsg(${m.id})" title="تثبيت">📌</button><button onclick="deleteMsg(${m.id})" title="مسح - انت أو صاحب الرسالة بس">🗑️</button></div></div>`;
-  }).join('');
-  let box=document.getElementById('msgs'); box.scrollTop=box.scrollHeight;
-  let pid=localStorage.getItem('pinnedId'); if(pid){ let msgs2=JSON.parse(localStorage.getItem('chatMsgs')||'[]'); let m=msgs2.find(x=>x.id==pid); if(m){ document.getElementById('pinnedBar').style.display='flex'; document.getElementById('pinnedText').innerText=(m.who==='teacher'?'Mr Romany Faheam':m.code||'')+' : '+(m.text||'صورة / فيديو'); } }
+  var html='';
+  for(var i=0;i<msgs.length;i++){
+    var m=msgs[i]; var isTeacher=m.who==='teacher';
+    var whoHtml=isTeacher?'<div class="who"><img src="teacher.jpg" onerror="this.src=\'https://via.placeholder.com/22\'"> Mr Romany Faheam • المستر</div>':'<div class="who">👤 '+(m.code||'AH1234')+'</div>';
+    var body='';
+    if(m.isSticker) body='<div style="font-size:36px">'+m.text+'</div>';
+    else if(m.audio) body='<audio controls src="'+m.audio+'" style="width:200px"></audio>';
+    else if(m.file) body=(m.fileType&&m.fileType.indexOf('video')===0)?'<video controls src="'+m.file+'"></video>':'<img class="cimg" src="'+m.file+'">';
+    else body='<div>'+m.text+'</div>';
+    var replyHtml=m.reply?'<div class="reply-box">↩️ '+(m.replyCode||'')+' : '+m.reply+'</div>':'';
+    var reactsHtml=''; for(var k in (m.reacts||{})){ reactsHtml+='<span onclick="addReact('+m.id+',\''+k+'\')">'+k+' '+m.reacts[k]+'</span>'; }
+    html+='<div class="msg '+(isTeacher?'teacher':'other')+'">'+whoHtml+replyHtml+body+'<div class="time">'+m.time+'</div><div class="reacts">'+reactsHtml+'</div><div class="actions"><button onclick="doReply('+m.id+')" title="رد">↩️</button><button onclick="addReact('+m.id+',\'❤️\')" title="رياكت">❤️</button><button onclick="pinMsg('+m.id+')" title="تثبيت">📌</button><button onclick="deleteMsg('+m.id+')" title="مسح">🗑️</button></div></div>';
+  }
+  var box=document.getElementById('msgs'); box.innerHTML=html; box.scrollTop=box.scrollHeight;
+  var pid=localStorage.getItem('pinnedId'); if(pid){ var mm=null; var all=getMsgs(); for(var j=0;j<all.length;j++){ if(String(all[j].id)===String(pid)) mm=all[j]; } if(mm){ document.getElementById('pinnedBar').style.display='flex'; document.getElementById('pinnedText').innerText=(mm.who==='teacher'?'Mr Romany Faheam':(mm.code||''))+' : '+(mm.text||'صورة / فيديو'); } }
 }
-document.getElementById('chatInput').addEventListener('keydown', e=>{ if(e.key==='Enter'&&!e.shiftKey){ e.preventDefault(); sendMsg(); } });
-updateChatUI(); renderMsgs();
+var inputEl=document.getElementById('chatInput');
+inputEl.addEventListener('keydown', function(e){ if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); sendMsg(); } });
+inputEl.addEventListener('input', function(){ this.style.height='auto'; this.style.height=Math.min(this.scrollHeight,80)+'px'; });
+updateUI(); renderMsgs();
 </script>
 </body>
 </html>
