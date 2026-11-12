@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mr Romany Faheam - AHS</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="login-page">
+  <div class="login-card">
+    <img class="teacher-img" src="teacher.jpg">
+    <h1>Mr Romany Faheam</h1>
+    <p class="sub">AHS - لوحة تحكم المستر</p>
+    <input id="userName" placeholder="اليوزر نيم - روماني فهيم">
+    <div class="pass-box">
+      <input id="pass" type="password" placeholder="كلمة السر">
+      <button class="monkey" onclick="togglePass()" id="monkeyBtn">🙈</button>
+    </div>
+    <p id="errorMsg">اليوزر نيم أو الباسورد غلط</p>
+    <button class="btn" onclick="login()">دخول لوحة التحكم 🚀</button>
+  </div>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
