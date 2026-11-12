@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>لوحة الشرف - Mr Romany Faheam</title>
+<style>
+*{box-sizing:border-box;font-family:'Segoe UI',Tahoma,sans-serif}
+body{margin:0;background:#F8F9FA}
+.topbar{background:#FF6B00;color:white;padding:14px 16px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:10}
+.topbar button{background:rgba(255,255,255,.2);color:white;border:none;width:42px;height:42px;border-radius:50%;font-size:20px;cursor:pointer}
+.topbar h2{margin:0;font-size:18px}
+.topbar p{margin:2px 0 0;font-size:12px;opacity:.9}
+.wrap{max-width:1100px;margin:16px auto;padding:0 12px}
+.tabs{display:flex;gap:10px;margin-bottom:14px}
+.tabs button{flex:1;padding:14px;border:none;border-radius:14px;cursor:pointer;font-weight:bold;font-size:15px;background:white;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.tabs button.active{background:#FF6B00;color:white}
+.card{background:white;padding:18px;border-radius:16px;box-shadow:0 1px 3px rgba(0,0,0,.08);margin-bottom:14px}
+.card h3{margin:0 0 10px}
+.stage-box{border:2px solid #FFE0B2;border-radius:14px;overflow:hidden}
+.stage-head{background:#FFF3E0;padding:14px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-weight:bold}
+.stage-body{display:none;padding:14px}
+.stage-body.open{display:block}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.chips button{background:#F1F3F4;border:none;padding:9px 16px;border-radius:20px;cursor:pointer;font-weight:bold}
+.chips button.active{background:#FF6B00;color:white}
+.students{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.stu{border:1px solid #EEE;border-radius:14px;padding:12px;text-align:center}
+.stu img{width:70px;height:70px;border-radius:50%;object-fit:cover;border:3px solid #FF6B00}
+.stu b{display:block;margin:6px 0 2px}
+.stu small{color:#888}
+.stu .points{background:#FFF8E0;padding:4px 10px;border-radius:12px;font-size:12px;font-weight:bold;display:inline-block;margin:6px 0}
+.stu button{width:100%;border:none;padding:9px;border-radius:10px;cursor:pointer;font-weight:bold;margin-top:6px}
+.add-btn{background:#FF6B00;color:white}
+.wallet-btn{background:#34A853;color:white}
+.honor-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+.honor-card{background:linear-gradient(135deg,#FFF8E0,#FFF3E0);border:2px solid #FFC107;border-radius:16px;padding:16px;text-align:center;position:relative}
+.honor-card.first{border-color:#FFD700;background:linear-gradient(135deg,#FFFDE7,#FFF8E1)}
+.honor-card img{width:86px;height:86px;border-radius:50%;object-fit:cover;border:4px solid #FFC107}
+.honor-card .crown{font-size:28px}
+.honor-card b{display:block;margin:6px 0 2px;font-size:16px}
+.honor-card small{color:#666}
+.honor-card .reason{background:white;padding:8px;border-radius:10px;font-size:12px;margin:8px 0}
+.honor-card .timer{font-size:11px;color:#D93025;background:#FCE8E6;padding:4px 8px;border-radius:12px;display:inline-block}
+.honor-card button{border:none;padding:8px 12px;border-radius:10px;cursor:pointer;font-weight:bold;margin:4px 2px}
+.remove-btn{background:#FCE8E6;color:#D93025}
+.points-btn{background:#E8F0FE;color:#1A73E8}
+input,select,textarea{width:100%;padding:11px;border:1px solid #E0E0E0;border-radius:12px;margin:6px 0;font-size:14px;outline:none}
+.btn{width:100%;background:#FF6B00;color:white;border:none;padding:13px;border-radius:12px;cursor:pointer;font-weight:bold;font-size:15px}
+.wallet-list{display:flex;flex-direction:column;gap:10px}
+.wallet-item{display:flex;gap:12px;align-items:center;padding:12px;border:1px solid #EEE;border-radius:14px}
+.wallet-item img{width:50px;height:50px;border-radius:50%;object-fit:cover}
+.wallet-item b{display:block}
+.wallet-item small{color:#888}
+.wallet-item .pts{margin-right:auto;background:#E8F5E9;color:#2E7D32;padding:6px 12px;border-radius:16px;font-weight:bold}
+.empty{text-align:center;color:#888;padding:30px}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:100;padding:16px}
+.modal.open{display:flex}
+.modal-box{background:white;width:100%;max-width:420px;padding:20px;border-radius:16px}
+.modal-box h3{margin:0 0 10px}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <button onclick="window.location.href='dashboard.html'">‹</button>
+  <div><h2>🏆 لوحة الشرف والمحفظة</h2><p>كرم الطالب وشجعه بنقاط = خصم في الحصة أو المذكرة</p></div>
+  <button style="margin-right:auto" onclick="showTab('honor')">🏆</button>
+</div>
+
+<div class="wrap">
+  <div class="tabs">
+    <button id="tabHonor" class="active" onclick="showTab('honor')">🏆 لوحة الشرف</button>
+    <button id="tabWallet" onclick="showTab('wallet')">💰 محفظة النقاط - مكافأة</button>
+  </div>
+
+  <div id="pageHonor">
+    <div class="card">
+      <div class="stage-box">
+        <div class="stage-head" onclick="toggleStage()"><span>🎓 اختار المرحلة الدراسية - دوس هنا عشان تفتح وتقفل</span><span id="stageArrow">▼</span></div>
+        <div class="stage-body" id="stageBody">
+          <div class="chips">
+            <button class="active" onclick="setStage('أولى بكالوريا',this)">أولى بكالوريا</button>
+            <button onclick="setStage('تانية بكالوريا',this)">تانية بكالوريا</button>
+            <button onclick="setStage('تالتة بكالوريا',this)">تالتة بكالوريا</button>
+          </div>
+          <p style="font-size:12px;color:#888;margin:0 0 10px">دوس على الطالب عشان تضيفه للوحة الشرف</p>
+          <div class="students" id="studentsList"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🏆 لوحة الشرف - <span id="honorCount">0</span> طالب مكرم</h3>
+      <p style="font-size:12px;color:#888;margin:0 0 12px">الأول بياخد 👑، وكل طالب بيظهر رصيده من النقاط</p>
+      <div class="honor-grid" id="honorGrid"></div>
+      <div class="empty" id="emptyHonor" style="display:none">لسه مفيش حد في لوحة الشرف<br>اختار مرحلة من فوق، ودوس إضافة للوحة الشرف</div>
+    </div>
+  </div>
+
+  <div id="pageWallet" style="display:none">
+    <div class="card">
+      <h3>💰 ابعت مكافأة نقاط لطالب</h3>
+      <p style="font-size:12px;color:#888">اختار الطالب، واختار عدد النقاط، ودوس إرسال - تلقائيا هتروح للطالب إشعار بعدد النقاط</p>
+      <label>🎓 المرحلة</label>
+      <select id="walletStage" onchange="renderWalletStudents()"><option>أولى بكالوريا</option><option>تانية بكالوريا</option><option>تالتة بكالوريا</option></select>
+      <label>👤 اختار الطالب</label>
+      <select id="walletStudent"></select>
+      <label>💰 عدد النقاط</label>
+      <select id="walletPoints"><option value="10">10 نقاط - تشجيع بسيط</option><option value="20">20 نقطة</option><option value="50">50 نقطة - ممتاز</option><option value="100">100 نقطة - متفوق 🏆</option><option value="200">200 نقطة - أسطورة 👑</option></select>
+      <label>✍️ سبب المكافأة - هيظهر للطالب في الإشعار</label>
+      <input id="walletReason" placeholder="مثال: أعلى درجة في الامتحان...">
+      <button class="btn" onclick="sendPoints()">💰 ابعت النقاط للطالب - هيوصله إشعار</button>
+    </div>
+    <div class="card">
+      <h3>📋 أرصدة الطلبة في المحفظة</h3>
+      <div class="wallet-list" id="walletList"></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="honorModal">
+  <div class="modal-box">
+    <h3>🏆 إضافة للوحة الشرف</h3>
+    <p id="modalStudentName" style="font-weight:bold"></p>
+    <label>✍️ ليه بتكرمه؟ - هيظهر في لوحة الشرف</label>
+    <input id="honorReason" placeholder="مثال: أعلى درجة في الامتحان...">
+    <label>⏰ الطالب يظهر إمتى في لوحة الشرف؟</label>
+    <select id="honorShowWhen"><option value="now">🚀 دلوقتي</option><option value="later">⏰ بعد مدة - حدد وقت</option></select>
+    <input type="datetime-local" id="honorShowAt" style="display:none">
+    <label>⏰ الطالب يختفي لوحده إمتى؟ - تايمر</label>
+    <select id="honorHideWhen"><option value="never">♾️ يفضل على طول - مش هيختفي</option><option value="1day">بعد يوم واحد</option><option value="3days">بعد 3 أيام</option><option value="7days">بعد أسبوع</option><option value="custom">⏰ وقت معين - حدده</option></select>
+    <input type="datetime-local" id="honorHideAt" style="display:none">
+    <button class="btn" onclick="confirmAddHonor()">🏆 أضف للوحة الشرف</button>
+    <button class="btn" style="background:#F1F3F4;color:#333;margin-top:8px" onclick="closeModal()">إلغاء</button>
+  </div>
+</div>
+
+<script>
+var currentStage='أولى بكالوريا';
+var selectedStu=null;
+var demoStudents=[
+  {code:'AH1001', name:'أحمد محمد علي', stage:'أولى بكالوريا', img:'https://i.pravatar.cc/150?img=12', points:120},
+  {code:'AH1002', name:'سارة أحمد حسن', stage:'أولى بكالوريا', img:'https://i.pravatar.cc/150?img=47', points:80},
+  {code:'AH1003', name:'محمد كريم سامي', stage:'أولى بكالوريا', img:'https://i.pravatar.cc/150?img=33', points:50},
+  {code:'AH2001', name:'نور الهدى مصطفى', stage:'تانية بكالوريا', img:'https://i.pravatar.cc/150?img=45', points:200},
+  {code:'AH2002', name:'يوسف أحمد محمود', stage:'تانية بكالوريا', img:'https://i.pravatar.cc/150?img=59', points:90},
+  {code:'AH3001', name:'مريم هاني عبد الله', stage:'تالتة بكالوريا', img:'https://i.pravatar.cc/150?img=44', points:150},
+  {code:'AH3002', name:'عمر خالد فاروق', stage:'تالتة بكالوريا', img:'https://i.pravatar.cc/150?img=13', points:60},
+];
+function getHonor(){ try{ return JSON.parse(localStorage.getItem('honorBoard')||'[]'); }catch(e){ return []; } }
+function saveHonor(a){ localStorage.setItem('honorBoard', JSON.stringify(a)); }
+function getPoints(){ try{ return JSON.parse(localStorage.getItem('walletPoints')||'{}'); }catch(e){ return {}; } }
+function savePoints(o){ localStorage.setItem('walletPoints', JSON.stringify(o)); }
+function showTab(t){
+  document.getElementById('pageHonor').style.display=t==='honor'?'block':'none';
+  document.getElementById('pageWallet').style.display=t==='wallet'?'block':'none';
+  document.getElementById('tabHonor').className=t==='honor'?'active':'';
+  document.getElementById('tabWallet').className=t==='wallet'?'active':'';
+  if(t==='wallet') renderWallet();
+}
+function toggleStage(){
+  var b=document.getElementById('stageBody'); var isOpen=b.classList.contains('open');
+  b.classList.toggle('open', !isOpen); document.getElementById('stageArrow').innerText=isOpen?'▼':'▲';
+}
+function setStage(s, el){
+  currentStage=s;
+  var btns=document.querySelectorAll('.chips button'); for(var i=0;i<btns.length;i++) btns[i].className='';
+  if(el) el.className='active';
+  renderStudents();
+}
+function renderStudents(){
+  var pts=getPoints();
+  var list=demoStudents.filter(function(s){ return s.stage===currentStage; });
+  var html='';
+  for(var i=0;i<list.length;i++){
+    var s=list[i]; var p=pts[s.code]!==undefined?pts[s.code]:s.points;
+    html+='<div class="stu"><img src="'+s.img+'" onerror="this.src=\'https://via.placeholder.com/70\'"><b>'+s.name+'</b><small>'+s.code+' • '+s.stage+'</small><br><span class="points">💰 '+p+' نقطة</span><button class="add-btn" onclick="openHonorModal(\''+s.code+'\')">🏆 إضافة للوحة الشرف</button><button class="wallet-btn" onclick="quickPoints(\''+s.code+'\')">💰 + نقاط</button></div>';
+  }
+  document.getElementById('studentsList').innerHTML=html||'<p>مفيش طلبة في المرحلة دي</p>';
+}
+function openHonorModal(code){
+  selectedStu=null; for(var i=0;i<demoStudents.length;i++){ if(demoStudents[i].code===code) selectedStu=demoStudents[i]; } if(!selectedStu) return;
+  document.getElementById('modalStudentName').innerText=selectedStu.name+' • '+selectedStu.code;
+  document.getElementById('honorReason').value='';
+  document.getElementById('honorModal').classList.add('open');
+}
+function closeModal(){ document.getElementById('honorModal').classList.remove('open'); }
+document.getElementById('honorShowWhen').addEventListener('change', function(){ document.getElementById('honorShowAt').style.display=this.value==='later'?'block':'none'; });
+document.getElementById('honorHideWhen').addEventListener('change', function(){ document.getElementById('honorHideAt').style.display=this.value==='custom'?'block':'none'; });
+function confirmAddHonor(){
+  if(!selectedStu) return;
+  var reason=document.getElementById('honorReason').value.trim()||'طالب متميز 🏆';
+  var showWhen=document.getElementById('honorShowWhen').value;
+  var showAt=showWhen==='later'?document.getElementById('honorShowAt').value:'';
+  var hideWhen=document.getElementById('honorHideWhen').value;
+  var hideAt='';
+  if(hideWhen==='1day') hideAt=new Date(Date.now()+24*60*60*1000).toISOString();
+  if(hideWhen==='3days') hideAt=new Date(Date.now()+3*24*60*60*1000).toISOString();
+  if(hideWhen==='7days') hideAt=new Date(Date.now()+7*24*60*60*1000).toISOString();
+  if(hideWhen==='custom') hideAt=document.getElementById('honorHideAt').value;
+  var honor=getHonor();
+  honor=honor.filter(function(h){ return h.code!==selectedStu.code; });
+  honor.push({code:selectedStu.code, name:selectedStu.name, stage:selectedStu.stage, img:selectedStu.img, reason:reason, showAt:showAt, hideAt:hideAt, addedAt:new Date().toISOString()});
+  saveHonor(honor); closeModal(); renderHonor(); alert('تمت إضافة '+selectedStu.name+' للوحة الشرف 🏆');
+}
+function removeHonor(code){
+  if(!confirm('تشيل الطالب ده من لوحة الشرف؟')) return;
+  var honor=getHonor().filter(function(h){ return h.code!==code; }); saveHonor(honor); renderHonor();
+}
+function renderHonor(){
+  var honor=getHonor(); var now=new Date();
+  honor=honor.filter(function(h){
+    if(h.showAt && new Date(h.showAt)>now) return true;
+    if(h.hideAt && new Date(h.hideAt)<now) return false;
+    return true;
+  });
+  var pts=getPoints();
+  var visible=honor.filter(function(h){ if(h.showAt && new Date(h.showAt)>now) return false; return true; });
+  document.getElementById('honorCount').innerText=visible.length;
+  var html='';
+  for(var i=0;i<visible.length;i++){
+    var h=visible[i]; var p=pts[h.code]!==undefined?pts[h.code]:0;
+    var crown=i===0?'👑':i===1?'🥈':i===2?'🥉':'🏅';
+    var timerHtml=h.hideAt?'<span class="timer">⏰ هيختفي لوحده: '+new Date(h.hideAt).toLocaleString('ar-EG')+'</span>':'<span class="timer" style="background:#E8F5E9;color:#2E7D32">♾️ هيتفضل على طول</span>';
+    html+='<div class="honor-card '+(i===0?'first':'')+'"><div class="crown">'+crown+'</div><img src="'+h.img+'" onerror="this.src=\'https://via.placeholder.com/86\'"><b>'+h.name+'</b><small>'+h.code+' • '+h.stage+'</small><br><span style="background:#FFF8E0;padding:4px 10px;border-radius:12px;font-size:12px;font-weight:bold">💰 '+p+' نقطة</span><div class="reason">✍️ '+h.reason+'</div>'+timerHtml+'<br><button class="points-btn" onclick="quickPoints(\''+h.code+'\')">💰 + نقاط</button><button class="remove-btn" onclick="removeHonor(\''+h.code+'\')">🗑️ إزالة من لوحة الشرف</button></div>';
+  }
+  document.getElementById('honorGrid').innerHTML=html;
+  document.getElementById('emptyHonor').style.display=visible.length?'none':'block';
+  var waiting=honor.filter(function(h){ return h.showAt && new Date(h.showAt)>now; });
+  if(waiting.length){ document.getElementById('honorGrid').innerHTML+='<p style="grid-column:1/-1;font-size:12px;color:#888">⏰ فيه '+waiting.length+' طالب هيظهروا في لوحة الشرف بعد مدة، لما ييجي وقتهم هيظهروا لوحدهم</p>'; }
+}
+function renderWalletStudents(){
+  var stage=document.getElementById('walletStage').value;
+  var list=demoStudents.filter(function(s){ return s.stage===stage; });
+  var sel=document.getElementById('walletStudent'); sel.innerHTML='';
+  for(var i=0;i<list.length;i++){ var o=document.createElement('option'); o.value=list[i].code; o.text=list[i].name+' • '+list[i].code; sel.appendChild(o); }
+}
+function renderWallet(){
+  renderWalletStudents();
+  var pts=getPoints();
+  var html='';
+  for(var i=0;i<demoStudents.length;i++){
+    var s=demoStudents[i]; var p=pts[s.code]!==undefined?pts[s.code]:s.points;
+    html+='<div class="wallet-item"><img src="'+s.img+'" onerror="this.src=\'https://via.placeholder.com/50\'"><div><b>'+s.name+'</b><small>'+s.code+' • '+s.stage+'</small></div><span class="pts">💰 '+p+' نقطة</span></div>';
+  }
+  document.getElementById('walletList').innerHTML=html;
+}
+function quickPoints(code){
+  var sel=document.getElementById('walletStudent'); var stage=document.getElementById('walletStage');
+  var stu=null; for(var i=0;i<demoStudents.length;i++){ if(demoStudents[i].code===code) stu=demoStudents[i]; } if(!stu) return;
+  stage.value=stu.stage; renderWalletStudents(); sel.value=code; showTab('wallet'); document.getElementById('walletPoints').focus();
+  document.querySelector('.wrap').scrollIntoView({behavior:'smooth'});
+}
+function sendPoints(){
+  var code=document.getElementById('walletStudent').value;
+  var ptsNum=parseInt(document.getElementById('walletPoints').value,10);
+  var reason=document.getElementById('walletReason').value.trim()||'مكافأة من المستر 🏆';
+  var stu=null; for(var i=0;i<demoStudents.length;i++){ if(demoStudents[i].code===code) stu=demoStudents[i]; } if(!stu){ alert('اختار طالب'); return; }
+  var pts=getPoints(); var cur=pts[code]!==undefined?pts[code]:stu.points; pts[code]=cur+ptsNum; savePoints(pts);
+  var notifs=JSON.parse(localStorage.getItem('notifications')||'[]');
+  notifs.unshift({id:Date.now(), title:'💰 جالك '+ptsNum+' نقطة!', msg:'مبروك يا '+stu.name+'، المستر بعتلك '+ptsNum+' نقطة. السبب: '+reason+'. رصيدك دلوقتي: '+pts[code]+' نقطة = خصم في ثمن الحصة أو المذكرة', target:'one', student:code, stage:stu.stage, tone:'loud', toneName:'📢 قوية', who:'teacher', time:new Date().toLocaleString('ar-EG')});
+  localStorage.setItem('notifications', JSON.stringify(notifs));
+  document.getElementById('walletReason').value='';
+  renderStudents(); renderHonor(); renderWallet();
+  alert('تم ✅ بعت '+ptsNum+' نقطة لـ '+stu.name+'\nوصله إشعار بالنقاط، ورصيده بقى '+pts[code]+' نقطة');
+}
+document.getElementById('stageBody').classList.add('open');
+renderStudents(); renderHonor(); renderWallet();
+</script>
+</body>
+</html>
