@@ -129,5 +129,15 @@ renderNotifs();
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 <script src="sync.js"></script>
+<script>
+document.addEventListener('change', function(e){
+  var box = document.getElementById('teacherToneBox');
+  if(box && box.contains(e.target)){
+    var checked = e.target.checked;
+    localStorage.setItem('teacherSettings', JSON.stringify({toneLocked:!checked}));
+    if(typeof syncPushAll==='function'){ syncPushAll(); }
+  }
+});
+</script>
 </body>
 </html>
