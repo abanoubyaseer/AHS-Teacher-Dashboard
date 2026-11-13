@@ -3,147 +3,103 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MRF English - الامتحانات</title>
+<title>MRF English - انشاء امتحان - مستر</title>
 <style>
 *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,sans-serif}
-body{margin:0;background:#0F0F0F;display:flex;justify-content:center}
-.app{width:100%;max-width:430px;background:#FFF8F0;min-height:100vh;position:relative;overflow:hidden;display:flex;flex-direction:column;padding-bottom:72px}
-.top{height:60px;background:#fff;border-bottom:1px solid #EEE;display:flex;align-items:center;padding:0 12px}.top .back{width:38px;height:38px;border-radius:50%;border:none;background:#FFF3E0;cursor:pointer;font-size:18px}.top b{flex:1;text-align:center}
-.card{margin:12px;background:#fff;border-radius:18px;padding:16px;border:1px solid #FFE0B2}
-.card h3{margin:0}.card .meta{font-size:12px;color:#888;margin:8px 0;line-height:1.8}
-.card .enter{width:100%;padding:13px;border:none;border-radius:12px;background:#FF6B00;color:#fff;font-weight:bold;cursor:pointer;font-size:14px}
-.empty{text-align:center;color:#888;padding:30px}.empty .big{font-size:44px}.empty b{color:#0B1026;font-size:16px}
-.modal{position:absolute;inset:0;background:rgba(0,0,0,.6);z-index:100;display:none;align-items:center;justify-content:center;padding:14px}.modal.show{display:flex}
-.modal-box{background:#fff;border-radius:20px;padding:18px;width:100%;max-height:92%;overflow:auto;text-align:center}
-.modal-box input{width:100%;padding:13px;border-radius:12px;border:1px solid #EEE;text-align:center;font-size:18px;letter-spacing:3px;font-weight:900;margin:10px 0;outline:none}
-.btn-green{width:100%;padding:13px;border:none;border-radius:12px;background:#2E7D32;color:#fff;font-weight:bold;cursor:pointer}.btn-green:disabled{background:#C8E6C9;color:#666}
-.check-row{display:flex;gap:8px;justify-content:center;background:#F5F5F5;padding:10px;border-radius:12px;margin:12px 0;font-size:13px;font-weight:bold}
-.timer{margin:10px 12px 0;background:#0B1026;color:#fff;border-radius:14px;padding:12px;display:none;justify-content:space-between;align-items:center;font-weight:bold}.timer.show{display:flex}.timer .time{font-size:20px;letter-spacing:2px;color:#FFD54F}
-.q-card{margin:12px;background:#fff;border-radius:16px;padding:14px}.q-card h4{margin:0 0 10px;line-height:1.6}
-.opt{display:block;width:100%;text-align:right;padding:12px;border:2px solid #EEE;border-radius:12px;margin-top:8px;cursor:pointer;background:#fff;font-size:13px}.opt.selected{border-color:#FF6B00;background:#FFF3E0}
-.nav-row{display:flex;gap:8px;margin:0 12px 12px}.nav-row button{flex:1;padding:12px;border:none;border-radius:12px;font-weight:bold;cursor:pointer}.btn-prev{background:#EEE}.btn-next{background:#0B1026;color:#fff}.btn-submit{background:#2E7D32;color:#fff}
-.result{margin:12px;background:#fff;border-radius:18px;padding:16px;text-align:center}.result.pass{border:2px solid #2E7D32}.result.fail{border:2px solid #C62828}
-.balloons{font-size:36px;animation:bounce 1s infinite}@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
-.ans-card{margin:10px 12px;background:#fff;border-radius:14px;padding:12px;text-align:right;font-size:13px;line-height:1.7}
-.bottom-nav{position:absolute;bottom:0;left:0;right:0;height:68px;background:#fff;border-top:1px solid #EEE;display:flex;align-items:center;justify-content:space-around;padding:4px 6px;z-index:20}
-.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;cursor:pointer;font-size:11px;font-weight:bold;color:#666;padding:6px 2px;border-radius:12px}.nav-item .ico{font-size:22px}.nav-item.active{background:#FFF3E0;color:#FF6B00}
+body{margin:0;background:#FFF8F0;display:flex;justify-content:center}
+.app{width:100%;max-width:800px;padding:16px}
+.top{background:linear-gradient(135deg,#0B1026,#FF6B00);color:#fff;border-radius:20px;padding:20px;text-align:center}
+.top h1{margin:0;font-size:22px}
+.top p{margin:6px 0 0;font-size:13px;opacity:.9}
+.back{display:inline-block;margin:12px 0;background:#fff;border:1px solid #FFE0B2;padding:10px 14px;border-radius:12px;text-decoration:none;color:#333;font-weight:bold;font-size:13px}
+.card{background:#fff;border:1px solid #FFE0B2;border-radius:18px;padding:16px;margin-bottom:12px}
+.card label{font-weight:bold;font-size:13px;display:block;margin-bottom:6px}
+.card input,.card select,.card textarea{width:100%;padding:12px;border-radius:12px;border:1px solid #E0E0E0;outline:none;margin-bottom:12px;font-family:inherit}
+.card input:focus,.card select:focus,.card textarea:focus{border-color:#FF6B00}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.qbox{border:1px dashed #FFCC80;border-radius:14px;padding:12px;margin-bottom:10px;background:#FFF8F0}
+.qbox b{font-size:13px}
+.qbox input{margin-top:8px}
+.btn{width:100%;padding:14px;border:none;border-radius:14px;font-weight:bold;cursor:pointer;font-size:15px}
+.btn-add{background:#0B1026;color:#fff;margin-bottom:12px}
+.btn-pub{background:#2E7D32;color:#fff}
+.btn-del{background:#FFEBEE;color:#C62828;padding:8px 12px;border:none;border-radius:8px;font-weight:bold;cursor:pointer;font-size:12px;float:left}
 </style>
 </head>
 <body>
-<div class="app" id="app">
-<div class="top"><button class="back" onclick="location.href='home.html'">→</button><b>📝 الامتحانات</b><span style="width:38px"></span></div>
-<div id="listView"></div>
-<div class="timer" id="timerBar"><span>⏳ الوقت المتبقي</span><span class="time" id="timerText">05:00</span><span id="pageInfo" style="font-size:12px"></span></div>
-<div id="examView" style="display:none"></div>
-<div class="nav-row" id="examNav" style="display:none"><button class="btn-prev" onclick="prevPage()">← السابق</button><button class="btn-next" id="nextBtn" onclick="nextPage()">التالي →</button><button class="btn-submit" id="submitBtn" onclick="submitExam()" style="display:none">تسليم ✅</button></div>
-<div id="resultView"></div>
-<div class="bottom-nav">
-<button class="nav-item active" onclick="location.href='exams.html'"><span class="ico">📝</span><span>امتحان جديد</span></button>
-<button class="nav-item" onclick="location.href='homework.html'"><span class="ico">📚</span><span>واجب جديد</span></button>
-<button class="nav-item" onclick="location.href='home.html'"><span class="ico">🏠</span><span>الرئيسية</span></button>
-<button class="nav-item" onclick="location.href='chat.html'"><span class="ico">💬</span><span>المنتدى</span></button>
-<button class="nav-item" onclick="location.href='reports.html'"><span class="ico">📊</span><span>تقاريري</span></button>
+<div class="app">
+<div class="top"><h1>MRF English - انشاء امتحان ✍️ - مستر</h1><p>اكتب الامتحان هنا، واختار المرحلة، وانشره، هيوصل للطالب في تطبيقه على طول</p></div>
+<a class="back" href="dashboard.html">← رجوع للوحة التحكم</a>
+<div class="card">
+<label>عنوان الامتحان:</label>
+<input id="title" placeholder="مثال: Unit 1 - Grammar">
+<label>المرحلة:</label>
+<select id="stage"><option value="أولى بكالوريا">أولى بكالوريا</option><option value="تانية بكالوريا">تانية بكالوريا</option><option value="تالتة بكالوريا">تالتة بكالوريا</option></select>
+<div class="row"><div><label>الدرجة الكلية:</label><input id="totalGrade" type="number" value="20"></div><div><label>وقت الامتحان بالدقيقة:</label><input id="duration" type="number" value="30"></div></div>
+<label>✍️ تعليمات الامتحان - الطالب هيشوفها قبل ما يدخل الامتحان:</label>
+<textarea id="instructions" placeholder="مثال: اقرأ كل سؤال كويس، ممنوع الغش، لو خرجت من الامتحان هتتسحب الدرجة، حل بنفسك يا بطل 💪"></textarea>
 </div>
-<div class="modal" id="codeModal"><div class="modal-box"><div style="font-size:40px">🔐</div><h2>اكتب كودك</h2><input id="codeInput" placeholder="اكتب الكود" maxlength="6"><div id="codeError" style="color:#C62828;font-size:12px;display:none">الكود غلط</div><button class="btn-green" onclick="checkCode()">دخول ✅</button></div></div>
-<div class="modal" id="warnModal"><div class="modal-box"><div style="font-size:40px">⚠️</div><h2>تعليمات الامتحان</h2><div id="warnInfo" style="text-align:right;font-size:13px;line-height:1.8;background:#FFF8F0;padding:12px;border-radius:12px;margin:10px 0"></div><ul style="text-align:right;line-height:1.8;font-size:13px"><li><b>لو حاولت تغش، هيوصل للمستر، وهتتسحب الدرجة.</b></li><li>ممنوع الخروج، ممنوع الاسكرين شوت.</li><li>حل بنفسك، واجمد يا بطل 💪</li></ul><label class="check-row"><input type="checkbox" id="agreeCheck" onchange="document.getElementById('understoodBtn').disabled=!this.checked"> أنا قرأت وفهمت، وموافق</label><button class="btn-green" id="understoodBtn" disabled onclick="startExam()">فهمت ✅</button></div></div>
+<div class="card"><h3 style="margin:0 0 12px">الأسئلة</h3><div id="questions"></div><button class="btn btn-add" onclick="addQ()">+ اضافة سؤال</button></div>
+<button class="btn btn-pub" onclick="publish()">🚀 نشر الامتحان للطلاب</button>
+<div id="msg" style="text-align:center;font-weight:bold;margin-top:12px;color:#2E7D32"></div>
 </div>
 <script>
-if(!localStorage.getItem('currentStudent')){ location.href='index.html'; }
-var stu=JSON.parse(localStorage.getItem('currentStudent')||'{}');
-var exams=JSON.parse(localStorage.getItem('teacherExams')||'[]');
-var currentExam=null, answers={}, currentPage=0, timerInt=null, timeLeft=0, enterTime=null, cheatCount=0;
-function renderList(){
-  exams=JSON.parse(localStorage.getItem('teacherExams')||'[]');
-  var el=document.getElementById('listView'); el.innerHTML='';
-  var list=exams.filter(function(e){ return !e.stage || e.stage===stu.stage || e.stage==='all'; });
-  if(list.length===0){
-    el.innerHTML='<div class="empty"><div class="big">📚 💪 ✨</div><b>ذاكر، الاختبار قرب 📚</b><p>لسه مفيش امتحان جديد.<br>لما المستر ينزل امتحان، هيظهر هنا على طول.<br>استغل الوقت وذاكر، واجمد يا بطل 💪</p></div>';
-    return;
+var qs=[];
+function addQ(data){ qs.push(data||{q:'',a1:'',a2:'',a3:'',a4:'',correct:0}); renderQs(); }
+function renderQs(){
+  var wrap=document.getElementById('questions'); wrap.innerHTML='';
+  qs.forEach(function(item,i){
+    var d=document.createElement('div'); d.className='qbox';
+    d.innerHTML='<button class="btn-del" onclick="delQ('+i+')">حذف</button><b>سؤال '+(i+1)+'</b><input placeholder="اكتب السؤال هنا" value="'+(item.q||'').replace(/"/g,'&quot;')+'" oninput="qs['+i+'].q=this.value"><input placeholder="اختيار 1" value="'+(item.a1||'').replace(/"/g,'&quot;')+'" oninput="qs['+i+'].a1=this.value"><input placeholder="اختيار 2" value="'+(item.a2||'').replace(/"/g,'&quot;')+'" oninput="qs['+i+'].a2=this.value"><input placeholder="اختيار 3" value="'+(item.a3||'').replace(/"/g,'&quot;')+'" oninput="qs['+i+'].a3=this.value"><input placeholder="اختيار 4" value="'+(item.a4||'').replace(/"/g,'&quot;')+'" oninput="qs['+i+'].a4=this.value"><label>الاجابة الصحيحة:</label><select onchange="qs['+i+'].correct=this.value"><option value="0" '+(item.correct==0?'selected':'')+'>اختيار 1</option><option value="1" '+(item.correct==1?'selected':'')+'>اختيار 2</option><option value="2" '+(item.correct==2?'selected':'')+'>اختيار 3</option><option value="3" '+(item.correct==3?'selected':'')+'>اختيار 4</option></select>';
+    wrap.appendChild(d);
+  });
+}
+function delQ(i){ qs.splice(i,1); renderQs(); }
+function publish(){
+  var title=document.getElementById('title').value.trim();
+  if(!title){ alert('اكتب عنوان الامتحان'); return; }
+  if(qs.length===0){ alert('ضيف سؤال واحد على الأقل'); return; }
+  var editId=localStorage.getItem('editOldId')||'';
+  var urlId=new URLSearchParams(location.search).get('edit')||'';
+  var id=urlId || (editId.startsWith('exam:')?editId.split(':')[1]:'') || 'exam_'+Date.now();
+  var exam={id:id,title:title,stage:document.getElementById('stage').value,targetStage:document.getElementById('stage').value,totalGrade:document.getElementById('totalGrade').value,duration:document.getElementById('duration').value,instructions:document.getElementById('instructions').value,questions:qs.map(function(q){ return {q:q.q,choices:[q.a1,q.a2,q.a3,q.a4],correct:Number(q.correct)}; }),created:Date.now(),date:Date.now()};
+  var list=JSON.parse(localStorage.getItem('teacherExams')||localStorage.getItem('exams')||'[]');
+  list=list.filter(function(e){ return String(e.id)!==String(id); });
+  list.unshift(exam);
+  localStorage.setItem('teacherExams', JSON.stringify(list));
+  localStorage.setItem('exams', JSON.stringify(list));
+  var instrs=JSON.parse(localStorage.getItem('examInstructions')||'{}');
+  instrs['exam:'+id]=exam.instructions;
+  localStorage.setItem('examInstructions', JSON.stringify(instrs));
+  localStorage.removeItem('editOldId');
+  if(typeof syncPushAll==='function'){ syncPushAll(); }
+  document.getElementById('msg').innerText='تم نشر الامتحان ✅ - وصل للطلاب في مرحلة '+exam.stage;
+  setTimeout(function(){ location.href='dashboard.html'; },1500);
+}
+window.onload=function(){
+  var urlId=new URLSearchParams(location.search).get('edit')||'';
+  var editId=localStorage.getItem('editOldId')||'';
+  var wantId=urlId || (editId.startsWith('exam:')?editId.split(':')[1]:'');
+  if(wantId){
+    var list=JSON.parse(localStorage.getItem('teacherExams')||localStorage.getItem('exams')||'[]');
+    var found=list.find(function(e){ return String(e.id)===String(wantId); });
+    if(found){
+      document.getElementById('title').value=found.title||'';
+      document.getElementById('stage').value=found.stage||found.targetStage||'أولى بكالوريا';
+      document.getElementById('totalGrade').value=found.totalGrade||20;
+      document.getElementById('duration').value=found.duration||30;
+      document.getElementById('instructions').value=found.instructions||'';
+      qs=[];
+      (found.questions||[]).forEach(function(q){ qs.push({q:q.q,a1:q.choices?q.choices[0]:'',a2:q.choices?q.choices[1]:'',a3:q.choices?q.choices[2]:'',a4:q.choices?q.choices[3]:'',correct:q.correct||0}); });
+      renderQs();
+      document.querySelector('.top h1').innerText='MRF English - تعديل امتحان ✍️ - مستر';
+    }
   }
-  list.forEach(function(ex){
-    var div=document.createElement('div'); div.className='card';
-    div.innerHTML='<h3>📝 '+ex.title+'</h3><div class="meta">⏰ المدة: '+ex.duration+' دقيقة<br>❓ عدد الأسئلة: '+ex.questions.length+' سؤال<br>🏆 درجة النجاح: '+ex.passGrade+'%<br>📚 المرحلة: '+(ex.stage||'الكل')+'</div><button class="enter" onclick="openExam(\''+ex.id+'\')">الدخول إلى الاختبار →</button>';
-    el.appendChild(div);
-  });
-}
-function openExam(id){ currentExam=exams.find(function(x){return x.id===id;}); if(!currentExam) return; document.getElementById('codeModal').classList.add('show'); }
-function checkCode(){
-  var v=document.getElementById('codeInput').value.trim().toUpperCase();
-  if(v!==stu.code.toUpperCase()){ document.getElementById('codeError').style.display='block'; return; }
-  document.getElementById('codeError').style.display='none'; document.getElementById('codeModal').classList.remove('show');
-  document.getElementById('warnInfo').innerHTML='<b>عنوان الامتحان:</b> '+currentExam.title+'<br><b>المدة:</b> '+currentExam.duration+' دقيقة<br><b>عدد الأسئلة:</b> '+currentExam.questions.length+' سؤال<br><b>درجة النجاح:</b> '+currentExam.passGrade+'%<br><b>ملاحظة المستر:</b> '+(currentExam.note||'ركز، وحل بنفسك.');
-  document.getElementById('warnModal').classList.add('show');
-}
-function startExam(){
-  document.getElementById('warnModal').classList.remove('show');
-  document.getElementById('listView').style.display='none';
-  document.getElementById('examView').style.display='block';
-  document.getElementById('examNav').style.display='flex';
-  document.getElementById('timerBar').classList.add('show');
-  currentPage=0; answers={}; enterTime=new Date(); timeLeft=currentExam.duration*60;
-  updateTimer(); renderPage();
-  clearInterval(timerInt);
-  timerInt=setInterval(function(){ timeLeft--; updateTimer(); if(timeLeft<=0){ clearInterval(timerInt); alert('الوقت خلص'); submitExam(); } },1000);
-}
-function updateTimer(){
-  var m=Math.floor(timeLeft/60), s=timeLeft%60;
-  document.getElementById('timerText').innerText=(m<10?'0'+m:m)+':'+(s<10?'0'+s:s);
-  var totalPages=Math.ceil(currentExam.questions.length / (currentExam.perPage||1));
-  document.getElementById('pageInfo').innerText='صفحة '+(currentPage+1)+' من '+totalPages;
-}
-function renderPage(){
-  var per=currentExam.perPage||1; var start=currentPage*per, end=Math.min(start+per, currentExam.questions.length);
-  var el=document.getElementById('examView'); el.innerHTML='';
-  for(var i=start;i<end;i++){ (function(idx){
-    var q=currentExam.questions[idx]; var div=document.createElement('div'); div.className='q-card';
-    var html='<h4>سؤال '+(idx+1)+': '+q.q+'</h4>';
-    q.options.forEach(function(opt,oi){ var sel=answers[idx]===oi?' selected':''; html+='<button class="opt'+sel+'" onclick="selectAns('+idx+','+oi+',this)">'+opt+'</button>'; });
-    div.innerHTML=html; el.appendChild(div);
-  })(i); }
-  var totalPages=Math.ceil(currentExam.questions.length/per);
-  document.getElementById('nextBtn').style.display = currentPage<totalPages-1 ? 'block':'none';
-  document.getElementById('submitBtn').style.display = currentPage===totalPages-1 ? 'block':'none';
-  updateTimer();
-}
-function selectAns(idx, oi, btn){ answers[idx]=oi; var parent=btn.parentElement; parent.querySelectorAll('.opt').forEach(function(b){ b.classList.remove('selected'); }); btn.classList.add('selected'); }
-function nextPage(){ currentPage++; renderPage(); window.scrollTo({top:0,behavior:'smooth'}); }
-function prevPage(){ if(currentPage>0){ currentPage--; renderPage(); } }
-function submitExam(){
-  clearInterval(timerInt);
-  var total=0, got=0;
-  currentExam.questions.forEach(function(q,idx){ total+=(q.grade||5); if(answers[idx]===q.correct) got+=(q.grade||5); });
-  var percent=Math.round((got/total)*100); var passed=percent>=currentExam.passGrade;
-  var endTime=new Date(); var durMin=Math.max(1, Math.round((endTime-enterTime)/60000));
-  document.getElementById('examView').style.display='none'; document.getElementById('examNav').style.display='none'; document.getElementById('timerBar').classList.remove('show');
-  var res=document.getElementById('resultView'); var html='';
-  if(passed){ html+='<div class="result pass"><div class="balloons">🎉 🎈 🎊 🎈 🎉</div><h2 style="color:#2E7D32">عاش يا بطل! 🎉</h2>'; }
-  else { html+='<div class="result fail"><div style="font-size:44px">🥺 😔</div><h2 style="color:#C62828">معلش يا بطل، متزعلش</h2>'; }
-  html+='<div style="text-align:right;line-height:1.9;font-size:13px;background:#FFF8F0;padding:12px;border-radius:12px;margin-top:10px"><b>الطالب:</b> '+stu.name+'<br><b>الكود:</b> '+stu.code+'<br><b>الامتحان:</b> '+currentExam.title+'<br><b>دخول الامتحان:</b> '+enterTime.toLocaleString('ar-EG')+'<br><b>المدة:</b> '+durMin+' دقيقة<br><b>الدرجة:</b> '+got+' / '+total+' ('+percent+'%)</div></div>';
-  currentExam.questions.forEach(function(q,idx){
-    var stuAns = answers[idx]!==undefined ? q.options[answers[idx]] : 'لم يجب';
-    var correctAns = q.options[q.correct]; var isOk = answers[idx]===q.correct;
-    html+='<div class="ans-card" style="border:1px solid '+(isOk?'#C8E6C9':'#FFCDD2')+'"><b>سؤال '+(idx+1)+':</b> '+q.q+'<br>👤 <b>إجابتك:</b> '+stuAns+'<br>✅ <b>الإجابة الصح:</b> '+correctAns+'<br>'+(isOk?'✅ صح':'❌ غلط')+'</div>';
-  });
-  html+='<button class="btn-green" onclick="location.href=\'reports.html\'" style="margin:10px 12px;width:calc(100% - 24px)">أوكي ✅</button>';
-  res.innerHTML=html;
-  var reports=JSON.parse(localStorage.getItem('studentReports')||'[]');
-  reports.unshift({type:'exam', title:currentExam.title, name:stu.name, code:stu.code, stage:stu.stage, enter:enterTime.toLocaleString('ar-EG'), duration:durMin, grade:got, total:total, percent:percent, passed:passed, cheat:cheatCount, answers:answers, questions:currentExam.questions, date:Date.now()});
-  localStorage.setItem('studentReports', JSON.stringify(reports));
-}
-if(localStorage.getItem('theme')==='dark') document.getElementById('app').classList.add('dark');
-renderList();
+  if(qs.length===0){ addQ(); addQ(); }
+};
 </script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 <script src="sync.js"></script>
-<script>
-  if(typeof firebase !== 'undefined' && typeof firebaseConfig !== 'undefined'){
-    try{
-      firebase.initializeApp(firebaseConfig);
-      window.firebaseDB = firebase.database();
-      setTimeout(function(){ if(typeof syncPull === 'function'){ syncPull(); syncPushAll(); } }, 500);
-    }catch(e){}
-  }
-</script>
 </body>
 </html>
