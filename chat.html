@@ -94,6 +94,15 @@ body{margin:0;background:#F0F2F5;padding:0}
       <div class="status" id="chatStatus">🟢 مفتوح</div>
     </div>
     <div class="pinned" id="pinnedBar" style="display:none"><span>📌</span><b id="pinnedText"></b><button onclick="unpin()">✕</button></div>
+    <div id="stageTabs" style="display:flex;gap:8px;padding:10px;">
+  <button onclick="setStage('1')" id="st1" style="flex:1;padding:10px;border-radius:10px;">سنة أولى</button>
+  <button onclick="setStage('2')" id="st2" style="flex:1;padding:10px;border-radius:10px;">سنة تانية</button>
+  <button onclick="setStage('3')" id="st3" style="flex:1;padding:10px;border-radius:10px;">سنة تالتة</button>
+</div>
+<script>
+var currentStage = localStorage.getItem('teacherForumStage')||'1';
+function setStage(s){ currentStage=s; localStorage.setItem('teacherForumStage', s); renderMsgs(); }
+</script>
     <div class="msgs" id="msgs"></div>
     <div class="closed-box" id="closedMsg">🔒 المستر قفل الشات دلوقتي<br><small>استنى لما المستر يفتحه تاني</small></div>
     <div class="reply-bar" id="replyBar" style="display:none"><span>↩️ بترد على:</span><b id="replyPreview"></b><button onclick="cancelReply()">✕</button></div>
@@ -216,6 +225,7 @@ function renderMsgs(){
     msgs=[{id:1, who:'teacher', name:'Mr Romany Faheam', text:'أهلا بيكم في الشات الجماعي ❤️ هنا هنتكلم ونساعد بعض، الكود بس اللي بيظهر، مفيش أسماء ولا أرقام، والشات من غير مكالمات خالص', time:'الآن', reacts:{'❤️':3,'🔥':2}}, {id:2, who:'student', code:'AH1234', text:'أهلا يا مستر، الشات جميل جدا', time:'الآن', reacts:{'👍':1}}];
     saveMsgs(msgs);
   }
+  msgs = msgs.filter(function(m){ return !m.stage || String(m.stage)===String(currentStage); });
   var html='';
   for(var i=0;i<msgs.length;i++){
     var m=msgs[i]; var isTeacher=m.who==='teacher';
