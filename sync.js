@@ -62,6 +62,7 @@ function syncPullAll(){
     var all = Object.values(data);
     if(all.length===0) return;
     localStorage.setItem('students', JSON.stringify(all));
+    if(typeof renderStudents==='function'){ renderStudents(); }
   });
   db.ref('reports').on('value', function(snap){
     var data = snap.val()||{};
