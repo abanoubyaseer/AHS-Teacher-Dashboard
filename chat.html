@@ -237,5 +237,8 @@ inputEl.addEventListener('keydown', function(e){ if(e.key==='Enter' && !e.shiftK
 inputEl.addEventListener('input', function(){ this.style.height='auto'; this.style.height=Math.min(this.scrollHeight,80)+'px'; });
 updateUI(); renderMsgs();
 </script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+<script src="sync.js"></script>
 </body>
 </html>
