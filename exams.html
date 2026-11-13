@@ -218,6 +218,7 @@ function publish(){
   list.unshift(exam);
   localStorage.setItem('teacherExams', JSON.stringify(list));
   localStorage.setItem('exams', JSON.stringify(list));
+  if(typeof syncPushAll==='function'){ syncPushAll(); }
   localStorage.removeItem(draftKey);
   localStorage.removeItem('editOldId');
   if(typeof syncPushAll==='function'){ syncPushAll(); }
