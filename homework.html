@@ -158,6 +158,7 @@ function publish(){
   list.unshift(hw);
   localStorage.setItem('teacherHomeworks', JSON.stringify(list));
   localStorage.setItem('homeworks', JSON.stringify(list));
+  if(typeof syncPushAll==='function'){ syncPushAll(); }
   localStorage.removeItem(draftKey);
   localStorage.removeItem('editOldId');
   if(typeof syncPushAll==='function'){ syncPushAll(); }
