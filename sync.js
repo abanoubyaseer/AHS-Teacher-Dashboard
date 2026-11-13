@@ -33,6 +33,8 @@ function syncPushAll(){
     if(reports.length>0){
       reports.forEach(function(r){ if(r.id) db.ref('reports/'+r.id).set(r); });
     }
+    var notifs = JSON.parse(localStorage.getItem('teacherNotifications')||localStorage.getItem('notifications')||'[]');
+if(notifs.length>0){ notifs.forEach(function(n){ if(n.id) db.ref('notifications/'+n.id).set(n); }); }
     var settings = JSON.parse(localStorage.getItem('teacherSettings')||'null');
     if(settings){ db.ref('teacherSettings').set(settings); }
   }catch(e){ console.log(e); }
