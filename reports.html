@@ -245,19 +245,7 @@ function deleteStudent(code){
   var pts=JSON.parse(localStorage.getItem('walletPoints')||'{}'); delete pts[code]; localStorage.setItem('walletPoints', JSON.stringify(pts));
   var honor=JSON.parse(localStorage.getItem('honorBoard')||'[]').filter(function(h){ return h.code!==code; }); localStorage.setItem('honorBoard', JSON.stringify(honor));
   closeDetail(); renderStudents(); alert('تم حذف حساب الطالب نهائيا');
-}
-function addFakeExam(){
-  if(!selectedCode) return;
-  var title=prompt('اسم الامتحان أو الواجب - مثال: امتحان الوحدة الأولى');
-  if(!title) return;
-  var grade=prompt('الدرجة - اكتب رقم من 0 لـ 100 - مثال: 85');
-  if(grade===null) return;
-  var res=getResults();
-  var now=new Date();
-  res.unshift({code:selectedCode, examTitle:title, type:'امتحان', grade:parseInt(grade,10)||0, correct:0, wrong:0, total:0, startedAt:now.toLocaleString('ar-EG'), finishedAt:now.toLocaleString('ar-EG'), duration:'يدوي', cheat:false});
-  localStorage.setItem('examResults', JSON.stringify(res));
-  renderStudents(); openStudent(selectedCode);
-}
+
 function printStudent(){ window.print(); }
 renderStudents();
 </script>
