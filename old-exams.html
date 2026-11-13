@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MRF English - امتحانات قديمة</title>
+<style>
+*{box-sizing:border-box;font-family:'Segoe UI',Tahoma,sans-serif}
+body{margin:0;background:#FFF8F0;display:flex;justify-content:center}
+.app{width:100%;max-width:850px;min-height:100vh;padding:16px}
+@keyframes up{from{transform:translateY(25px);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes zoom{from{transform:scale(.8);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.top{background:linear-gradient(135deg,#0B1026,#FF6B00);color:#fff;border-radius:22px;padding:22px;text-align:center;animation:up .5s ease both;box-shadow:0 8px 24px rgba(255,107,0,.25)}
+.top h1{margin:0;font-size:24px}
+.top p{margin:8px 0 0;font-size:13px;opacity:.9;line-height:1.6}
+.back{display:inline-block;margin:14px 0;background:#fff;border:1px solid #FFE0B2;padding:10px 16px;border-radius:12px;text-decoration:none;color:#333;font-weight:bold;font-size:13px}
+.search-box{background:#fff;border:2px solid #FFE0B2;border-radius:18px;padding:6px;display:flex;gap:8px;align-items:center;animation:up .5s .1s ease both}
+.search-box span{font-size:20px;padding:0 6px}
+.search-box input{flex:1;border:none;outline:none;padding:12px;font-size:14px;background:transparent}
+.search-box button{background:#0B1026;color:#fff;border:none;padding:12px 18px;border-radius:12px;font-weight:bold;cursor:pointer}
+/* دواير المراحل */
+.circles{display:flex;justify-content:center;gap:16px;margin:18px 0;animation:up .5s .2s ease both}
+.circle{width:92px;height:92px;border-radius:50%;border:none;cursor:pointer;font-weight:bold;font-size:13px;line-height:1.4;transition:.25s;box-shadow:0 4px 14px rgba(0,0,0,.1);animation:float 3s infinite}
+.circle small{display:block;font-size:11px;opacity:.8;margin-top:2px}
+.circle.all{background:#0B1026;color:#fff}
+.circle.s1{background:#FF6B00;color:#fff}
+.circle.s2{background:#2E7D32;color:#fff}
+.circle.s3{background:#1976D2;color:#fff}
+.circle.active{transform:scale(1.12);box-shadow:0 8px 22px rgba(0,0,0,.2);outline:3px solid #FFD54F}
+.filters{display:flex;gap:8px;justify-content:center;margin-bottom:16px;animation:up .5s .3s ease both}
+.filters button{padding:10px 18px;border:2px solid #EEE;border-radius:20px;background:#fff;font-weight:bold;cursor:pointer;font-size:13px}
+.filters button.active{background:#FF6B00;color:#fff;border-color:#FF6B00}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.card{background:#fff;border:1px solid #FFE0B2;border-radius:18px;padding:16px;animation:zoom .4s ease both;box-shadow:0 2px 10px rgba(0,0,0,.04)}
+.card .head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.card .head .tag{font-size:11px;padding:5px 10px;border-radius:20px;color:#fff;font-weight:bold}
+.card .head .tag.exam{background:#FF6B00}
+.card .head .tag.hw{background:#2E7D32}
+.card .head .stage{font-size:11px;background:#FFF3E0;padding:5px 10px;border-radius:20px;font-weight:bold}
+.card h3{margin:0 0 6px;font-size:15px;line-height:1.5}
+.card p{margin:0;font-size:12px;color:#888}
+.card .actions{display:flex;gap:8px;margin-top:12px}
+.card .actions button{flex:1;padding:10px;border:none;border-radius:10px;font-weight:bold;cursor:pointer;font-size:13px}
+.card .actions .edit{background:#FF6B00;color:#fff}
+.card .actions .del{background:#FFEBEE;color:#C62828}
+.empty{background:#fff;border:1px dashed #FFCC80;border-radius:18px;padding:30px;text-align:center;color:#888;font-size:14px}
+.instr-box{background:#fff;border:1px solid #FFE0B2;border-radius:20px;padding:18px;margin-top:16px;animation:up .5s ease both}
+.instr-box h3{margin:0 0 6px}
+.instr-box p{font-size:12px;color:#666;line-height:1.7;margin:0 0 10px}
+.instr-box select{width:100%;padding:12px;border-radius:12px;border:1px solid #E0E0E0;margin-bottom:10px}
+.instr-box textarea{width:100%;min-height:100px;border-radius:12px;border:1px solid #E0E0E0;padding:12px;font-family:inherit;outline:none}
+.instr-box textarea:focus{border-color:#FF6B00}
+.instr-box button{background:#2E7D32;color:#fff;border:none;padding:12px;border-radius:12px;font-weight:bold;cursor:pointer;width:100%;margin-top:10px}
+</style>
+</head>
+<body>
+<div class="app">
+<div class="top"><h1>MRF English - امتحانات قديمة 📚</h1><p>أي امتحان أو واجب خلص، هتلاقيه هنا، عدله وانشره تاني من غير ما تكتبه من الأول<br>دور بالاسم، واختار المرحلة من الدواير، وعدل وانشر</p></div>
+<a class="back" href="dashboard.html">← رجوع للوحة التحكم</a>
+<div class="search-box"><span>🔍</span><input id="searchInput" placeholder="دور باسم أو عنوان الامتحان... مثال: Unit 1" oninput="render()"><button onclick="render()">بحث</button></div>
+<div class="circles">
+<button class="circle all active" id="cAll" onclick="setStage('الكل')">الكل<small id="countAll">0</small></button>
+<button class="circle s1" id="c1" onclick="setStage('أولى بكالوريا')">أولى<small id="count1">0</small></button>
+<button class="circle s2" id="c2" onclick="setStage('تانية بكالوريا')">تانية<small id="count2">0</small></button>
+<button class="circle s3" id="c3" onclick="setStage('تالتة بكالوريا')">تالتة<small id="count3">0</small></button>
+</div>
+<div class="filters">
+<button id="fAll" class="active" onclick="setType('الكل')">الكل</button>
+<button id="fExam" onclick="setType('امتحان')">📝 امتحانات بس</button>
+<button id="fHw" onclick="setType('واجب')">📚 واجبات بس</button>
+</div>
+<div class="grid" id="grid"></div>
+<div class="instr-box">
+<h3>✍️ كتابة تعليمات الامتحان</h3>
+<p>اكتب التعليمات اللي عايزها، والطالب أول ما يكتب الكود بتاعه، هتظهرله التعليمات، يدوس فهمت، يدخل على الامتحان، والتايمر يبدأ مع أول سؤال.</p>
+<label style="font-size:12px;font-weight:bold">اختار الامتحان:</label>
+<select id="instrExam"></select>
+<textarea id="instrText" placeholder="مثال: اقرأ كل سؤال كويس، ممنوع الغش، لو خرجت من الامتحان هتتسحب الدرجة، حل بنفسك يا بطل 💪"></textarea>
+<button onclick="saveInstr()">💾 حفظ التعليمات</button>
+<div id="instrMsg" style="font-size:12px;color:#2E7D32;margin-top:8px;text-align:center"></div>
+</div>
+</div>
+<script>
+var curStage='الكل', curType='الكل';
+function getAll(){
+  var exams=JSON.parse(localStorage.getItem('teacherExams')||localStorage.getItem('exams')||'[]');
+  var hws=JSON.parse(localStorage.getItem('teacherHomeworks')||localStorage.getItem('homeworks')||'[]');
+  var list=[];
+  exams.forEach(function(e){ e._type='امتحان'; e._kind='exam'; list.push(e); });
+  hws.forEach(function(e){ e._type='واجب'; e._kind='hw'; list.push(e); });
+  return list;
+}
+function setStage(s){
+  curStage=s;
+  document.getElementById('cAll').classList.toggle('active', s==='الكل');
+  document.getElementById('c1').classList.toggle('active', s==='أولى بكالوريا');
+  document.getElementById('c2').classList.toggle('active', s==='تانية بكالوريا');
+  document.getElementById('c3').classList.toggle('active', s==='تالتة بكالوريا');
+  render();
+}
+function setType(t){
+  curType=t;
+  document.getElementById('fAll').classList.toggle('active', t==='الكل');
+  document.getElementById('fExam').classList.toggle('active', t==='امتحان');
+  document.getElementById('fHw').classList.toggle('active', t==='واجب');
+  render();
+}
+function render(){
+  var all=getAll();
+  // عدادات الدواير
+  document.getElementById('countAll').innerText=all.length+' امتحان';
+  document.getElementById('count1').innerText=all.filter(function(e){ return (e.stage||e.targetStage)==='أولى بكالوريا'; }).length+' امتحان';
+  document.getElementById('count2').innerText=all.filter(function(e){ return (e.stage||e.targetStage)==='تانية بكالوريا'; }).length+' امتحان';
+  document.getElementById('count3').innerText=all.filter(function(e){ return (e.stage||e.targetStage)==='تالتة بكالوريا'; }).length+' امتحان';
+  // سيرش
+  var q=(document.getElementById('searchInput').value||'').trim().toLowerCase();
+  var filtered=all.filter(function(e){
+    if(curStage!=='الكل' && (e.stage||e.targetStage)!==curStage) return false;
+    if(curType!=='الكل' && e._type!==curType) return false;
+    if(q){
+      var title=(e.title||'').toLowerCase();
+      if(!title.includes(q)) return false;
+    }
+    return true;
+  });
+  var grid=document.getElementById('grid');
+  grid.innerHTML='';
+  if(filtered.length===0){
+    grid.innerHTML='<div class="empty" style="grid-column:1/-1">مفيش امتحانات أو واجبات بالاسم ده في المرحلة دي 🔍<br>جرب تدور باسم تاني، أو اختار مرحلة تانية</div>';
+  }
+  filtered.forEach(function(item){
+    var d=document.createElement('div'); d.className='card';
+    var date=new Date(item.created||item.date||Date.now()).toLocaleDateString('ar-EG');
+    d.innerHTML='<div class="head"><span class="tag '+(item._kind==='exam'?'exam':'hw')+'">'+item._type+'</span><span class="stage">'+(item.stage||item.targetStage||'بدون مرحلة')+'</span></div><h3>'+(item.title||'بدون عنوان')+'</h3><p>📅 '+date+' • '+(item.questions?item.questions.length:0)+' سؤال</p><div class="actions"><button class="edit" onclick="editItem(\''+item._kind+'\',\''+item.id+'\')">✏️ تعديل</button><button class="del" onclick="delItem(\''+item._kind+'\',\''+item.id+'\')">🗑️ حذف نهائي</button></div>';
+    grid.appendChild(d);
+  });
+  // قايمة التعليمات
+  var sel=document.getElementById('instrExam');
+  var curSel=sel.value;
+  sel.innerHTML='<option value="">-- اختار الامتحان --</option>';
+  all.filter(function(e){ return e._kind==='exam'; }).forEach(function(e){
+    var o=document.createElement('option'); o.value='exam:'+e.id; o.innerText='امتحان: '+(e.title||'بدون عنوان')+' - '+(e.stage||e.targetStage||''); sel.appendChild(o);
+  });
+  sel.value=curSel;
+}
+function editItem(type, id){
+  localStorage.setItem('editOldId', type+':'+id);
+  if(type==='exam'){ location.href='exams.html?edit='+id; }
+  else { location.href='homework.html?edit='+id; }
+}
+function delItem(type, id){
+  if(!confirm('متأكد إنك عايز تحذف نهائي؟ مش هيرجع تاني!')) return;
+  if(type==='exam'){
+    var list=JSON.parse(localStorage.getItem('teacherExams')||localStorage.getItem('exams')||'[]');
+    list=list.filter(function(e){ return String(e.id)!==String(id); });
+    localStorage.setItem('teacherExams', JSON.stringify(list));
+    localStorage.setItem('exams', JSON.stringify(list));
+  } else {
+    var list2=JSON.parse(localStorage.getItem('teacherHomeworks')||localStorage.getItem('homeworks')||'[]');
+    list2=list2.filter(function(e){ return String(e.id)!==String(id); });
+    localStorage.setItem('teacherHomeworks', JSON.stringify(list2));
+    localStorage.setItem('homeworks', JSON.stringify(list2));
+  }
+  if(typeof syncPushAll==='function'){ syncPushAll(); }
+  render();
+}
+function saveInstr(){
+  var sel=document.getElementById('instrExam').value;
+  var txt=document.getElementById('instrText').value.trim();
+  if(!sel){ alert('اختار الامتحان الأول'); return; }
+  if(!txt){ alert('اكتب التعليمات الأول'); return; }
+  var instrs=JSON.parse(localStorage.getItem('examInstructions')||'{}');
+  instrs[sel]=txt;
+  localStorage.setItem('examInstructions', JSON.stringify(instrs));
+  if(typeof syncPushAll==='function'){ syncPushAll(); }
+  document.getElementById('instrMsg').innerText='تم حفظ التعليمات ✅';
+}
+render();
+</script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+<script src="sync.js"></script>
+</body>
+</html>
