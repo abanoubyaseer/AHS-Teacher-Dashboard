@@ -6,74 +6,130 @@
 <title>MRF English - انشاء واجب - مستر</title>
 <style>
 *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,sans-serif}
-body{margin:0;background:#FFF8F0;display:flex;justify-content:center}
-.app{width:100%;max-width:800px;padding:16px}
-.top{background:linear-gradient(135deg,#0B1026,#FF6B00);color:#fff;border-radius:20px;padding:20px;text-align:center}
-.top h1{margin:0;font-size:22px}
-.top p{margin:6px 0 0;font-size:13px;opacity:.9}
-.back{display:inline-block;margin:12px 0;background:#fff;border:1px solid #FFE0B2;padding:10px 14px;border-radius:12px;text-decoration:none;color:#333;font-weight:bold;font-size:13px}
-.card{background:#fff;border:1px solid #FFE0B2;border-radius:18px;padding:16px;margin-bottom:12px}
-.card label{font-weight:bold;font-size:13px;display:block;margin-bottom:6px}
-.card input,.card select,.card textarea{width:100%;padding:12px;border-radius:12px;border:1px solid #E0E0E0;outline:none;margin-bottom:12px;font-family:inherit}
-.card input:focus,.card select:focus,.card textarea:focus{border-color:#FF6B00}
+body{margin:0;background:#F0EBF8;display:flex;justify-content:center}
+.app{width:100%;max-width:820px;padding:14px;padding-bottom:90px}
+.top{background:#fff;border-top:10px solid #188038;border-radius:14px;padding:18px;box-shadow:0 1px 4px rgba(0,0,0,.1)}
+.top h1{margin:0;font-size:20px}
+.top p{margin:6px 0 0;color:#666;font-size:12px;line-height:1.6}
+.back{display:inline-block;margin:10px 0;color:#188038;text-decoration:none;font-weight:bold;font-size:13px}
+.tabs{display:flex;gap:8px;margin:12px 0}
+.tabs button{flex:1;padding:13px;border:none;border-radius:12px;font-weight:bold;cursor:pointer;font-size:14px;background:#fff}
+.tabs button.active{background:#188038;color:#fff}
+.card{background:#fff;border-radius:14px;padding:18px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,.1)}
+.card h3{margin:0 0 12px;font-size:15px}
+.card label{font-size:12px;color:#5F6368;display:block;margin:12px 0 4px;font-weight:bold}
+.card input,.card select,.card textarea{width:100%;padding:11px;border:1px solid #DADCE0;border-radius:8px;outline:none;font-family:inherit;font-size:13px}
+.card input:focus,.card select:focus,.card textarea:focus{border-color:#188038}
 .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.qbox{border:1px dashed #FFCC80;border-radius:14px;padding:12px;margin-bottom:10px;background:#FFF8F0}
-.qbox b{font-size:13px}
-.qbox input{margin-top:8px}
-.btn{width:100%;padding:14px;border:none;border-radius:14px;font-weight:bold;cursor:pointer;font-size:15px}
-.btn-add{background:#0B1026;color:#fff;margin-bottom:12px}
-.btn-pub{background:#2E7D32;color:#fff}
-.btn-del{background:#FFEBEE;color:#C62828;padding:8px 12px;border:none;border-radius:8px;font-weight:bold;cursor:pointer;font-size:12px;float:left}
+.switch{display:flex;justify-content:space-between;align-items:center;background:#F1F8E9;border:1px solid #DCEDC8;border-radius:10px;padding:12px;margin-bottom:10px}
+.switch b{font-size:13px}
+.switch small{display:block;color:#666;font-weight:normal;font-size:11px}
+.switch input{width:52px;height:28px;appearance:none;background:#CCC;border-radius:20px;position:relative;cursor:pointer;flex-shrink:0;padding:0}
+.switch input:checked{background:#188038}
+.switch input:before{content:'';position:absolute;top:3px;right:3px;width:22px;height:22px;background:#fff;border-radius:50%;transition:.2s}
+.switch input:checked:before{right:27px}
+.qcard{background:#fff;border-radius:14px;padding:16px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,.1)}
+.qcard .qhead{display:flex;justify-content:space-between;align-items:center}
+.qcard .qhead b{font-size:13px}
+.qcard .qhead button{border:none;background:#FCE8E6;color:#D93025;padding:7px 12px;border-radius:20px;cursor:pointer;font-size:12px;font-weight:bold}
+.opt{display:flex;gap:8px;align-items:center;margin-bottom:8px}
+.opt input[type=radio]{accent-color:#188038;width:18px;height:18px;flex-shrink:0}
+.opt input[type=text]{flex:1;margin:0}
+.opt button{border:none;background:none;color:#999;cursor:pointer}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.toolbar button{border:1px solid #E0E0E0;background:#fff;padding:9px 12px;border-radius:20px;cursor:pointer;font-size:12px;font-weight:bold}
+.bar{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #EEE;padding:10px;display:flex;gap:8px;justify-content:center;z-index:20}
+.bar button{padding:12px 18px;border:none;border-radius:25px;font-weight:bold;cursor:pointer;font-size:13px}
+.bar .add{background:#188038;color:#fff}
+.bar .save{background:#188038;color:#fff}
+.bar .clear{background:#FCE8E6;color:#D93025}
+.autosave{text-align:center;font-size:11px;color:#188038;margin-top:6px}
 </style>
 </head>
 <body>
 <div class="app">
-<div class="top"><h1>MRF English - انشاء واجب 📚 - مستر</h1><p>اكتب الواجب هنا، واختار المرحلة، وانشره، هيوصل للطالب في تطبيقه على طول</p></div>
 <a class="back" href="dashboard.html">← رجوع للوحة التحكم</a>
+<div class="top"><h1>MRF English - انشاء واجب 📚 - مستر</h1><p>اكتب الواجب زي جوجل فورم - قايمة الاعدادات، وقايمة الأسئلة - وكل حرف بيتسجل لوحده، لو خرجت ورجعت هتلاقي شغلك زي ما هو</p></div>
+<div class="tabs"><button id="tabSet" class="active" onclick="showTab('settings')">⚙️ الاعدادات</button><button id="tabQ" onclick="showTab('questions')">❓ الأسئلة <span id="qCount">(0)</span></button></div>
+<div id="panelSettings">
 <div class="card">
-<label>عنوان الواجب:</label>
-<input id="title" placeholder="مثال: Homework - Unit 1">
+<h3>⚙️ اعدادات الواجب</h3>
+<div class="switch"><div><b>📌 هذا الواجب أساسي - إجباري لازم يتحل</b><small>لو شغلته، الطالب مش هيعرف يسيبه، ولازم يحله</small></div><input type="checkbox" id="isRequired" checked onchange="autoSave()"></div>
+<div class="switch"><div><b>🔀 لخبطة الأسئلة - ترتيب عشوائي لكل طالب</b><small>كل طالب هيجيله الأسئلة بترتيب مختلف، عشان مفيش غش</small></div><input type="checkbox" id="shuffle" checked onchange="autoSave()"></div>
+<div class="switch"><div><b>🚫 منع الخروج من الواجب - عدم الغش</b><small>لو الطالب خرج من الواجب، هيتحسب عليه</small></div><input type="checkbox" id="noExit" checked onchange="autoSave()"></div>
+<div class="switch"><div><b>📸 منع لقطة الشاشة</b><small>الطالب مش هيعرف ياخد سكرين شوت</small></div><input type="checkbox" id="noScreenshot" checked onchange="autoSave()"></div>
 <label>المرحلة:</label>
-<select id="stage"><option value="أولى بكالوريا">أولى بكالوريا</option><option value="تانية بكالوريا">تانية بكالوريا</option><option value="تالتة بكالوريا">تالتة بكالوريا</option></select>
-<div class="row"><div><label>الدرجة الكلية:</label><input id="totalGrade" type="number" value="20"></div><div><label>وقت الواجب بالدقيقة:</label><input id="duration" type="number" value="30"></div></div>
-<label>✍️ تعليمات الواجب - الطالب هيشوفها قبل ما يدخل الواجب:</label>
-<textarea id="instructions" placeholder="مثال: اقرأ كل سؤال كويس، ممنوع الغش، حل بنفسك يا بطل 💪"></textarea>
+<select id="stage" onchange="autoSave()"><option value="أولى بكالوريا">أولى بكالوريا</option><option value="تانية بكالوريا">تانية بكالوريا</option><option value="تالتة بكالوريا">تالتة بكالوريا</option></select>
+<div class="row"><div><label>عدد الأسئلة:</label><input id="qTotal" type="number" value="10" oninput="autoSave()"></div><div><label>المدة بالدقيقة:</label><input id="duration" type="number" value="30" oninput="autoSave()"></div></div>
+<div class="row"><div><label>الدرجة الكلية:</label><input id="totalGrade" type="number" value="20" oninput="autoSave()"></div><div><label>درجة النجاح:</label><input id="passGrade" type="number" value="10" oninput="autoSave()"></div></div>
+<div class="row"><div><label>الواجب على كام صفحة - كل صفحة كام سؤال؟</label><input id="perPage" type="number" value="5" oninput="autoSave()"></div><div><label>هيتقفل امتى؟</label><input id="closeAt" type="datetime-local" onchange="autoSave()"></div></div>
+<label>✍️ تعليمات الواجب - الطالب هيشوفها قبل ما يدخل:</label>
+<textarea id="instructions" rows="3" placeholder="اقرأ كل سؤال كويس، ممنوع الغش، حل بنفسك يا بطل 💪" oninput="autoSave()"></textarea>
+<label>🎉 الجملة اللي هتظهر بعد تسليم الواجب:</label>
+<input id="afterMsg" placeholder="مثال: عاش يا بطل، خلصت الواجب، استنى نتيجتك 💪" oninput="autoSave()">
 </div>
-<div class="card"><h3 style="margin:0 0 12px">الأسئلة</h3><div id="questions"></div><button class="btn btn-add" onclick="addQ()">+ اضافة سؤال</button></div>
-<button class="btn btn-pub" onclick="publish()">🚀 نشر الواجب للطلاب</button>
-<div id="msg" style="text-align:center;font-weight:bold;margin-top:12px;color:#2E7D32"></div>
+</div>
+<div id="panelQuestions" style="display:none">
+<div class="card">
+<label>📌 عنوان الواجب - إجباري:</label>
+<input id="title" placeholder="مثال: Homework - Unit 1" oninput="autoSave()">
+<label>📝 العنوان التاني - مش إجباري:</label>
+<input id="subtitle" placeholder="مثال: راجع كويس قبل ما تبدأ" oninput="autoSave()">
+</div>
+<div id="questions"></div>
+<div class="card" style="text-align:center;color:#888;font-size:13px">دوس على <b>+ اضافة سؤال</b> تحت، واختار نوع السؤال، واكتبه، وحدد درجته واجابته الصحيحة</div>
+</div>
+<div class="autosave" id="saveMsg">💾 حفظ تلقائي شغال - كل حرف بيتسجل</div>
+</div>
+<div class="bar">
+<button class="add" onclick="addQ()">+ اضافة سؤال</button>
+<button class="save" onclick="publish()">🚀 نشر الواجب</button>
+<button class="clear" onclick="clearDraft()">🗑️ مسح المسودة</button>
 </div>
 <script>
 var qs=[];
-function addQ(data){ qs.push(data||{q:'',a1:'',a2:'',a3:'',a4:'',correct:0}); renderQs(); }
+var draftKey='draft_hw_teacher';
+function showTab(t){
+  document.getElementById('panelSettings').style.display=t==='settings'?'block':'none';
+  document.getElementById('panelQuestions').style.display=t==='questions'?'block':'none';
+  document.getElementById('tabSet').classList.toggle('active',t==='settings');
+  document.getElementById('tabQ').classList.toggle('active',t==='questions');
+}
+function addQ(data){ qs.push(data||{type:'mcq',q:'',choices:['','','',''],correct:0,grade:1,img:''}); renderQs(); autoSave(); }
 function renderQs(){
+  document.getElementById('qCount').innerText='('+qs.length+')';
   var wrap=document.getElementById('questions'); wrap.innerHTML='';
   qs.forEach(function(item,i){
-    var d=document.createElement('div'); d.className='qbox';
-    d.innerHTML='<button class="btn-del" onclick="delQ('+i+')">حذف</button><b>سؤال '+(i+1)+'</b><input placeholder="اكتب السؤال هنا" value="'+(item.q||'').replace(/"/g,'&quot;')+'" oninput="qs['+i+'].q=this.value"><input placeholder="اختيار 1" value="'+(item.a1||'').replace(/"/g,'&quot;')+'" oninput="qs['+i+'].a1=this.value"><input placeholder="اختيار 2" value="'+(item.a2||'').replace(/"/g,'&quot;')+'" oninput="qs['+i+'].a2=this.value"><input placeholder="اختيار 3" value="'+(item.a3||'').replace(/"/g,'&quot;')+'" oninput="qs['+i+'].a3=this.value"><input placeholder="اختيار 4" value="'+(item.a4||'').replace(/"/g,'&quot;')+'" oninput="qs['+i+'].a4=this.value"><label>الاجابة الصحيحة:</label><select onchange="qs['+i+'].correct=this.value"><option value="0" '+(item.correct==0?'selected':'')+'>اختيار 1</option><option value="1" '+(item.correct==1?'selected':'')+'>اختيار 2</option><option value="2" '+(item.correct==2?'selected':'')+'>اختيار 3</option><option value="3" '+(item.correct==3?'selected':'')+'>اختيار 4</option></select>';
+    var d=document.createElement('div'); d.className='qcard';
+    var body='';
+    if(item.type==='mcq'){
+      var opts='';
+      item.choices.forEach(function(c,ci){
+        opts+='<div class="opt"><input type="radio" name="q'+i+'" '+(item.correct===ci?'checked':'')+' onclick="qs['+i+'].correct='+ci+';autoSave()"><input type="text" placeholder="اختيار '+(ci+1)+'" value="'+(c||'').replace(/"/g,'&quot;')+'" oninput="qs['+i+'].choices['+ci+']=this.value;autoSave()"><button onclick="delOpt('+i+','+ci+')">✕</button></div>';
+      });
+      body=opts+'<span style="color:#188038;font-weight:bold;font-size:12px;cursor:pointer" onclick="addOpt('+i+')">+ اضافة اختيار</span><div style="font-size:11px;color:#888;margin-top:6px">دوس على الدايرة جنب الاختيار عشان تختار الاجابة الصحيحة ✅</div>';
+    } else {
+      body='<label style="font-size:12px;color:#666">الاجابة الصحيحة للمقالي:</label><textarea rows="2" style="width:100%;padding:10px;border:1px solid #DADCE0;border-radius:8px" placeholder="اكتب الاجابة النموذجية هنا..." oninput="qs['+i+'].correctText=this.value;autoSave()">'+(item.correctText||'')+'</textarea>';
+    }
+    d.innerHTML='<div class="qhead"><b>سؤال '+(i+1)+' - '+(item.type==='mcq'?'اختر':'مقالي')+'</b><button onclick="delQ('+i+')">🗑️ حذف السؤال</button></div>'+
+    '<label style="font-size:12px;color:#666">نوع السؤال:</label><select onchange="qs['+i+'].type=this.value;renderQs();autoSave()"><option value="mcq" '+(item.type==='mcq'?'selected':'')+'>✏️ اختر - MCQ</option><option value="essay" '+(item.type==='essay'?'selected':'')+'>📝 مقالي</option></select>'+
+    '<input type="text" placeholder="اكتب السؤال هنا..." value="'+(item.q||'').replace(/"/g,'&quot;')+'" oninput="qs['+i+'].q=this.value;autoSave()" style="width:100%;border:none;border-bottom:1px solid #DADCE0;padding:10px 0;outline:none;font-size:15px">'+body+
+    '<div class="toolbar"><button onclick="addImg('+i+')">🖼️ اضافة صورة للسؤال</button><button>⭐ درجة السؤال: <input type="number" value="'+(item.grade||1)+'" style="width:50px;border:none;outline:none" onchange="qs['+i+'].grade=this.value;autoSave()"></button><button onclick="dupQ('+i+')">📋 نسخ السؤال</button></div>'+
+    (item.img?'<div style="font-size:12px;color:#188038;margin-top:8px">🖼️ فيه صورة: '+item.img+'</div>':'');
     wrap.appendChild(d);
   });
 }
-function delQ(i){ qs.splice(i,1); renderQs(); }
-function publish(){
-  var title=document.getElementById('title').value.trim();
-  if(!title){ alert('اكتب عنوان الواجب'); return; }
-  if(qs.length===0){ alert('ضيف سؤال واحد على الأقل'); return; }
-  var editId=localStorage.getItem('editOldId')||'';
-  var urlId=new URLSearchParams(location.search).get('edit')||'';
-  var id=urlId || (editId.startsWith('hw:')?editId.split(':')[1]:'') || 'hw_'+Date.now();
-  var hw={id:id,title:title,stage:document.getElementById('stage').value,targetStage:document.getElementById('stage').value,totalGrade:document.getElementById('totalGrade').value,duration:document.getElementById('duration').value,instructions:document.getElementById('instructions').value,questions:qs.map(function(q){ return {q:q.q,choices:[q.a1,q.a2,q.a3,q.a4],correct:Number(q.correct)}; }),created:Date.now(),date:Date.now()};
-  var list=JSON.parse(localStorage.getItem('teacherHomeworks')||localStorage.getItem('homeworks')||'[]');
-  list=list.filter(function(e){ return String(e.id)!==String(id); });
-  list.unshift(hw);
-  localStorage.setItem('teacherHomeworks', JSON.stringify(list));
-  localStorage.setItem('homeworks', JSON.stringify(list));
-  localStorage.removeItem('editOldId');
-  if(typeof syncPushAll==='function'){ syncPushAll(); }
-  document.getElementById('msg').innerText='تم نشر الواجب ✅ - وصل للطلاب في مرحلة '+hw.stage;
-  setTimeout(function(){ location.href='dashboard.html'; },1500);
+function delQ(i){ qs.splice(i,1); renderQs(); autoSave(); }
+function dupQ(i){ var c=JSON.parse(JSON.stringify(qs[i])); qs.splice(i+1,0,c); renderQs(); autoSave(); }
+function addOpt(i){ if(qs[i].choices.length<6){ qs[i].choices.push(''); renderQs(); autoSave(); } }
+function delOpt(i,ci){ if(qs[i].choices.length>2){ qs[i].choices.splice(ci,1); renderQs(); autoSave(); } }
+function addImg(i){ var u=prompt('حط لينك صورة السؤال:'); if(u){ qs[i].img=u; renderQs(); autoSave(); } }
+function getForm(){
+  return {title:document.getElementById('title').value,subtitle:document.getElementById('subtitle').value,stage:document.getElementById('stage').value,isRequired:document.getElementById('isRequired').checked,shuffle:document.getElementById('shuffle').checked,noExit:document.getElementById('noExit').checked,noScreenshot:document.getElementById('noScreenshot').checked,qTotal:document.getElementById('qTotal').value,duration:document.getElementById('duration').value,totalGrade:document.getElementById('totalGrade').value,passGrade:document.getElementById('passGrade').value,perPage:document.getElementById('perPage').value,closeAt:document.getElementById('closeAt').value,instructions:document.getElementById('instructions').value,afterMsg:document.getElementById('afterMsg').value,questions:qs};
 }
-window.onload=function(){
+function autoSave(){ localStorage.setItem(draftKey, JSON.stringify(getForm())); document.getElementById('saveMsg').innerText='💾 اتحفظ تلقائي - '+new Date().toLocaleTimeString('ar-EG'); }
+function loadDraft(){
+  var d=JSON.parse(localStorage.getItem(draftKey)||'null');
   var urlId=new URLSearchParams(location.search).get('edit')||'';
   var editId=localStorage.getItem('editOldId')||'';
   var wantId=urlId || (editId.startsWith('hw:')?editId.split(':')[1]:'');
@@ -81,19 +137,34 @@ window.onload=function(){
     var list=JSON.parse(localStorage.getItem('teacherHomeworks')||localStorage.getItem('homeworks')||'[]');
     var found=list.find(function(e){ return String(e.id)===String(wantId); });
     if(found){
-      document.getElementById('title').value=found.title||'';
-      document.getElementById('stage').value=found.stage||found.targetStage||'أولى بكالوريا';
-      document.getElementById('totalGrade').value=found.totalGrade||20;
-      document.getElementById('duration').value=found.duration||30;
-      document.getElementById('instructions').value=found.instructions||'';
-      qs=[];
-      (found.questions||[]).forEach(function(q){ qs.push({q:q.q,a1:q.choices?q.choices[0]:'',a2:q.choices?q.choices[1]:'',a3:q.choices?q.choices[2]:'',a4:q.choices?q.choices[3]:'',correct:q.correct||0}); });
-      renderQs();
-      document.querySelector('.top h1').innerText='MRF English - تعديل واجب 📚 - مستر';
+      document.getElementById('title').value=found.title||''; document.getElementById('subtitle').value=found.subtitle||''; document.getElementById('stage').value=found.stage||found.targetStage||'أولى بكالوريا'; document.getElementById('totalGrade').value=found.totalGrade||20; document.getElementById('duration').value=found.duration||30; document.getElementById('passGrade').value=found.passGrade||10; document.getElementById('perPage').value=found.perPage||5; document.getElementById('instructions').value=found.instructions||''; document.getElementById('afterMsg').value=found.afterMsg||''; qs=[]; (found.questions||[]).forEach(function(q){ qs.push({type:q.type||'mcq',q:q.q,choices:q.choices||['','','',''],correct:q.correct||0,grade:q.grade||1,correctText:q.correctText||'',img:q.img||''}); }); renderQs(); showTab('questions'); return;
     }
   }
-  if(qs.length===0){ addQ(); addQ(); }
-};
+  if(d){
+    document.getElementById('title').value=d.title||''; document.getElementById('subtitle').value=d.subtitle||''; document.getElementById('stage').value=d.stage||'أولى بكالوريا'; document.getElementById('isRequired').checked=d.isRequired!==false; document.getElementById('shuffle').checked=d.shuffle!==false; document.getElementById('noExit').checked=d.noExit!==false; document.getElementById('noScreenshot').checked=d.noScreenshot!==false; document.getElementById('qTotal').value=d.qTotal||10; document.getElementById('duration').value=d.duration||30; document.getElementById('totalGrade').value=d.totalGrade||20; document.getElementById('passGrade').value=d.passGrade||10; document.getElementById('perPage').value=d.perPage||5; document.getElementById('closeAt').value=d.closeAt||''; document.getElementById('instructions').value=d.instructions||''; document.getElementById('afterMsg').value=d.afterMsg||''; qs=d.questions||[]; renderQs(); if(qs.length>0){ document.getElementById('saveMsg').innerText='💾 رجعنالك شغلك اللي كنت بتكتبه - كمل من مكان ما وقفت'; }
+  } else { addQ(); addQ(); }
+}
+function clearDraft(){ if(confirm('متأكد تمسح المسودة؟')){ localStorage.removeItem(draftKey); qs=[]; renderQs(); } }
+function publish(){
+  var f=getForm();
+  if(!f.title.trim()){ alert('اكتب عنوان الواجب - إجباري'); showTab('questions'); return; }
+  if(qs.length===0){ alert('ضيف سؤال واحد على الأقل'); return; }
+  var editId=localStorage.getItem('editOldId')||'';
+  var urlId=new URLSearchParams(location.search).get('edit')||'';
+  var id=urlId || (editId.startsWith('hw:')?editId.split(':')[1]:'') || 'hw_'+Date.now();
+  var hw={id:id,title:f.title,subtitle:f.subtitle,stage:f.stage,targetStage:f.stage,isRequired:f.isRequired,shuffle:f.shuffle,noExit:f.noExit,noScreenshot:f.noScreenshot,qTotal:qs.length,duration:f.duration,totalGrade:f.totalGrade,passGrade:f.passGrade,perPage:f.perPage,closeAt:f.closeAt,instructions:f.instructions,afterMsg:f.afterMsg,questions:qs,created:Date.now(),date:Date.now()};
+  var list=JSON.parse(localStorage.getItem('teacherHomeworks')||localStorage.getItem('homeworks')||'[]');
+  list=list.filter(function(e){ return String(e.id)!==String(id); });
+  list.unshift(hw);
+  localStorage.setItem('teacherHomeworks', JSON.stringify(list));
+  localStorage.setItem('homeworks', JSON.stringify(list));
+  localStorage.removeItem(draftKey);
+  localStorage.removeItem('editOldId');
+  if(typeof syncPushAll==='function'){ syncPushAll(); }
+  alert('تم نشر الواجب ✅ - وصل للطلاب في مرحلة '+hw.stage);
+  location.href='dashboard.html';
+}
+loadDraft();
 </script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
