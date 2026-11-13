@@ -150,8 +150,9 @@ function sendMsg(){
   var input=document.getElementById('chatInput');
   var t=input.value.trim(); if(!t) return;
   var msgs=getMsgs();
-  msgs.push({id:Date.now(), who:'teacher', name:'Mr Romany Faheam', text:t, reply:replyTo?replyTo.text:'', replyCode:replyTo?replyTo.code:'', time:new Date().toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'}), reacts:{}});
+  msgs.push({id:Date.now(), who:'teacher', name:'Mr Romany Faheam', text:t, stage: currentStage, reply:replyTo?replyTo.text:'', replyCode:replyTo?replyTo.code:'', time:new Date().toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'}), reacts:{}});
   saveMsgs(msgs); input.value=''; input.style.height='auto'; replyTo=null; document.getElementById('replyBar').style.display='none'; renderMsgs();
+  if(typeof db!=='undefined' && db){ var lastMsg = msgs[msgs.length-1]; db.ref('forum/'+currentStage+'/'+lastMsg.id).set(lastMsg); }
 }
 function sendSticker(s){
   if(!chatSettings.sticker){ alert('الستيكرات مقفولة'); return; }
